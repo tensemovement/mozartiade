@@ -54,12 +54,21 @@ const config: Config = {
         ivory: "#FEF3C7",
       },
       fontFamily: {
+        // Body text: Inter + Noto Sans KR
         sans: [
-          "Inter",
+          "var(--font-inter)",
+          "var(--font-noto-sans-kr)",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
           "sans-serif",
+        ],
+        // Headings: Playfair Display + Noto Serif KR
+        serif: [
+          "var(--font-playfair)",
+          "var(--font-noto-serif-kr)",
+          "Georgia",
+          "serif",
         ],
         mono: ["Fira Code", "Monaco", "monospace"],
       },

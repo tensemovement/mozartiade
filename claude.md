@@ -17,9 +17,13 @@ Classical, elegant UI with Mozart-inspired theme:
   - Text Primary: #78350F (Dark Gold) - 따뜻한 어두운 톤
   - Text Secondary: #92400E (Medium Gold) - 보조 텍스트
 
-- Typography:
-  - Headings: Inter (font-semibold to font-bold)
-  - Body: System fonts stack (-apple-system, BlinkMacSystemFont, "Segoe UI")
+- Typography (Mozart-inspired):
+  - Headings: Playfair Display (font-serif) - 18세기 타이포그래피에서 영감
+    - 한글: Noto Serif KR - 우아한 세리프 폰트
+    - 사용: font-serif, font-semibold to font-bold
+  - Body: Inter (font-sans) - 현대적이고 가독성 높은 산세리프
+    - 한글: Noto Sans KR - 깔끔한 산세리프
+    - 사용: font-sans, font-normal to font-medium
   - Code: 'Fira Code', 'Monaco', monospace
 
 - Spacing: 8px grid system
