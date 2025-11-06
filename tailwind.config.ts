@@ -9,9 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Mozart Theme: Royal Gold, Imperial Purple, Burgundy
+        // Mozart Theme: Deep Burgundy (Coat), Antique Gold (Embellishments), Emerald (Contrast)
         primary: {
-          DEFAULT: "#D97706", // Royal Gold
+          DEFAULT: "#991B1B", // Deep Wine Red - Mozart's signature coat color
+          50: "#FEF2F2",
+          100: "#FEE2E2",
+          200: "#FECACA",
+          300: "#FCA5A5",
+          400: "#F87171",
+          500: "#EF4444",
+          600: "#DC2626",
+          700: "#B91C1C",
+          800: "#991B1B",
+          900: "#7F1D1D",
+        },
+        secondary: {
+          DEFAULT: "#D97706", // Antique Gold - decorative buttons and embellishments
           50: "#FFFBEB",
           100: "#FEF3C7",
           200: "#FDE68A",
@@ -23,31 +36,18 @@ const config: Config = {
           800: "#92400E",
           900: "#78350F",
         },
-        secondary: {
-          DEFAULT: "#7C3AED", // Imperial Purple
-          50: "#FAF5FF",
-          100: "#F3E8FF",
-          200: "#E9D5FF",
-          300: "#D8B4FE",
-          400: "#C084FC",
-          500: "#A855F7",
-          600: "#9333EA",
-          700: "#7C3AED",
-          800: "#6B21A8",
-          900: "#581C87",
-        },
         accent: {
-          DEFAULT: "#991B1B", // Burgundy Red
-          50: "#FEF2F2",
-          100: "#FEE2E2",
-          200: "#FECACA",
-          300: "#FCA5A5",
-          400: "#F87171",
-          500: "#EF4444",
-          600: "#DC2626",
-          700: "#B91C1C",
-          800: "#991B1B",
-          900: "#7F1D1D",
+          DEFAULT: "#047857", // Deep Emerald - elegant contrast
+          50: "#ECFDF5",
+          100: "#D1FAE5",
+          200: "#A7F3D0",
+          300: "#6EE7B7",
+          400: "#34D399",
+          500: "#10B981",
+          600: "#059669",
+          700: "#047857",
+          800: "#065F46",
+          900: "#064E3B",
         },
         // Classical music inspired neutrals
         cream: "#FFFBEB",
