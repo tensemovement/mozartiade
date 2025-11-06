@@ -17,9 +17,13 @@ Classical, elegant UI with Mozart-inspired theme:
   - Text Primary: #78350F (Dark Gold) - 따뜻한 어두운 톤
   - Text Secondary: #92400E (Medium Gold) - 보조 텍스트
 
-- Typography:
-  - Headings: Inter (font-semibold to font-bold)
-  - Body: System fonts stack (-apple-system, BlinkMacSystemFont, "Segoe UI")
+- Typography (Mozart-inspired):
+  - Headings: Playfair Display (font-serif) - 18세기 타이포그래피에서 영감
+    - 한글: Noto Serif KR - 우아한 세리프 폰트
+    - 사용: font-serif, font-semibold to font-bold
+  - Body: Inter (font-sans) - 현대적이고 가독성 높은 산세리프
+    - 한글: Noto Sans KR - 깔끔한 산세리프
+    - 사용: font-sans, font-normal to font-medium
   - Code: 'Fira Code', 'Monaco', monospace
 
 - Spacing: 8px grid system
@@ -44,18 +48,23 @@ Classical, elegant UI with Mozart-inspired theme:
 
 ```
 Use Tailwind CSS with Mozart Theme:
-- Elegant gradient backgrounds: from-primary-600 to-secondary-700 (gold to purple)
+- Solid color backgrounds: bg-cream, bg-white (NO gradients)
 - Subtle gold accents: border-primary-400, text-primary-600
-- Glass morphism effects: backdrop-blur-lg bg-cream/80
+- Glass morphism effects: backdrop-blur-lg bg-cream/80 (minimal use)
 - Smooth, refined transitions: transition-all duration-300 ease-out
 - Classical shadows: shadow-lg with warm tones
 - Responsive design: mobile-first approach (sm:, md:, lg:, xl:, 2xl:)
+
+⚠️ IMPORTANT: Avoid gradients for classical elegance
+- Use solid colors for backgrounds and elements
+- Gradients distract from the timeless, elegant aesthetic
+- Exception: Subtle gradients ONLY for hero images/illustrations (rarely)
 ```
 
 **예시:**
 ```jsx
-<div className="bg-gradient-to-r from-primary-600 to-secondary-700 backdrop-blur-lg">
-  <div className="bg-cream/90 rounded-xl shadow-lg border border-primary-200">
+<div className="bg-cream backdrop-blur-lg">
+  <div className="bg-white rounded-xl shadow-lg border border-primary-200">
     {/* Content */}
   </div>
 </div>
@@ -146,7 +155,7 @@ Input: "w-full px-4 py-3 rounded-lg border-2 border-primary-200
 ### 접근성
 ```
 "Implement focus-visible for accessibility"
-- focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+- focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
 - Use focus-visible: for keyboard-only focus styles
 - Maintain color contrast ratio ≥ 4.5:1
 ```
@@ -162,6 +171,35 @@ Input: "w-full px-4 py-3 rounded-lg border-2 border-primary-200
   - ease-in: Accelerating
   - ease-out: Decelerating (preferred for enter animations)
   - ease-in-out: Smooth start and end
+```
+
+### ⚠️ Gradient Usage Policy (IMPORTANT)
+
+```
+RULE: Avoid gradients to maintain classical elegance
+
+❌ DO NOT USE:
+- Background gradients (bg-gradient-to-*)
+- Text gradients (bg-clip-text)
+- Border gradients
+- Icon/element gradients
+
+✅ USE INSTEAD:
+- Solid backgrounds: bg-cream, bg-white, bg-primary-50
+- Solid colors for icons: bg-primary-600, bg-secondary-700
+- Solid text colors: text-primary-700, text-secondary-900
+- Borders with single colors: border-primary-200
+
+🎯 RATIONALE:
+- Classical design emphasizes simplicity and timelessness
+- Mozart-era aesthetics favor solid, rich colors
+- Gradients can appear trendy and date quickly
+- Solid colors are more elegant and professional
+
+📝 RARE EXCEPTIONS (must be justified):
+- Hero section illustrations/artwork ONLY
+- Must be subtle and purposeful
+- Requires explicit approval in code review
 ```
 
 ## 6. 코드 구조화
