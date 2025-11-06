@@ -7,15 +7,15 @@
 프로젝트 전반에 걸쳐 사용할 디자인 언어:
 
 ```
-modern, minimalist UI with:
-- Color scheme:
-  - Primary: #3B82F6 (Blue 500)
-  - Secondary: #8B5CF6 (Violet 500)
-  - Accent: #10B981 (Emerald 500)
-  - Background: #FFFFFF (White)
-  - Surface: #F9FAFB (Gray 50)
-  - Text Primary: #111827 (Gray 900)
-  - Text Secondary: #6B7280 (Gray 500)
+Classical, elegant UI with Mozart-inspired theme:
+- Color scheme (Mozart Theme):
+  - Primary: #D97706 (Royal Gold) - 모차르트 시대의 금박, 음악의 풍부함
+  - Secondary: #7C3AED (Imperial Purple) - 왕실의 고귀함, 오페라의 벨벳
+  - Accent: #991B1B (Burgundy Red) - 깊이 있는 클래식함, 와인 레드
+  - Background: #FFFBEB (Cream) - 악보의 색상
+  - Surface: #FEF3C7 (Ivory) - 부드러운 표면
+  - Text Primary: #78350F (Dark Gold) - 따뜻한 어두운 톤
+  - Text Secondary: #92400E (Medium Gold) - 보조 텍스트
 
 - Typography:
   - Headings: Inter (font-semibold to font-bold)
@@ -43,17 +43,19 @@ modern, minimalist UI with:
 ### Tailwind CSS 사용 가이드
 
 ```
-Use Tailwind CSS with:
-- Modern gradient backgrounds: from-blue-500 to-violet-600
-- Glass morphism effects: backdrop-blur-lg bg-white/10
-- Smooth transitions: transition-all duration-200 ease-in-out
+Use Tailwind CSS with Mozart Theme:
+- Elegant gradient backgrounds: from-primary-600 to-secondary-700 (gold to purple)
+- Subtle gold accents: border-primary-400, text-primary-600
+- Glass morphism effects: backdrop-blur-lg bg-cream/80
+- Smooth, refined transitions: transition-all duration-300 ease-out
+- Classical shadows: shadow-lg with warm tones
 - Responsive design: mobile-first approach (sm:, md:, lg:, xl:, 2xl:)
 ```
 
 **예시:**
 ```jsx
-<div className="bg-gradient-to-r from-blue-500 to-violet-600 backdrop-blur-lg">
-  <div className="bg-white/10 rounded-xl shadow-lg">
+<div className="bg-gradient-to-r from-primary-600 to-secondary-700 backdrop-blur-lg">
+  <div className="bg-cream/90 rounded-xl shadow-lg border border-primary-200">
     {/* Content */}
   </div>
 </div>
@@ -79,43 +81,48 @@ Implement Stripe-like checkout flow with:
 ```jsx
 "Create a navigation bar with:
 - Sticky positioning with backdrop blur
-  → className="sticky top-0 z-50 backdrop-blur-md bg-white/80"
+  → className="sticky top-0 z-50 backdrop-blur-md bg-cream/90 border-b border-primary-200"
 
 - Smooth scroll indicators
   → Use IntersectionObserver for active states
 
-- Active state with underline animation
+- Active state with golden underline animation
   → className="relative after:absolute after:bottom-0 after:left-0
-     after:h-0.5 after:w-full after:bg-blue-500 after:scale-x-0
+     after:h-0.5 after:w-full after:bg-primary-600 after:scale-x-0
      after:transition-transform hover:after:scale-x-100"
 ```
 
 ### Buttons
 
 ```jsx
-Primary: "bg-blue-500 hover:bg-blue-600 text-white font-medium
-          px-6 py-3 rounded-lg transition-colors duration-200"
+Primary: "bg-primary-600 hover:bg-primary-700 text-white font-semibold
+          px-6 py-3 rounded-lg transition-all duration-300 shadow-md
+          hover:shadow-lg hover:scale-105"
 
-Secondary: "bg-gray-100 hover:bg-gray-200 text-gray-900 font-medium
-            px-6 py-3 rounded-lg transition-colors duration-200"
+Secondary: "bg-secondary-600 hover:bg-secondary-700 text-white font-semibold
+            px-6 py-3 rounded-lg transition-all duration-300"
 
-Outline: "border-2 border-blue-500 text-blue-500 hover:bg-blue-50
-          font-medium px-6 py-3 rounded-lg transition-colors duration-200"
+Outline: "border-2 border-primary-600 text-primary-700 hover:bg-primary-50
+          font-semibold px-6 py-3 rounded-lg transition-all duration-300"
+
+Accent: "bg-accent-800 hover:bg-accent-900 text-white font-semibold
+         px-6 py-3 rounded-lg transition-all duration-300"
 ```
 
 ### Cards
 
 ```jsx
-"rounded-xl bg-white shadow-md hover:shadow-lg
- transition-shadow duration-200 p-6 border border-gray-100"
+"rounded-xl bg-cream shadow-md hover:shadow-xl
+ transition-all duration-300 p-6 border border-primary-200
+ hover:border-primary-300 hover:-translate-y-1"
 ```
 
 ### Forms
 
 ```jsx
-Input: "w-full px-4 py-3 rounded-lg border border-gray-300
-        focus:border-blue-500 focus:ring-2 focus:ring-blue-200
-        outline-none transition-all duration-200"
+Input: "w-full px-4 py-3 rounded-lg border-2 border-primary-200
+        bg-cream focus:border-primary-600 focus:ring-2 focus:ring-primary-300
+        outline-none transition-all duration-300"
 ```
 
 ## 5. 마이크로 인터랙션
