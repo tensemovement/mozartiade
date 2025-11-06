@@ -78,13 +78,13 @@ export default function TimelineSection() {
           </div>
 
           {/* Timeline */}
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <div className="relative">
-              {/* Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gray-200 hidden md:block"></div>
+              {/* Center Timeline Line */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary-200 via-primary-300 to-primary-200 hidden md:block"></div>
 
               {/* Timeline Events */}
-              <div className="space-y-12">
+              <div className="space-y-16">
                 {timelineEvents.map((event, index) => (
                   <div
                     key={event.year}
@@ -93,51 +93,90 @@ export default function TimelineSection() {
                       transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
                     }}
                   >
-                    <div className={`flex flex-col md:flex-row gap-6 items-start ${
-                      index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                    }`}>
-                      {/* Portrait Image */}
-                      <div className="flex-shrink-0">
-                        <div className="relative w-32 h-32 rounded-xl overflow-hidden shadow-lg ring-2 ring-white group">
-                          <Image
-                            src={event.image}
-                            alt={`Mozart ${event.year}`}
-                            fill
-                            className="object-cover transform transition-transform duration-500 group-hover:scale-110"
-                            sizes="128px"
-                          />
-                        </div>
-                      </div>
+                    {/* Center Timeline Dot */}
+                    <div className="absolute left-1/2 top-8 transform -translate-x-1/2 -translate-y-1/2 hidden md:block z-10">
+                      <div
+                        className={`w-5 h-5 rounded-full ${
+                          event.highlight
+                            ? 'bg-primary-600 ring-8 ring-primary-100 shadow-lg'
+                            : 'bg-gray-400 ring-8 ring-gray-100 shadow-md'
+                        }`}
+                      ></div>
+                    </div>
 
-                      {/* Center Dot (positioned absolutely for desktop) */}
-                      <div className="absolute left-1/2 top-16 transform -translate-x-1/2 hidden md:block">
-                        <div
-                          className={`w-4 h-4 rounded-full ${
-                            event.highlight
-                              ? 'bg-primary-600 ring-4 ring-primary-100'
-                              : 'bg-gray-300 ring-4 ring-gray-100'
-                          }`}
-                        ></div>
-                      </div>
-
-                      {/* Content Card */}
-                      <div className="flex-1">
-                        <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200">
-                          <div className={`inline-block px-3 py-1 mb-3 rounded-full font-sans text-sm font-bold ${
-                            event.highlight
-                              ? 'bg-primary-600 text-white'
-                              : 'bg-gray-100 text-gray-700'
-                          }`}>
-                            {event.year}
+                    {/* Left/Right Content */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                      {index % 2 === 0 ? (
+                        <>
+                          {/* Left Side - Content */}
+                          <div className="md:text-right md:pr-12">
+                            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary-300 inline-block w-full md:ml-auto">
+                              <div className={`inline-block px-4 py-1.5 mb-3 rounded-full font-sans text-sm font-bold ${
+                                event.highlight
+                                  ? 'bg-primary-600 text-white'
+                                  : 'bg-gray-100 text-gray-700'
+                              }`}>
+                                {event.year}
+                              </div>
+                              <h3 className="font-serif text-2xl font-bold text-gray-900 mb-3">
+                                {event.title}
+                              </h3>
+                              <p className="font-sans text-gray-600 leading-relaxed">
+                                {event.description}
+                              </p>
+                            </div>
                           </div>
-                          <h3 className="font-serif text-2xl font-bold text-gray-900 mb-2">
-                            {event.title}
-                          </h3>
-                          <p className="font-sans text-gray-600 leading-relaxed">
-                            {event.description}
-                          </p>
-                        </div>
-                      </div>
+
+                          {/* Right Side - Image */}
+                          <div className="md:pl-12">
+                            <div className="relative w-48 h-48 mx-auto md:mx-0 rounded-2xl overflow-hidden shadow-xl ring-4 ring-white group">
+                              <Image
+                                src={event.image}
+                                alt={`Mozart ${event.year}`}
+                                fill
+                                className="object-cover transform transition-transform duration-500 group-hover:scale-110"
+                                sizes="192px"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {/* Left Side - Image */}
+                          <div className="md:pr-12 order-2 md:order-1">
+                            <div className="relative w-48 h-48 mx-auto md:ml-auto md:mr-0 rounded-2xl overflow-hidden shadow-xl ring-4 ring-white group">
+                              <Image
+                                src={event.image}
+                                alt={`Mozart ${event.year}`}
+                                fill
+                                className="object-cover transform transition-transform duration-500 group-hover:scale-110"
+                                sizes="192px"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                          </div>
+
+                          {/* Right Side - Content */}
+                          <div className="md:pl-12 order-1 md:order-2">
+                            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary-300">
+                              <div className={`inline-block px-4 py-1.5 mb-3 rounded-full font-sans text-sm font-bold ${
+                                event.highlight
+                                  ? 'bg-primary-600 text-white'
+                                  : 'bg-gray-100 text-gray-700'
+                              }`}>
+                                {event.year}
+                              </div>
+                              <h3 className="font-serif text-2xl font-bold text-gray-900 mb-3">
+                                {event.title}
+                              </h3>
+                              <p className="font-sans text-gray-600 leading-relaxed">
+                                {event.description}
+                              </p>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 ))}

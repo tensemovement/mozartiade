@@ -9,19 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Mozart Theme: Bright Rose (Historical Portrait), Antique Gold (Embellishments), Emerald (Contrast)
+        // Mozart Theme: Vivid Red (Historical Portrait), Antique Gold (Embellishments), Emerald (Contrast)
         primary: {
-          DEFAULT: "#E11D48", // Bright Rose - Mozart's actual bright coat color from portraits
+          DEFAULT: "#FF4560", // Vivid Bright Red - Brighter Mozart coat color
           50: "#FFF1F2",
-          100: "#FFE4E6",
-          200: "#FECDD3",
-          300: "#FDA4AF",
-          400: "#FB7185",
-          500: "#F43F5E",
-          600: "#E11D48",
-          700: "#BE123C",
-          800: "#9F1239",
-          900: "#881337",
+          100: "#FFE1E5",
+          200: "#FFC7D1",
+          300: "#FFA3B5",
+          400: "#FF7A91",
+          500: "#FF4560",
+          600: "#FF1744",
+          700: "#E6003D",
+          800: "#C20038",
+          900: "#A00030",
         },
         secondary: {
           DEFAULT: "#D97706", // Antique Gold - decorative buttons and embellishments
