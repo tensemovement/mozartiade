@@ -56,8 +56,8 @@ const config: Config = {
       fontFamily: {
         // Body text: Inter + Noto Sans KR
         sans: [
-          "var(--font-inter)",
-          "var(--font-noto-sans-kr)",
+          "Inter",
+          "Noto Sans KR",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
@@ -65,8 +65,8 @@ const config: Config = {
         ],
         // Headings: Playfair Display + Noto Serif KR
         serif: [
-          "var(--font-playfair)",
-          "var(--font-noto-serif-kr)",
+          "Playfair Display",
+          "Noto Serif KR",
           "Georgia",
           "serif",
         ],

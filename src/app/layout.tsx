@@ -1,42 +1,10 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Noto_Serif_KR, Noto_Sans_KR } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "./providers";
 
-// Elegant serif font for headings - inspired by 18th century typography
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-playfair",
-  display: "swap",
-});
-
-// Modern sans-serif for body text
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-// Korean serif font for headings
-const notoSerifKR = Noto_Serif_KR({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "900"],
-  variable: "--font-noto-serif-kr",
-  display: "swap",
-});
-
-// Korean sans-serif for body text
-const notoSansKR = Noto_Sans_KR({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-noto-sans-kr",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "EnjoyMozart Portal",
-  description: "모차르트의 우아함에서 영감받은 클래식 음악 포털",
+  title: "EnjoyMozart Portal - 모차르트 완전 카탈로그",
+  description: "모차르트의 626개 작품을 탐색하세요. 완전한 Köchel 카탈로그, 연대기, 악보, 음원, 영상, 해설까지 모든 자료를 제공합니다.",
 };
 
 export default function RootLayout({
@@ -45,10 +13,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <body
-        className={`${inter.variable} ${playfair.variable} ${notoSansKR.variable} ${notoSerifKR.variable} font-sans antialiased`}
-      >
+    <html lang="ko" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Noto+Serif+KR:wght@400;500;600;700;900&family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="font-sans antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
