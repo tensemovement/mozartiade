@@ -52,13 +52,7 @@ export default function TimelineSection() {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-br from-primary-50 to-secondary-50 relative overflow-hidden">
-      {/* Decorative Background */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-1/4 left-0 w-96 h-96 bg-primary-300 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-secondary-300 rounded-full blur-3xl"></div>
-      </div>
-
+    <section className="py-24 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <div
           ref={ref}
@@ -70,13 +64,13 @@ export default function TimelineSection() {
         >
           {/* Section Header */}
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-secondary-100 text-secondary-900 rounded-full font-sans text-sm font-semibold mb-4">
+            <span className="inline-block px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-sans text-sm font-semibold mb-4">
               Life & Works
             </span>
-            <h2 className="font-serif text-5xl md:text-6xl font-bold text-primary-900 mb-6">
+            <h2 className="font-serif text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               모차르트의 생애 연대기
             </h2>
-            <p className="font-sans text-xl text-primary-700 max-w-3xl mx-auto">
+            <p className="font-sans text-xl text-gray-600 max-w-3xl mx-auto">
               1756년부터 1791년까지, 35년간의 짧지만 찬란했던 생애.
               <br />
               각 시기의 주요 작품과 역사적 사건을 시간순으로 탐험하세요.
@@ -84,85 +78,65 @@ export default function TimelineSection() {
           </div>
 
           {/* Timeline */}
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="relative">
               {/* Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary-200 via-primary-300 to-primary-200 hidden md:block"></div>
+              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gray-200 hidden md:block"></div>
 
               {/* Timeline Events */}
-              <div className="space-y-16">
+              <div className="space-y-12">
                 {timelineEvents.map((event, index) => (
                   <div
                     key={event.year}
-                    className={`relative flex flex-col md:flex-row items-center gap-8 ${
-                      index % 2 === 0
-                        ? 'md:flex-row'
-                        : 'md:flex-row-reverse'
-                    }`}
+                    className="relative"
                     style={{
-                      transitionDelay: isVisible ? `${index * 150}ms` : '0ms',
+                      transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
                     }}
                   >
-                    {/* Portrait Image */}
-                    <div
-                      className={`w-full md:w-5/12 ${
-                        index % 2 === 0 ? 'md:text-right' : 'md:text-left'
-                      }`}
-                    >
-                      <div className="inline-block group">
-                        <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white transform transition-all duration-500 hover:scale-110 hover:rotate-3">
+                    <div className={`flex flex-col md:flex-row gap-6 items-start ${
+                      index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                    }`}>
+                      {/* Portrait Image */}
+                      <div className="flex-shrink-0">
+                        <div className="relative w-32 h-32 rounded-xl overflow-hidden shadow-lg ring-2 ring-white group">
                           <Image
                             src={event.image}
                             alt={`Mozart ${event.year}`}
                             fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 192px, 224px"
+                            className="object-cover transform transition-transform duration-500 group-hover:scale-110"
+                            sizes="128px"
                           />
-                          {/* Hover overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-primary-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Center Dot */}
-                    <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center justify-center">
-                      <div
-                        className={`w-6 h-6 rounded-full ${
-                          event.highlight
-                            ? 'bg-primary-600 ring-8 ring-primary-200 shadow-lg'
-                            : 'bg-primary-400 ring-8 ring-primary-100'
-                        } transition-all duration-300 hover:scale-125`}
-                      ></div>
-                    </div>
-
-                    {/* Content Card */}
-                    <div
-                      className={`w-full md:w-5/12 ${
-                        index % 2 === 0 ? 'md:text-left' : 'md:text-right'
-                      }`}
-                    >
-                      <div
-                        className={`bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${
-                          event.highlight
-                            ? 'border-2 border-primary-400 ring-4 ring-primary-100'
-                            : 'border border-primary-100'
-                        } hover:-translate-y-2`}
-                      >
+                      {/* Center Dot (positioned absolutely for desktop) */}
+                      <div className="absolute left-1/2 top-16 transform -translate-x-1/2 hidden md:block">
                         <div
-                          className={`inline-block px-4 py-2 ${
+                          className={`w-4 h-4 rounded-full ${
+                            event.highlight
+                              ? 'bg-primary-600 ring-4 ring-primary-100'
+                              : 'bg-gray-300 ring-4 ring-gray-100'
+                          }`}
+                        ></div>
+                      </div>
+
+                      {/* Content Card */}
+                      <div className="flex-1">
+                        <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200">
+                          <div className={`inline-block px-3 py-1 mb-3 rounded-full font-sans text-sm font-bold ${
                             event.highlight
                               ? 'bg-primary-600 text-white'
-                              : 'bg-primary-100 text-primary-800'
-                          } rounded-full font-sans text-sm font-bold mb-4 shadow-md`}
-                        >
-                          {event.year}
+                              : 'bg-gray-100 text-gray-700'
+                          }`}>
+                            {event.year}
+                          </div>
+                          <h3 className="font-serif text-2xl font-bold text-gray-900 mb-2">
+                            {event.title}
+                          </h3>
+                          <p className="font-sans text-gray-600 leading-relaxed">
+                            {event.description}
+                          </p>
                         </div>
-                        <h3 className="font-serif text-3xl font-bold text-primary-900 mb-3">
-                          {event.title}
-                        </h3>
-                        <p className="font-sans text-lg text-primary-700 leading-relaxed">
-                          {event.description}
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -172,8 +146,8 @@ export default function TimelineSection() {
           </div>
 
           {/* CTA */}
-          <div className="text-center mt-20">
-            <button className="inline-flex items-center px-8 py-4 bg-secondary-700 text-white rounded-xl font-sans text-lg font-semibold hover:bg-secondary-800 transition-all duration-300 shadow-lg hover:shadow-xl group">
+          <div className="text-center mt-16">
+            <button className="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-xl font-sans text-lg font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl group">
               전체 연대기 탐색
               <svg
                 xmlns="http://www.w3.org/2000/svg"

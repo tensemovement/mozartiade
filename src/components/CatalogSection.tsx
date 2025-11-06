@@ -10,29 +10,21 @@ export default function CatalogSection() {
       id: 'K1-K99',
       title: '교향곡 & 관현악',
       count: 98,
-      icon: '🎺',
-      color: 'primary',
     },
     {
       id: 'K100-K299',
       title: '협주곡',
       count: 156,
-      icon: '🎹',
-      color: 'secondary',
     },
     {
       id: 'K300-K499',
       title: '실내악',
       count: 142,
-      icon: '🎻',
-      color: 'accent',
     },
     {
       id: 'K500-K626',
       title: '성악 & 오페라',
       count: 230,
-      icon: '🎭',
-      color: 'primary',
     },
   ];
 
@@ -49,13 +41,13 @@ export default function CatalogSection() {
         >
           {/* Section Header */}
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-primary-100 text-primary-800 rounded-full font-sans text-sm font-semibold mb-4">
+            <span className="inline-block px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-sans text-sm font-semibold mb-4">
               Köchel Catalog
             </span>
-            <h2 className="font-serif text-5xl md:text-6xl font-bold text-primary-900 mb-6">
+            <h2 className="font-serif text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               완전한 작품 카탈로그
             </h2>
-            <p className="font-sans text-xl text-primary-700 max-w-3xl mx-auto">
+            <p className="font-sans text-xl text-gray-600 max-w-3xl mx-auto">
               Ludwig von Köchel이 집대성한 626개 작품의 완전한 목록.
               <br />
               각 작품의 상세 정보, 연주 가이드, 역사적 배경까지 모두 확인하세요.
@@ -67,35 +59,34 @@ export default function CatalogSection() {
             {categories.map((category, index) => (
               <div
                 key={category.id}
-                className={`group relative bg-gradient-to-br from-${category.color}-50 to-${category.color}-100 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-${category.color}-200 hover:border-${category.color}-400 hover:-translate-y-2`}
+                className="group relative bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200 hover:border-primary-300 hover:-translate-y-2"
                 style={{
                   transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
                 }}
               >
-                <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">
-                  {category.icon}
-                </div>
-                <div className="text-sm font-sans font-semibold text-primary-700 mb-2">
+                <div className="text-sm font-sans font-semibold text-primary-600 mb-3">
                   {category.id}
                 </div>
-                <h3 className="font-serif text-2xl font-bold text-primary-900 mb-3">
+                <h3 className="font-serif text-2xl font-bold text-gray-900 mb-4">
                   {category.title}
                 </h3>
-                <div className="flex items-center justify-between">
-                  <span className="font-sans text-3xl font-bold text-primary-800">
+                <div className="flex items-baseline gap-2">
+                  <span className="font-sans text-4xl font-bold text-gray-900">
                     {category.count}
                   </span>
-                  <span className="font-sans text-sm text-primary-600">
+                  <span className="font-sans text-sm text-gray-500">
                     작품
                   </span>
                 </div>
+                {/* Subtle accent line */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-b-2xl"></div>
               </div>
             ))}
           </div>
 
           {/* CTA */}
           <div className="text-center">
-            <button className="inline-flex items-center px-8 py-4 bg-primary-800 text-white rounded-xl font-sans text-lg font-semibold hover:bg-primary-900 transition-all duration-300 shadow-lg hover:shadow-xl group">
+            <button className="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-xl font-sans text-lg font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl group">
               전체 카탈로그 보기
               <svg
                 xmlns="http://www.w3.org/2000/svg"

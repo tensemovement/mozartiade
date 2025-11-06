@@ -2,7 +2,6 @@ import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
 import CatalogSection from '@/components/CatalogSection';
 import TimelineSection from '@/components/TimelineSection';
-import PortraitGallerySection from '@/components/PortraitGallerySection';
 import FeaturedWorksSection from '@/components/FeaturedWorksSection';
 import EventsNewsSection from '@/components/EventsNewsSection';
 import AdBannerSection from '@/components/AdBannerSection';
@@ -16,7 +15,6 @@ export default function Home() {
         <HeroSection />
         <CatalogSection />
         <TimelineSection />
-        <PortraitGallerySection />
         <FeaturedWorksSection />
         <EventsNewsSection />
         <AdBannerSection />

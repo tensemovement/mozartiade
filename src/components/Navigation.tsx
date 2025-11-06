@@ -32,21 +32,27 @@ export default function Navigation() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? 'bg-white/95 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
+          : 'bg-white/10 backdrop-blur-sm shadow-sm'
       }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center transform transition-transform group-hover:scale-110">
+            <div className={`w-12 h-12 rounded-lg flex items-center justify-center transform transition-all group-hover:scale-110 ${
+              isScrolled ? 'bg-primary-800' : 'bg-white/90 backdrop-blur-sm'
+            }`}>
               <span className="text-2xl">🎵</span>
             </div>
             <div>
-              <h1 className="font-serif text-xl font-bold text-primary-900 transition-colors">
+              <h1 className={`font-serif text-xl font-bold transition-colors ${
+                isScrolled ? 'text-primary-900' : 'text-white drop-shadow-lg'
+              }`}>
                 EnjoyMozart
               </h1>
-              <p className="text-xs text-primary-700 font-sans">
+              <p className={`text-xs font-sans ${
+                isScrolled ? 'text-primary-700' : 'text-white/90 drop-shadow'
+              }`}>
                 완전한 카탈로그와 연대기
               </p>
             </div>
@@ -58,7 +64,11 @@ export default function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-4 py-2 rounded-lg font-sans text-sm font-medium text-primary-900 hover:bg-primary-50 hover:text-primary-800 transition-all duration-200"
+                className={`px-4 py-2 rounded-lg font-sans text-sm font-medium transition-all duration-200 ${
+                  isScrolled
+                    ? 'text-primary-900 hover:bg-primary-50 hover:text-primary-800'
+                    : 'text-white hover:bg-white/20 drop-shadow-md'
+                }`}
               >
                 {item.label}
               </Link>
@@ -67,10 +77,14 @@ export default function Navigation() {
 
           {/* Search & CTA */}
           <div className="hidden lg:flex items-center space-x-4">
-            <button className="p-2 rounded-lg hover:bg-primary-50 transition-colors">
+            <button className={`p-2 rounded-lg transition-colors ${
+              isScrolled
+                ? 'hover:bg-primary-50 text-primary-700'
+                : 'hover:bg-white/20 text-white'
+            }`}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-primary-700"
+                className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -83,19 +97,25 @@ export default function Navigation() {
                 />
               </svg>
             </button>
-            <button className="px-5 py-2 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors shadow-md hover:shadow-lg">
+            <button className={`px-5 py-2 rounded-lg font-sans text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
+              isScrolled
+                ? 'bg-primary-800 text-white hover:bg-primary-900'
+                : 'bg-white text-primary-900 hover:bg-cream'
+            }`}>
               시작하기
             </button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 rounded-lg hover:bg-primary-50"
+            className={`lg:hidden p-2 rounded-lg ${
+              isScrolled ? 'hover:bg-primary-50' : 'hover:bg-white/20'
+            }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-primary-900"
+              className={`h-6 w-6 ${isScrolled ? 'text-primary-900' : 'text-white'}`}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -122,7 +142,7 @@ export default function Navigation() {
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden pb-4 animate-fadeIn">
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-2 bg-white/95 backdrop-blur-md rounded-lg p-4 shadow-lg">
               {menuItems.map((item) => (
                 <Link
                   key={item.href}
