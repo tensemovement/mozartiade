@@ -1,11 +1,11 @@
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-primary-50 via-cream to-secondary-50">
+    <main className="min-h-screen bg-cream">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <h1 className="font-serif text-6xl font-bold bg-gradient-to-r from-primary-700 via-secondary-600 to-accent-700 bg-clip-text text-transparent mb-6">
+            <h1 className="font-serif text-6xl font-bold text-primary-700 mb-6">
               EnjoyMozart Portal
             </h1>
             <p className="font-sans text-xl text-primary-900 mb-4">
@@ -18,9 +18,9 @@ export default function Home() {
 
           {/* Feature Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-cream rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-primary-200 hover:border-primary-300 hover:-translate-y-1">
+            <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-primary-200 hover:border-primary-300 hover:-translate-y-1">
               <div className="flex items-center mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center mr-3">
+                <div className="w-10 h-10 rounded-full bg-primary-600 flex items-center justify-center mr-3">
                   <span className="text-white text-xl">🎵</span>
                 </div>
                 <h2 className="font-serif text-2xl font-semibold text-primary-900">
@@ -32,9 +32,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="bg-cream rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-secondary-200 hover:border-secondary-300 hover:-translate-y-1">
+            <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-secondary-200 hover:border-secondary-300 hover:-translate-y-1">
               <div className="flex items-center mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mr-3">
+                <div className="w-10 h-10 rounded-full bg-secondary-700 flex items-center justify-center mr-3">
                   <span className="text-white text-xl">🎼</span>
                 </div>
                 <h2 className="font-serif text-2xl font-semibold text-secondary-900">
@@ -46,9 +46,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="bg-cream rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-primary-200 hover:border-primary-300 hover:-translate-y-1">
+            <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-primary-200 hover:border-primary-300 hover:-translate-y-1">
               <div className="flex items-center mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-700 to-accent-800 flex items-center justify-center mr-3">
+                <div className="w-10 h-10 rounded-full bg-accent-800 flex items-center justify-center mr-3">
                   <span className="text-white text-xl">⚡</span>
                 </div>
                 <h2 className="font-serif text-2xl font-semibold text-accent-900">
@@ -60,9 +60,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="bg-cream rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-secondary-200 hover:border-secondary-300 hover:-translate-y-1">
+            <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-secondary-200 hover:border-secondary-300 hover:-translate-y-1">
               <div className="flex items-center mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-600 to-secondary-600 flex items-center justify-center mr-3">
+                <div className="w-10 h-10 rounded-full bg-primary-700 flex items-center justify-center mr-3">
                   <span className="text-white text-xl">🎻</span>
                 </div>
                 <h2 className="font-serif text-2xl font-semibold text-primary-900">
