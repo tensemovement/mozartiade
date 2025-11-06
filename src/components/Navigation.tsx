@@ -44,7 +44,7 @@ export default function Navigation() {
               isScrolled ? 'bg-white' : 'bg-white/90 backdrop-blur-sm'
             }`}>
               <Image
-                src="/images/logo.png"
+                src="/images/logo.svg"
                 alt="EnjoyMozart Logo"
                 width={40}
                 height={40}

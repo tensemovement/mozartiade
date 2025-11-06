@@ -22,7 +22,7 @@ export default function AdBannerSection() {
             {/* Mozart Portrait Background */}
             <div className="absolute inset-0">
               <Image
-                src="/images/m/mozart005.jpg"
+                src="/images/m/mozart002.jpg"
                 alt="Mozart Premium"
                 fill
                 className="object-cover object-center"

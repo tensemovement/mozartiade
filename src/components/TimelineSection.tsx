@@ -78,13 +78,16 @@ export default function TimelineSection() {
           </div>
 
           {/* Timeline */}
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <div className="relative">
-              {/* Center Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary-200 via-primary-300 to-primary-200 hidden md:block"></div>
+              {/* Center Timeline Line - More elegant */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 hidden md:block">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary-400 to-transparent"></div>
+                <div className="absolute inset-0 bg-primary-300 opacity-60"></div>
+              </div>
 
               {/* Timeline Events */}
-              <div className="space-y-16">
+              <div className="space-y-12">
                 {timelineEvents.map((event, index) => (
                   <div
                     key={event.year}
@@ -93,49 +96,54 @@ export default function TimelineSection() {
                       transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
                     }}
                   >
-                    {/* Center Timeline Dot */}
-                    <div className="absolute left-1/2 top-8 transform -translate-x-1/2 -translate-y-1/2 hidden md:block z-10">
-                      <div
-                        className={`w-5 h-5 rounded-full ${
-                          event.highlight
-                            ? 'bg-primary-600 ring-8 ring-primary-100 shadow-lg'
-                            : 'bg-gray-400 ring-8 ring-gray-100 shadow-md'
-                        }`}
-                      ></div>
+                    {/* Center Timeline Dot - More refined */}
+                    <div className="absolute left-1/2 top-6 transform -translate-x-1/2 -translate-y-1/2 hidden md:block z-10">
+                      <div className="relative">
+                        <div
+                          className={`w-4 h-4 rounded-full ${
+                            event.highlight
+                              ? 'bg-primary-500 shadow-lg shadow-primary-300'
+                              : 'bg-gray-300 shadow-md'
+                          }`}
+                        ></div>
+                        {event.highlight && (
+                          <div className="absolute inset-0 rounded-full bg-primary-500 animate-ping opacity-75"></div>
+                        )}
+                      </div>
                     </div>
 
-                    {/* Left/Right Content */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    {/* Left/Right Content - Smaller cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                       {index % 2 === 0 ? (
                         <>
                           {/* Left Side - Content */}
-                          <div className="md:text-right md:pr-12">
-                            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary-300 inline-block w-full md:ml-auto">
-                              <div className={`inline-block px-4 py-1.5 mb-3 rounded-full font-sans text-sm font-bold ${
+                          <div className="md:text-right md:pr-8">
+                            <div className="bg-white rounded-xl p-5 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-primary-200 inline-block w-full md:ml-auto">
+                              <div className={`inline-block px-3 py-1 mb-2 rounded-full font-sans text-xs font-bold ${
                                 event.highlight
-                                  ? 'bg-primary-600 text-white'
+                                  ? 'bg-primary-500 text-white'
                                   : 'bg-gray-100 text-gray-700'
                               }`}>
                                 {event.year}
                               </div>
-                              <h3 className="font-serif text-2xl font-bold text-gray-900 mb-3">
+                              <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">
                                 {event.title}
                               </h3>
-                              <p className="font-sans text-gray-600 leading-relaxed">
+                              <p className="font-sans text-sm text-gray-600 leading-relaxed">
                                 {event.description}
                               </p>
                             </div>
                           </div>
 
                           {/* Right Side - Image */}
-                          <div className="md:pl-12">
-                            <div className="relative w-48 h-48 mx-auto md:mx-0 rounded-2xl overflow-hidden shadow-xl ring-4 ring-white group">
+                          <div className="md:pl-8">
+                            <div className="relative w-36 h-36 mx-auto md:mx-0 rounded-xl overflow-hidden shadow-lg ring-2 ring-gray-200 group">
                               <Image
                                 src={event.image}
                                 alt={`Mozart ${event.year}`}
                                 fill
                                 className="object-cover transform transition-transform duration-500 group-hover:scale-110"
-                                sizes="192px"
+                                sizes="144px"
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </div>
@@ -144,33 +152,33 @@ export default function TimelineSection() {
                       ) : (
                         <>
                           {/* Left Side - Image */}
-                          <div className="md:pr-12 order-2 md:order-1">
-                            <div className="relative w-48 h-48 mx-auto md:ml-auto md:mr-0 rounded-2xl overflow-hidden shadow-xl ring-4 ring-white group">
+                          <div className="md:pr-8 order-2 md:order-1">
+                            <div className="relative w-36 h-36 mx-auto md:ml-auto md:mr-0 rounded-xl overflow-hidden shadow-lg ring-2 ring-gray-200 group">
                               <Image
                                 src={event.image}
                                 alt={`Mozart ${event.year}`}
                                 fill
                                 className="object-cover transform transition-transform duration-500 group-hover:scale-110"
-                                sizes="192px"
+                                sizes="144px"
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </div>
                           </div>
 
                           {/* Right Side - Content */}
-                          <div className="md:pl-12 order-1 md:order-2">
-                            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary-300">
-                              <div className={`inline-block px-4 py-1.5 mb-3 rounded-full font-sans text-sm font-bold ${
+                          <div className="md:pl-8 order-1 md:order-2">
+                            <div className="bg-white rounded-xl p-5 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-primary-200">
+                              <div className={`inline-block px-3 py-1 mb-2 rounded-full font-sans text-xs font-bold ${
                                 event.highlight
-                                  ? 'bg-primary-600 text-white'
+                                  ? 'bg-primary-500 text-white'
                                   : 'bg-gray-100 text-gray-700'
                               }`}>
                                 {event.year}
                               </div>
-                              <h3 className="font-serif text-2xl font-bold text-gray-900 mb-3">
+                              <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">
                                 {event.title}
                               </h3>
-                              <p className="font-sans text-gray-600 leading-relaxed">
+                              <p className="font-sans text-sm text-gray-600 leading-relaxed">
                                 {event.description}
                               </p>
                             </div>

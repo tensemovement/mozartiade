@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { FaTwitter, FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
 
 export default function Footer() {
   const footerLinks = {
@@ -38,8 +40,14 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
-                <span className="text-2xl">🎵</span>
+              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center p-2">
+                <Image
+                  src="/images/logo.svg"
+                  alt="EnjoyMozart Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                />
               </div>
               <div>
                 <h3 className="font-serif text-2xl font-bold">EnjoyMozart</h3>
@@ -54,15 +62,42 @@ export default function Footer() {
             </p>
             {/* Social Links */}
             <div className="flex gap-4">
-              {['Twitter', 'Facebook', 'Instagram', 'YouTube'].map((social) => (
-                <button
-                  key={social}
-                  className="w-10 h-10 bg-primary-800 hover:bg-primary-700 rounded-lg flex items-center justify-center transition-colors"
-                  aria-label={social}
-                >
-                  <span className="text-sm">{social[0]}</span>
-                </button>
-              ))}
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary-800 hover:bg-primary-700 rounded-lg flex items-center justify-center transition-colors"
+                aria-label="Twitter"
+              >
+                <FaTwitter className="text-white text-lg" />
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary-800 hover:bg-primary-700 rounded-lg flex items-center justify-center transition-colors"
+                aria-label="Facebook"
+              >
+                <FaFacebook className="text-white text-lg" />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary-800 hover:bg-primary-700 rounded-lg flex items-center justify-center transition-colors"
+                aria-label="Instagram"
+              >
+                <FaInstagram className="text-white text-lg" />
+              </a>
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary-800 hover:bg-primary-700 rounded-lg flex items-center justify-center transition-colors"
+                aria-label="YouTube"
+              >
+                <FaYoutube className="text-white text-lg" />
+              </a>
             </div>
           </div>
 
@@ -147,7 +182,7 @@ export default function Footer() {
                 placeholder="이메일 주소"
                 className="flex-1 px-6 py-3 rounded-lg bg-primary-800 text-white placeholder-primary-400 border border-primary-700 focus:border-primary-500 focus:outline-none font-sans"
               />
-              <button className="px-8 py-3 bg-secondary-700 hover:bg-secondary-800 text-white rounded-lg font-sans font-semibold transition-colors whitespace-nowrap">
+              <button className="px-8 py-3 bg-white hover:bg-gray-100 text-primary-900 rounded-lg font-sans font-semibold transition-colors whitespace-nowrap shadow-lg hover:shadow-xl">
                 구독하기
               </button>
             </div>
