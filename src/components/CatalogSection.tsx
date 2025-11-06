@@ -59,7 +59,7 @@ export default function CatalogSection() {
             {categories.map((category, index) => (
               <div
                 key={category.id}
-                className="group relative bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200 hover:border-primary-300 hover:-translate-y-2"
+                className="group relative bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200 hover:border-primary-300 hover:-translate-y-2 overflow-hidden"
                 style={{
                   transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
                 }}

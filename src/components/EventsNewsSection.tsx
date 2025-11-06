@@ -101,7 +101,7 @@ export default function EventsNewsSection() {
                 {events.map((event, index) => (
                   <div
                     key={event.id}
-                    className={`bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 ${
+                    className={`bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 min-h-[180px] flex flex-col ${
                       event.featured
                         ? 'border-2 border-primary-300'
                         : 'border border-gray-200'
@@ -115,17 +115,15 @@ export default function EventsNewsSection() {
                         추천 이벤트
                       </div>
                     )}
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">
-                          {event.title}
-                        </h4>
-                        <p className="font-sans text-sm text-gray-600 mb-2">
-                          {event.description}
-                        </p>
-                      </div>
+                    <div className="flex-1 mb-3">
+                      <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">
+                        {event.title}
+                      </h4>
+                      <p className="font-sans text-sm text-gray-600">
+                        {event.description}
+                      </p>
                     </div>
-                    <div className="flex items-center gap-4 text-sm">
+                    <div className="flex items-center gap-4 text-sm mt-auto">
                       <span className="flex items-center text-gray-600">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +185,7 @@ export default function EventsNewsSection() {
                 {news.map((item, index) => (
                   <div
                     key={item.id}
-                    className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-200"
+                    className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-200 min-h-[180px] flex flex-col"
                     style={{
                       transitionDelay: isVisible
                         ? `${(index + 3) * 100}ms`
@@ -202,12 +200,14 @@ export default function EventsNewsSection() {
                         {item.date}
                       </span>
                     </div>
-                    <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">
-                      {item.title}
-                    </h4>
-                    <p className="font-sans text-sm text-gray-600">
-                      {item.excerpt}
-                    </p>
+                    <div className="flex-1">
+                      <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">
+                        {item.title}
+                      </h4>
+                      <p className="font-sans text-sm text-gray-600">
+                        {item.excerpt}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>

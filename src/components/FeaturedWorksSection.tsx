@@ -1,6 +1,7 @@
 'use client';
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import Image from 'next/image';
 
 export default function FeaturedWorksSection() {
   const { ref, isVisible } = useScrollAnimation();
@@ -14,6 +15,7 @@ export default function FeaturedWorksSection() {
       genre: '성악',
       description: '미완성의 마지막 걸작',
       popular: true,
+      bgImage: '/images/m/mozart001.jpg',
     },
     {
       id: 'K525',
@@ -23,6 +25,7 @@ export default function FeaturedWorksSection() {
       genre: '세레나데',
       description: '가장 사랑받는 세레나데',
       popular: true,
+      bgImage: '/images/m/mozart002.jpg',
     },
     {
       id: 'K492',
@@ -32,6 +35,7 @@ export default function FeaturedWorksSection() {
       genre: '오페라',
       description: '오페라 부파의 정점',
       popular: true,
+      bgImage: '/images/m/mozart003.jpg',
     },
     {
       id: 'K551',
@@ -99,22 +103,30 @@ export default function FeaturedWorksSection() {
                 }}
               >
                 {/* Header with K number */}
-                <div className="relative h-32 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="font-serif text-4xl font-bold text-gray-800 mb-1">
+                <div className="relative h-32 bg-gray-100 flex items-center justify-center overflow-hidden">
+                  {work.bgImage && (
+                    <Image
+                      src={work.bgImage}
+                      alt={work.titleKr}
+                      fill
+                      className="object-cover opacity-30"
+                    />
+                  )}
+                  <div className="relative text-center z-10">
+                    <div className="font-serif text-4xl font-bold text-gray-900 mb-1 drop-shadow-sm">
                       {work.id}
                     </div>
-                    <div className="text-sm font-sans text-gray-600">
+                    <div className="text-sm font-sans text-gray-800 font-semibold drop-shadow-sm">
                       {work.year}
                     </div>
                   </div>
                   {work.popular && (
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-primary-600 text-white rounded-full font-sans text-xs font-bold">
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-primary-600 text-white rounded-full font-sans text-xs font-bold z-10">
                       인기
                     </div>
                   )}
                   {/* Genre badge */}
-                  <div className="absolute bottom-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold">
+                  <div className="absolute bottom-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold z-10">
                     {work.genre}
                   </div>
                 </div>
