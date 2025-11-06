@@ -9,19 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Mozart Theme: Deep Burgundy (Coat), Antique Gold (Embellishments), Emerald (Contrast)
+        // Mozart Theme: Vivid Red (Historical Portrait), Antique Gold (Embellishments), Emerald (Contrast)
         primary: {
-          DEFAULT: "#991B1B", // Deep Wine Red - Mozart's signature coat color
-          50: "#FEF2F2",
-          100: "#FEE2E2",
-          200: "#FECACA",
-          300: "#FCA5A5",
-          400: "#F87171",
-          500: "#EF4444",
-          600: "#DC2626",
-          700: "#B91C1C",
-          800: "#991B1B",
-          900: "#7F1D1D",
+          DEFAULT: "#FF4560", // Vivid Bright Red - Brighter Mozart coat color
+          50: "#FFF1F2",
+          100: "#FFE1E5",
+          200: "#FFC7D1",
+          300: "#FFA3B5",
+          400: "#FF7A91",
+          500: "#FF4560",
+          600: "#FF1744",
+          700: "#E6003D",
+          800: "#C20038",
+          900: "#A00030",
         },
         secondary: {
           DEFAULT: "#D97706", // Antique Gold - decorative buttons and embellishments
@@ -56,8 +56,8 @@ const config: Config = {
       fontFamily: {
         // Body text: Inter + Noto Sans KR
         sans: [
-          "var(--font-inter)",
-          "var(--font-noto-sans-kr)",
+          "Inter",
+          "Noto Sans KR",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
@@ -65,8 +65,8 @@ const config: Config = {
         ],
         // Headings: Playfair Display + Noto Serif KR
         serif: [
-          "var(--font-playfair)",
-          "var(--font-noto-serif-kr)",
+          "Playfair Display",
+          "Noto Serif KR",
           "Georgia",
           "serif",
         ],
