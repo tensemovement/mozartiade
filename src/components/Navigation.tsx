@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,10 +40,17 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className={`w-12 h-12 rounded-lg flex items-center justify-center transform transition-all group-hover:scale-110 ${
-              isScrolled ? 'bg-primary-800' : 'bg-white/90 backdrop-blur-sm'
+            <div className={`w-12 h-12 rounded-lg flex items-center justify-center transform transition-all group-hover:scale-110 overflow-hidden ${
+              isScrolled ? 'bg-white' : 'bg-white/90 backdrop-blur-sm'
             }`}>
-              <span className="text-2xl">🎵</span>
+              <Image
+                src="/images/logo.png"
+                alt="EnjoyMozart Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+                priority
+              />
             </div>
             <div>
               <h1 className={`font-serif text-xl font-bold transition-colors ${
