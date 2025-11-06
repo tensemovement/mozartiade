@@ -8,14 +8,14 @@
 
 ```
 Classical, elegant UI with Mozart-inspired theme:
-- Color scheme (Mozart Theme):
-  - Primary: #D97706 (Royal Gold) - 모차르트 시대의 금박, 음악의 풍부함
-  - Secondary: #7C3AED (Imperial Purple) - 왕실의 고귀함, 오페라의 벨벳
-  - Accent: #991B1B (Burgundy Red) - 깊이 있는 클래식함, 와인 레드
+- Color scheme (Mozart's Attire Theme):
+  - Primary: #991B1B (Deep Wine Red) - 모차르트 코트의 짙은 붉은색
+  - Secondary: #D97706 (Antique Gold) - 의상의 금색 단추와 장식
+  - Accent: #047857 (Deep Emerald) - 우아한 대비색, 고전적 청록
   - Background: #FFFBEB (Cream) - 악보의 색상
   - Surface: #FEF3C7 (Ivory) - 부드러운 표면
-  - Text Primary: #78350F (Dark Gold) - 따뜻한 어두운 톤
-  - Text Secondary: #92400E (Medium Gold) - 보조 텍스트
+  - Text Primary: #7F1D1D (Dark Burgundy) - 깊은 와인 톤
+  - Text Secondary: #991B1B (Wine Red) - 보조 텍스트
 
 - Typography (Mozart-inspired):
   - Headings: Playfair Display (font-serif) - 18세기 타이포그래피에서 영감
