@@ -211,7 +211,7 @@ export default function ChronologyPage() {
                       {/* Year marker - Sticky */}
                       <div
                         ref={(el) => { yearRefs.current[year] = el; }}
-                        className="sticky top-[148px] z-30 mb-8 pb-2 bg-white"
+                        className="sticky top-[148px] z-30 mb-8 pb-2"
                       >
                         <div className="text-gray-900 font-serif text-3xl font-bold">
                           {year}
