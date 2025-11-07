@@ -136,7 +136,9 @@ export default function ChronologyPage() {
       <div className="md:flex md:min-h-screen">
         {/* Main Content Wrapper */}
         <div className={`transition-all duration-300 md:flex-1 ${selectedItem ? 'md:w-2/3' : 'md:w-full'}`}>
-          <Navigation />
+          <div className="chronology-nav-wrapper">
+            <Navigation />
+          </div>
 
           {/* Hero Section */}
           <section className="relative pt-32 pb-16 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 overflow-hidden">
@@ -714,6 +716,15 @@ export default function ChronologyPage() {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+        }
+
+        /* Override Navigation positioning for chronology page */
+        @media (min-width: 768px) {
+          .chronology-nav-wrapper nav {
+            position: absolute;
+            left: 0;
+            right: 0;
+          }
         }
       `}</style>
     </>
