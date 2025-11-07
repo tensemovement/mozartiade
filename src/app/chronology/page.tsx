@@ -93,20 +93,24 @@ export default function ChronologyPage() {
 
   // Track active year based on scroll position
   const handleScroll = useCallback(() => {
-    const scrollPosition = window.pageYOffset + 148;
+    const scrollPosition = window.pageYOffset;
+    const offset = 200; // offset for determining which year is active
 
     for (let i = uniqueYears.length - 1; i >= 0; i--) {
       const year = uniqueYears[i];
       const element = yearRefs.current[year];
-      if (element && element.offsetTop <= scrollPosition) {
-        setActiveYear(prevActiveYear => {
-          if (prevActiveYear !== year) {
-            scrollYearFilterToCenter(year);
-            return year;
-          }
-          return prevActiveYear;
-        });
-        break;
+      if (element) {
+        const elementTop = element.getBoundingClientRect().top + scrollPosition;
+        if (elementTop <= scrollPosition + offset) {
+          setActiveYear(prevActiveYear => {
+            if (prevActiveYear !== year) {
+              scrollYearFilterToCenter(year);
+              return year;
+            }
+            return prevActiveYear;
+          });
+          break;
+        }
       }
     }
   }, [uniqueYears, scrollYearFilterToCenter]);
