@@ -131,7 +131,7 @@ export default function TimelineSection() {
 
                     {/* Card */}
                     <div className="flex-1 pl-4">
-                      <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 hover:border-secondary-200">
+                      <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden">
                         {/* Highlight accent border */}
                         {item.highlight && (
                           <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-secondary-600 to-secondary-400"></div>

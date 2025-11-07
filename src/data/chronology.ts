@@ -244,7 +244,7 @@ export const chronologyData: ChronologyItem[] = [
     description: '모차르트의 마지막 완성된 기악 작품',
     catalogNumber: 'K. 622',
     genre: '협주곡',
-    youtubeUrl: 'https://www.youtube.com/watch?v=example13',
+    youtubeUrl: 'https://www.youtube.com/watch?v=rvN3YDkjAjY',
     sheetMusicUrl: 'https://imslp.org/wiki/Clarinet_Concerto',
     compositionDetails: '클라리넷의 아름다운 음색을 완벽하게 살린 걸작입니다.',
     highlight: true,

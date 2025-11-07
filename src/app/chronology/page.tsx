@@ -112,6 +112,14 @@ export default function ChronologyPage() {
     return `${item.year}`;
   };
 
+  const getYoutubeEmbedUrl = (url: string) => {
+    const videoIdMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+    if (videoIdMatch && videoIdMatch[1]) {
+      return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
+    }
+    return null;
+  };
+
   return (
     <>
       <Navigation />
@@ -197,13 +205,10 @@ export default function ChronologyPage() {
                       {/* Year marker - Sticky */}
                       <div
                         ref={(el) => { yearRefs.current[year] = el; }}
-                        className="sticky top-32 z-30 mb-8 bg-white pb-2"
+                        className="sticky top-32 z-30 mb-8 pb-2"
                       >
-                        <div className="flex items-center gap-4">
-                          <div className="bg-white border-2 border-gray-300 text-gray-900 px-4 py-2 rounded-lg font-serif text-xl font-bold shadow-sm">
-                            {year}
-                          </div>
-                          <div className="flex-1 h-px bg-gray-300"></div>
+                        <div className="text-gray-900 font-serif text-3xl font-bold">
+                          {year}
                         </div>
                       </div>
 
@@ -321,23 +326,25 @@ export default function ChronologyPage() {
           onClick={() => setSelectedItem(null)}
         >
           <div
-            className="bg-primary-800 border border-accent-500/30 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slideUp"
+            className="bg-primary-800 border border-accent-500/30 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slideUp relative"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Close button - Sticky */}
+            <button
+              onClick={() => setSelectedItem(null)}
+              className="sticky top-4 right-4 ml-auto mr-4 mt-4 z-50 p-2 bg-white/90 hover:bg-white rounded-full transition-colors shadow-lg float-right"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
             {/* Header */}
-            <div className={`relative p-6 border-b ${
+            <div className={`p-6 border-b ${
               selectedItem.type === 'work'
                 ? 'bg-secondary-900/50 border-secondary-700/50'
                 : 'bg-accent-900/20 border-accent-500/30'
             }`}>
-              <button
-                onClick={() => setSelectedItem(null)}
-                className="absolute top-4 right-4 p-1.5 hover:bg-white/10 rounded-lg transition-colors"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
 
               <div className="flex items-start gap-3 mb-3">
                 <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-accent-500/20 text-accent-300 border border-accent-500/30">
@@ -402,20 +409,36 @@ export default function ChronologyPage() {
               {/* YouTube and Sheet Music */}
               {selectedItem.type === 'work' && (
                 <div className="space-y-3">
-                  {selectedItem.youtubeUrl && (
-                    <div className="rounded-xl overflow-hidden bg-gray-100 border border-gray-300">
-                      <div className="aspect-video bg-gray-200 flex items-center justify-center">
-                        <div className="text-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-                          </svg>
-                          <p className="text-gray-600 text-xs font-sans">
-                            유튜브 연동 준비 중
-                          </p>
+                  {selectedItem.youtubeUrl && (() => {
+                    const embedUrl = getYoutubeEmbedUrl(selectedItem.youtubeUrl);
+                    return embedUrl ? (
+                      <div className="rounded-xl overflow-hidden border border-gray-300">
+                        <iframe
+                          width="100%"
+                          height="400"
+                          src={embedUrl}
+                          title="YouTube video player"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full aspect-video"
+                        ></iframe>
+                      </div>
+                    ) : (
+                      <div className="rounded-xl overflow-hidden bg-gray-100 border border-gray-300">
+                        <div className="aspect-video bg-gray-200 flex items-center justify-center">
+                          <div className="text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                            </svg>
+                            <p className="text-gray-600 text-xs font-sans">
+                              유튜브 연동 준비 중
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    );
+                  })()}
 
                   {selectedItem.sheetMusicUrl && (
                     <a
