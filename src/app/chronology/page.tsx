@@ -139,7 +139,7 @@ export default function ChronologyPage() {
       </section>
 
       {/* Sticky Year Filter */}
-      <div className="sticky top-16 z-40 bg-primary-900 border-b border-accent-500/20 shadow-xl">
+      <div className="sticky top-20 z-40 bg-primary-900 border-b border-accent-500/20 shadow-xl">
         <div
           ref={yearFilterRef}
           className="overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing select-none"
@@ -172,13 +172,13 @@ export default function ChronologyPage() {
       </div>
 
       {/* Timeline Section */}
-      <section className="py-12 bg-gradient-to-br from-primary-900 to-primary-800">
+      <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             {/* Timeline */}
             <div className="relative">
               {/* Vertical line */}
-              <div className="absolute left-32 top-0 bottom-0 w-px bg-accent-500/30"></div>
+              <div className="absolute left-32 top-0 bottom-0 w-px bg-gray-300"></div>
 
               {/* Timeline items */}
               <div className="space-y-6">
@@ -194,11 +194,11 @@ export default function ChronologyPage() {
                           className="relative mb-6 flex items-center gap-4"
                         >
                           <div className="w-32 flex-shrink-0 text-right pr-6">
-                            <div className="inline-block bg-secondary-800 text-accent-400 px-4 py-2 rounded-lg font-serif text-2xl font-bold border border-accent-500/30 shadow-lg">
+                            <div className="inline-block bg-primary-900 text-white px-4 py-2 rounded-lg font-serif text-2xl font-bold shadow-lg">
                               {item.year}
                             </div>
                           </div>
-                          <div className="flex-1 h-px bg-accent-500/20"></div>
+                          <div className="flex-1 h-px bg-gray-300"></div>
                         </div>
                       )}
 
@@ -209,7 +209,7 @@ export default function ChronologyPage() {
                       >
                         {/* Date column */}
                         <div className="w-32 flex-shrink-0 text-right pr-6">
-                          <div className="text-accent-400 font-mono text-xs">
+                          <div className="text-gray-600 font-mono text-xs">
                             {item.month && `${String(item.month).padStart(2, '0')}`}
                             {item.day && `.${String(item.day).padStart(2, '0')}`}
                           </div>
@@ -219,66 +219,83 @@ export default function ChronologyPage() {
                         <div className="absolute left-32 top-2 -translate-x-1/2 z-10">
                           <div className={`w-2 h-2 rounded-full transition-all ${
                             item.highlight
-                              ? 'bg-accent-500 shadow-lg shadow-accent-500/50'
-                              : 'bg-accent-500/50 group-hover:bg-accent-400'
+                              ? 'bg-secondary-600 shadow-lg shadow-secondary-300'
+                              : 'bg-gray-400 group-hover:bg-secondary-500'
                           }`}></div>
                         </div>
 
                         {/* Card */}
                         <div className="flex-1 pl-4">
-                          <div className={`bg-primary-800/50 backdrop-blur-sm border rounded-lg p-4 transition-all duration-200 ${
+                          <div className={`relative bg-white border rounded-lg overflow-hidden transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${
                             item.type === 'work'
-                              ? 'border-secondary-700/50 hover:border-secondary-600 hover:bg-primary-800/70'
-                              : 'border-accent-500/30 hover:border-accent-400 hover:bg-primary-800/70'
-                          } hover:shadow-xl hover:-translate-y-0.5`}>
-                            {/* Header */}
-                            <div className="flex items-center gap-2 mb-2">
-                              {item.type === 'work' ? (
-                                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-secondary-800/80 text-secondary-200 rounded text-xs font-bold">
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
-                                  </svg>
-                                  작품
+                              ? 'border-secondary-200 hover:border-secondary-400'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}>
+                            {/* Work accent border */}
+                            {item.type === 'work' && (
+                              <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-secondary-600 to-secondary-400"></div>
+                            )}
+
+                            <div className="flex gap-3">
+                              {/* Content */}
+                              <div className={`flex-1 p-4 ${item.type === 'work' ? 'pl-5' : ''}`}>
+                                {/* Header */}
+                                <div className="flex items-center gap-2 mb-2">
+                                  {item.type === 'work' ? (
+                                    <div className="px-2 py-0.5 bg-secondary-100 text-secondary-800 rounded text-xs font-bold">
+                                      작품
+                                    </div>
+                                  ) : (
+                                    <div className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs font-bold">
+                                      생애
+                                    </div>
+                                  )}
+                                  {item.catalogNumber && (
+                                    <span className="px-2 py-0.5 bg-accent-100 text-accent-800 border border-accent-200 rounded text-xs font-mono">
+                                      {item.catalogNumber}
+                                    </span>
+                                  )}
+                                  {item.genre && (
+                                    <span className="px-2 py-0.5 text-gray-500 text-xs">
+                                      {item.genre}
+                                    </span>
+                                  )}
                                 </div>
-                              ) : (
-                                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-accent-900/80 text-accent-200 rounded text-xs font-bold">
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                                  </svg>
-                                  생애
+
+                                {/* Title */}
+                                <h3 className="font-serif text-lg font-bold text-gray-900 mb-1">
+                                  {item.title}
+                                </h3>
+
+                                {/* Description */}
+                                <p className="font-sans text-xs text-gray-600 leading-relaxed line-clamp-2">
+                                  {item.description}
+                                </p>
+
+                                {/* Location */}
+                                {item.location && (
+                                  <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    </svg>
+                                    {item.location}
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Image */}
+                              {item.image && (
+                                <div className="w-24 h-24 flex-shrink-0 my-4 mr-4 relative rounded-lg overflow-hidden">
+                                  <Image
+                                    src={item.image}
+                                    alt={item.title}
+                                    fill
+                                    className="object-cover"
+                                    sizes="96px"
+                                  />
                                 </div>
-                              )}
-                              {item.catalogNumber && (
-                                <span className="px-2 py-0.5 bg-accent-900/50 text-accent-300 border border-accent-700/50 rounded text-xs font-mono">
-                                  {item.catalogNumber}
-                                </span>
-                              )}
-                              {item.genre && (
-                                <span className="px-2 py-0.5 text-gray-400 text-xs">
-                                  {item.genre}
-                                </span>
                               )}
                             </div>
-
-                            {/* Title */}
-                            <h3 className="font-serif text-lg font-bold text-white mb-1">
-                              {item.title}
-                            </h3>
-
-                            {/* Description */}
-                            <p className="font-sans text-xs text-gray-400 leading-relaxed line-clamp-2">
-                              {item.description}
-                            </p>
-
-                            {/* Location */}
-                            {item.location && (
-                              <div className="mt-2 flex items-center gap-1 text-xs text-accent-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                </svg>
-                                {item.location}
-                              </div>
-                            )}
                           </div>
                         </div>
                       </div>
