@@ -1,12 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import Link from 'next/link';
 import Image from 'next/image';
+import { selectedItemState } from '@/store/atoms';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const selectedItem = useRecoilValue(selectedItemState);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +33,9 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 z-50 transition-all duration-300 w-full ${
+        selectedItem ? 'md:w-[66.666667%]' : ''
+      } ${
         isScrolled
           ? 'bg-white/95 backdrop-blur-md shadow-lg'
           : 'bg-white/10 backdrop-blur-sm shadow-sm'

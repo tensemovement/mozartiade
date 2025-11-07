@@ -9,49 +9,49 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Mozart Theme: Vivid Red (Historical Portrait), Antique Gold (Embellishments), Emerald (Contrast)
+        // Elegant Dark Theme: Black, Wine, Gold
         primary: {
-          DEFAULT: "#FF4560", // Vivid Bright Red - Brighter Mozart coat color
-          50: "#FFF1F2",
-          100: "#FFE1E5",
-          200: "#FFC7D1",
-          300: "#FFA3B5",
-          400: "#FF7A91",
-          500: "#FF4560",
-          600: "#FF1744",
-          700: "#E6003D",
-          800: "#C20038",
-          900: "#A00030",
+          DEFAULT: "#1a1a1a", // Deep Black - Main color
+          50: "#fafafa",
+          100: "#f5f5f5",
+          200: "#e5e5e5",
+          300: "#d4d4d4",
+          400: "#a3a3a3",
+          500: "#737373",
+          600: "#525252",
+          700: "#404040",
+          800: "#262626",
+          900: "#1a1a1a",
         },
         secondary: {
-          DEFAULT: "#D97706", // Antique Gold - decorative buttons and embellishments
-          50: "#FFFBEB",
-          100: "#FEF3C7",
-          200: "#FDE68A",
-          300: "#FCD34D",
-          400: "#FBBF24",
-          500: "#F59E0B",
-          600: "#D97706",
-          700: "#B45309",
-          800: "#92400E",
-          900: "#78350F",
+          DEFAULT: "#6B1B3D", // Deep Wine/Burgundy - Sub color
+          50: "#fdf2f5",
+          100: "#fce7eb",
+          200: "#fad0d9",
+          300: "#f5a8ba",
+          400: "#ed7694",
+          500: "#dc4c71",
+          600: "#c42d59",
+          700: "#a41f49",
+          800: "#891d40",
+          900: "#6B1B3D",
         },
         accent: {
-          DEFAULT: "#047857", // Deep Emerald - elegant contrast
-          50: "#ECFDF5",
-          100: "#D1FAE5",
-          200: "#A7F3D0",
-          300: "#6EE7B7",
-          400: "#34D399",
-          500: "#10B981",
-          600: "#059669",
-          700: "#047857",
-          800: "#065F46",
-          900: "#064E3B",
+          DEFAULT: "#D4A574", // Warm Gold - Accent color
+          50: "#fdfaf6",
+          100: "#faf3ea",
+          200: "#f4e4d0",
+          300: "#ead0ab",
+          400: "#deb67f",
+          500: "#D4A574",
+          600: "#c18a55",
+          700: "#a16e45",
+          800: "#85593c",
+          900: "#6e4a33",
         },
-        // Classical music inspired neutrals
-        cream: "#FFFBEB",
-        ivory: "#FEF3C7",
+        // Classical elegance
+        cream: "#fdfaf6",
+        ivory: "#faf3ea",
       },
       fontFamily: {
         // Body text: Inter + Noto Sans KR
