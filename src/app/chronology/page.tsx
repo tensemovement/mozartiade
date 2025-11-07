@@ -132,90 +132,86 @@ export default function ChronologyPage() {
 
   return (
     <>
-      {/* Desktop: Full Page Flex Layout */}
-      <div className="md:flex md:min-h-screen">
-        {/* Main Content Wrapper */}
-        <div className={`transition-all duration-300 md:flex-1 ${selectedItem ? 'md:w-2/3' : 'md:w-full'}`}>
-          <div className="chronology-nav-wrapper">
-            <Navigation />
+      {/* Page Wrapper - shifts entire page left when panel opens */}
+      <div className={`transition-all duration-300 ${selectedItem ? 'md:-translate-x-[33.333333%]' : ''}`}>
+        <Navigation />
+
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-16 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/m/mozart001.jpg"
+              alt="Mozart"
+              fill
+              className="object-cover opacity-20"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/85 to-secondary-900/90"></div>
           </div>
 
-          {/* Hero Section */}
-          <section className="relative pt-32 pb-16 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 overflow-hidden">
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              <Image
-                src="/images/m/mozart001.jpg"
-                alt="Mozart"
-                fill
-                className="object-cover opacity-20"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/85 to-secondary-900/90"></div>
-            </div>
-
-            <div className="container mx-auto px-4 relative z-10">
-              <div className="max-w-4xl mx-auto text-center">
-                <span className="inline-block px-5 py-1.5 bg-accent-500/20 backdrop-blur-sm text-accent-300 rounded-full font-mono text-xs font-bold mb-4 border border-accent-500/30">
-                  1756 — 1791
-                </span>
-                <h1 className="font-serif text-5xl md:text-6xl font-bold text-white mb-4">
-                  모차르트 연대기
-                </h1>
-                <p className="font-sans text-base text-gray-300 leading-relaxed">
-                  35년의 짧은 생애 동안 626개의 불멸의 작품을 남긴 천재의 발자취
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Sticky Year Filter */}
-          <div className="sticky top-20 z-40 bg-primary-900 border-b border-accent-500/20 shadow-xl">
-            <div
-              ref={yearFilterRef}
-              className="overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing select-none"
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseLeave}
-            >
-              <div className="flex items-center gap-2 px-4 py-2 min-w-max">
-                {uniqueYears.map((year) => {
-                  const isActive = activeYear === year;
-
-                  return (
-                    <button
-                      key={year}
-                      ref={(el) => { yearButtonRefs.current[year] = el; }}
-                      onClick={(e) => {
-                        // Prevent click if we just finished dragging
-                        if (hasDragged) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          return;
-                        }
-                        scrollToYear(year);
-                      }}
-                      className={`px-4 py-1.5 rounded-lg font-mono text-xs font-bold transition-all duration-200 whitespace-nowrap ${
-                        isActive
-                          ? 'bg-accent-500 text-primary-900 shadow-lg scale-105'
-                          : 'bg-primary-800/50 text-accent-300 hover:bg-primary-700 hover:text-accent-200'
-                      }`}
-                    >
-                      {year}
-                    </button>
-                  );
-                })}
-              </div>
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-4xl mx-auto text-center">
+              <span className="inline-block px-5 py-1.5 bg-accent-500/20 backdrop-blur-sm text-accent-300 rounded-full font-mono text-xs font-bold mb-4 border border-accent-500/30">
+                1756 — 1791
+              </span>
+              <h1 className="font-serif text-5xl md:text-6xl font-bold text-white mb-4">
+                모차르트 연대기
+              </h1>
+              <p className="font-sans text-base text-gray-300 leading-relaxed">
+                35년의 짧은 생애 동안 626개의 불멸의 작품을 남긴 천재의 발자취
+              </p>
             </div>
           </div>
+        </section>
 
-          {/* Timeline Section */}
-          <section className="py-12 bg-white">
-            <div className="container mx-auto px-4">
-              <div className="max-w-5xl mx-auto">
-            {/* Timeline */}
-            <div className="relative">
+        {/* Sticky Year Filter */}
+        <div className="sticky top-20 z-40 bg-primary-900 border-b border-accent-500/20 shadow-xl">
+          <div
+            ref={yearFilterRef}
+            className="overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing select-none"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="flex items-center gap-2 px-4 py-2 min-w-max">
+              {uniqueYears.map((year) => {
+                const isActive = activeYear === year;
+
+                return (
+                  <button
+                    key={year}
+                    ref={(el) => { yearButtonRefs.current[year] = el; }}
+                    onClick={(e) => {
+                      // Prevent click if we just finished dragging
+                      if (hasDragged) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return;
+                      }
+                      scrollToYear(year);
+                    }}
+                    className={`px-4 py-1.5 rounded-lg font-mono text-xs font-bold transition-all duration-200 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-accent-500 text-primary-900 shadow-lg scale-105'
+                        : 'bg-primary-800/50 text-accent-300 hover:bg-primary-700 hover:text-accent-200'
+                    }`}
+                  >
+                    {year}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Timeline Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              {/* Timeline */}
+              <div className="relative">
               {/* Vertical line */}
               <div className="absolute left-32 top-0 bottom-0 w-px bg-gray-300"></div>
 
@@ -339,20 +335,21 @@ export default function ChronologyPage() {
                 })}
               </div>
             </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-          <Footer />
-        </div>
+        <Footer />
+      </div>
 
-        {/* Desktop: Side Panel */}
-        <div
-          className={`hidden md:block md:sticky md:top-0 transition-all duration-300 ease-in-out bg-white border-l border-gray-200 shadow-2xl overflow-y-auto
-            ${selectedItem ? 'md:w-1/3' : 'md:w-0 md:border-0 md:overflow-hidden'}
-          `}
-          style={{ height: '100vh' }}
-        >
+      {/* Desktop: Side Panel - Fixed on right */}
+      <div
+        className={`hidden md:block fixed top-0 right-0 transition-all duration-300 ease-in-out bg-white border-l border-gray-200 shadow-2xl overflow-y-auto z-50
+          ${selectedItem ? 'md:w-1/3' : 'md:w-0 md:border-0 md:overflow-hidden'}
+        `}
+        style={{ height: '100vh' }}
+      >
           {selectedItem && (
             <>
               {/* Close button */}
@@ -510,7 +507,6 @@ export default function ChronologyPage() {
               </div>
             </>
           )}
-        </div>
       </div>
 
       {/* Mobile: Backdrop */}
@@ -686,7 +682,6 @@ export default function ChronologyPage() {
           </>
         )}
       </div>
-      </div>
 
       <style jsx global>{`
         @keyframes fadeIn {
@@ -716,15 +711,6 @@ export default function ChronologyPage() {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
-        }
-
-        /* Override Navigation positioning for chronology page */
-        @media (min-width: 768px) {
-          .chronology-nav-wrapper nav {
-            position: absolute;
-            left: 0;
-            right: 0;
-          }
         }
       `}</style>
     </>
