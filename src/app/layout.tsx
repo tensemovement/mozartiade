@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import { Providers } from "./providers";
+import LayoutContent from "@/components/LayoutContent";
 
 export const metadata: Metadata = {
   title: "EnjoyMozart Portal - 모차르트 완전 카탈로그",
@@ -28,7 +29,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          <LayoutContent>{children}</LayoutContent>
+        </Providers>
       </body>
     </html>
   );
