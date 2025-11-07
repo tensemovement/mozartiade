@@ -77,7 +77,8 @@ export default function ChronologyPage() {
   const scrollToYear = (year: number) => {
     const element = yearRefs.current[year];
     if (element) {
-      const offset = 150;
+      // Navigation height (80px) + Year filter height (~48px) + margin (~20px)
+      const offset = 148;
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - offset;
 
@@ -93,7 +94,7 @@ export default function ChronologyPage() {
   // Track active year based on scroll position
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.pageYOffset + 200;
+      const scrollPosition = window.pageYOffset + 148;
 
       for (let i = uniqueYears.length - 1; i >= 0; i--) {
         const year = uniqueYears[i];
@@ -207,7 +208,7 @@ export default function ChronologyPage() {
                       {/* Year marker - Sticky */}
                       <div
                         ref={(el) => { yearRefs.current[year] = el; }}
-                        className="sticky top-32 z-30 mb-8 pb-2"
+                        className="sticky top-[148px] z-30 mb-8 pb-2 bg-white"
                       >
                         <div className="text-gray-900 font-serif text-3xl font-bold">
                           {year}
