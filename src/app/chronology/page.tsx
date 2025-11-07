@@ -126,10 +126,10 @@ export default function ChronologyPage() {
               src="/images/m/mozart004.jpg"
               alt="Mozart"
               fill
-              className="object-cover opacity-20"
+              className="object-cover opacity-40"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/85 to-secondary-900/90"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-900/80 via-primary-800/75 to-secondary-900/80"></div>
           </div>
 
           <div className="container mx-auto px-4 relative z-10">
