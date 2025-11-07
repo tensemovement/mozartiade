@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import Image from 'next/image';
 import Navigation from '@/components/Navigation';
@@ -56,7 +56,7 @@ export default function ChronologyPage() {
   };
 
   // Scroll year filter to center active year button
-  const scrollYearFilterToCenter = (year: number) => {
+  const scrollYearFilterToCenter = useCallback((year: number) => {
     const filterElement = yearFilterRef.current;
     const buttonElement = yearButtonRefs.current[year];
 
@@ -71,10 +71,10 @@ export default function ChronologyPage() {
         behavior: 'smooth'
       });
     }
-  };
+  }, []);
 
   // Scroll to year function
-  const scrollToYear = (year: number) => {
+  const scrollToYear = useCallback((year: number) => {
     const element = yearRefs.current[year];
     if (element) {
       // Navigation height (80px) + Year filter height (~48px) + margin (~20px)
@@ -89,31 +89,34 @@ export default function ChronologyPage() {
       setActiveYear(year);
       scrollYearFilterToCenter(year);
     }
-  };
+  }, [scrollYearFilterToCenter]);
 
   // Track active year based on scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.pageYOffset + 148;
+  const handleScroll = useCallback(() => {
+    const scrollPosition = window.pageYOffset + 148;
 
-      for (let i = uniqueYears.length - 1; i >= 0; i--) {
-        const year = uniqueYears[i];
-        const element = yearRefs.current[year];
-        if (element && element.offsetTop <= scrollPosition) {
-          if (activeYear !== year) {
-            setActiveYear(year);
+    for (let i = uniqueYears.length - 1; i >= 0; i--) {
+      const year = uniqueYears[i];
+      const element = yearRefs.current[year];
+      if (element && element.offsetTop <= scrollPosition) {
+        setActiveYear(prevActiveYear => {
+          if (prevActiveYear !== year) {
             scrollYearFilterToCenter(year);
+            return year;
           }
-          break;
-        }
+          return prevActiveYear;
+        });
+        break;
       }
-    };
+    }
+  }, [uniqueYears, scrollYearFilterToCenter]);
 
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [uniqueYears, activeYear]);
+  }, [handleScroll]);
 
   return (
     <>
