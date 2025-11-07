@@ -204,10 +204,12 @@ export default function ChronologyPage() {
         </div>
       </div>
 
-      {/* Timeline Section */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
+      {/* Main Content Wrapper */}
+      <div className={`transition-all duration-300 ${selectedItem ? 'md:mr-[33.333333%]' : ''}`}>
+        {/* Timeline Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
             {/* Timeline */}
             <div className="relative">
               {/* Vertical line */}
@@ -336,21 +338,30 @@ export default function ChronologyPage() {
           </div>
         </div>
       </section>
+      </div>
 
-      {/* Detail Panel */}
+      {/* Backdrop */}
       {selectedItem && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fadeIn"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 animate-fadeIn"
           onClick={() => setSelectedItem(null)}
-        >
-          <div
-            className="bg-primary-800 border border-accent-500/30 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slideUp relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close button - Sticky */}
+        />
+      )}
+
+      {/* Side Panel - Desktop: Slide from right, Mobile: Slide from bottom */}
+      <div
+        className={`fixed z-50 bg-white shadow-2xl transition-transform duration-300 ease-in-out overflow-y-auto
+          md:top-0 md:right-0 md:w-1/3 md:h-full md:border-l md:border-gray-200
+          max-md:bottom-0 max-md:left-0 max-md:right-0 max-md:h-2/3 max-md:rounded-t-2xl max-md:border-t max-md:border-gray-200
+          ${selectedItem ? 'md:translate-x-0 max-md:translate-y-0' : 'md:translate-x-full max-md:translate-y-full'}
+        `}
+      >
+        {selectedItem && (
+          <>
+            {/* Close button */}
             <button
               onClick={() => setSelectedItem(null)}
-              className="sticky top-4 right-4 ml-auto mr-4 mt-4 z-50 p-2 bg-white/90 hover:bg-white rounded-full transition-colors shadow-lg float-right"
+              className="absolute top-4 right-4 z-50 p-2 bg-white hover:bg-gray-100 rounded-full transition-colors shadow-lg border border-gray-200"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -360,40 +371,39 @@ export default function ChronologyPage() {
             {/* Header */}
             <div className={`p-6 border-b ${
               selectedItem.type === 'work'
-                ? 'bg-secondary-900/50 border-secondary-700/50'
-                : 'bg-accent-900/20 border-accent-500/30'
+                ? 'bg-secondary-50 border-secondary-200'
+                : 'bg-accent-50 border-accent-200'
             }`}>
-
-              <div className="flex items-start gap-3 mb-3">
-                <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-accent-500/20 text-accent-300 border border-accent-500/30">
+              <div className="flex items-start gap-2 mb-3 flex-wrap">
+                <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-accent-100 text-accent-800 border border-accent-200">
                   {getDateString(selectedItem)}
                 </div>
                 {selectedItem.catalogNumber && (
-                  <div className="px-3 py-1 bg-primary-700 rounded-lg font-mono text-xs font-bold text-accent-300 border border-accent-500/30">
+                  <div className="px-3 py-1 bg-secondary-100 rounded-lg font-mono text-xs font-bold text-secondary-800 border border-secondary-200">
                     {selectedItem.catalogNumber}
                   </div>
                 )}
               </div>
 
-              <h2 className="font-serif text-3xl font-bold text-white mb-2">
+              <h2 className="font-serif text-2xl font-bold text-gray-900 mb-3">
                 {selectedItem.title}
               </h2>
 
               <div className="flex flex-wrap gap-2">
                 <div className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
                   selectedItem.type === 'work'
-                    ? 'bg-secondary-700 text-secondary-100'
-                    : 'bg-accent-700 text-accent-100'
+                    ? 'bg-secondary-600 text-white'
+                    : 'bg-accent-600 text-white'
                 }`}>
                   {selectedItem.type === 'work' ? '작품' : '생애'}
                 </div>
                 {selectedItem.genre && (
-                  <div className="px-2.5 py-0.5 bg-primary-700 rounded-full text-xs font-bold text-gray-300">
+                  <div className="px-2.5 py-0.5 bg-gray-200 rounded-full text-xs font-bold text-gray-700">
                     {selectedItem.genre}
                   </div>
                 )}
                 {selectedItem.location && (
-                  <div className="px-2.5 py-0.5 bg-primary-700 rounded-full text-xs font-bold text-gray-300 flex items-center gap-1">
+                  <div className="px-2.5 py-0.5 bg-gray-200 rounded-full text-xs font-bold text-gray-700 flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     </svg>
@@ -404,21 +414,21 @@ export default function ChronologyPage() {
             </div>
 
             {/* Content */}
-            <div className="p-6 bg-white">
-              <p className="font-sans text-base text-gray-700 leading-relaxed mb-6">
+            <div className="p-6">
+              <p className="font-sans text-sm text-gray-700 leading-relaxed mb-6">
                 {selectedItem.description}
               </p>
 
               {selectedItem.compositionDetails && (
-                <div className="mb-6 p-5 bg-secondary-50 rounded-xl border border-secondary-200">
-                  <h3 className="font-serif text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-200">
+                  <h3 className="font-serif text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-secondary-600" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                       <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                     </svg>
                     작곡 배경
                   </h3>
-                  <p className="font-sans text-sm text-gray-700 leading-relaxed">
+                  <p className="font-sans text-xs text-gray-700 leading-relaxed">
                     {selectedItem.compositionDetails}
                   </p>
                 </div>
@@ -430,23 +440,23 @@ export default function ChronologyPage() {
                   {selectedItem.youtubeUrl && (() => {
                     const embedUrl = getYoutubeEmbedUrl(selectedItem.youtubeUrl);
                     return embedUrl ? (
-                      <div className="rounded-xl overflow-hidden border border-gray-300">
+                      <div className="rounded-lg overflow-hidden border border-gray-300">
                         <iframe
                           width="100%"
-                          height="400"
+                          height="250"
                           src={embedUrl}
                           title="YouTube video player"
                           frameBorder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
-                          className="w-full aspect-video"
+                          className="w-full"
                         ></iframe>
                       </div>
                     ) : (
-                      <div className="rounded-xl overflow-hidden bg-gray-100 border border-gray-300">
+                      <div className="rounded-lg overflow-hidden bg-gray-100 border border-gray-300">
                         <div className="aspect-video bg-gray-200 flex items-center justify-center">
                           <div className="text-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-400 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
                               <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
                             </svg>
                             <p className="text-gray-600 text-xs font-sans">
@@ -463,23 +473,23 @@ export default function ChronologyPage() {
                       href={selectedItem.sheetMusicUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block p-4 bg-accent-50 rounded-xl border border-accent-200 hover:border-accent-400 transition-all group"
+                      className="block p-3 bg-accent-50 rounded-lg border border-accent-200 hover:border-accent-400 transition-all group"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                         </div>
-                        <div className="flex-1">
-                          <h4 className="font-serif text-base font-bold text-gray-900 mb-0.5">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
                             악보 다운로드
                           </h4>
                           <p className="font-sans text-xs text-gray-600">
                             IMSLP에서 무료 악보 열람하기
                           </p>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-accent-600 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-accent-600 group-hover:translate-x-1 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       </div>
@@ -490,20 +500,20 @@ export default function ChronologyPage() {
 
               {/* Image if available */}
               {selectedItem.image && (
-                <div className="mt-6 rounded-xl overflow-hidden border border-gray-300 relative aspect-video">
+                <div className="mt-6 rounded-lg overflow-hidden border border-gray-300 relative aspect-video">
                   <Image
                     src={selectedItem.image}
                     alt={selectedItem.title}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 768px"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
                 </div>
               )}
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </div>
 
       <Footer />
 
@@ -513,23 +523,8 @@ export default function ChronologyPage() {
           to { opacity: 1; }
         }
 
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
         .animate-fadeIn {
           animation: fadeIn 0.2s ease-out;
-        }
-
-        .animate-slideUp {
-          animation: slideUp 0.3s ease-out;
         }
 
         .scrollbar-hide::-webkit-scrollbar {
