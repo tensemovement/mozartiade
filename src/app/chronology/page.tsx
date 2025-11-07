@@ -132,10 +132,10 @@ export default function ChronologyPage() {
 
   return (
     <>
-      {/* Page Wrapper - shifts entire page left when panel opens */}
-      <div className={`transition-all duration-300 ${selectedItem ? 'md:-translate-x-[33.333333%]' : ''}`}>
-        <Navigation />
+      <Navigation />
 
+      {/* Main Content Wrapper - shrinks width when panel opens */}
+      <div className={`transition-all duration-300 ${selectedItem ? 'md:w-[66.666667%]' : 'md:w-full'}`}>
         {/* Hero Section */}
         <section className="relative pt-32 pb-16 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 overflow-hidden">
           {/* Background Image */}
