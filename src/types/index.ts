@@ -17,3 +17,30 @@ export interface ApiResponse<T = unknown> {
 }
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
+
+/**
+ * Chronology & Timeline types
+ */
+export type ChronologyItemType = 'life' | 'work';
+
+export interface ChronologyItem {
+  id: string;
+  type: ChronologyItemType;
+  year: number;
+  month?: number;
+  day?: number;
+  title: string;
+  description: string;
+  location?: string;
+
+  // For works
+  catalogNumber?: string; // K. number
+  genre?: string;
+  youtubeUrl?: string;
+  sheetMusicUrl?: string;
+  compositionDetails?: string;
+
+  // UI
+  highlight?: boolean;
+  image?: string;
+}
