@@ -30,26 +30,25 @@ export default function SidePanel() {
     <>
       {/* Desktop: Side Panel - Fixed on right */}
       <div
-        className="hidden md:block fixed top-0 right-0 transition-all duration-300 ease-in-out bg-white border-l border-gray-200 shadow-2xl overflow-y-auto z-50 w-1/3"
+        className="hidden md:flex md:flex-col fixed top-0 right-0 transition-all duration-300 ease-in-out bg-white border-l border-gray-200 shadow-2xl z-50 w-1/3"
         style={{ height: '100vh' }}
       >
-        {/* Close button */}
-        <button
-          onClick={() => setSelectedItem(null)}
-          className="sticky top-4 right-4 ml-auto mr-4 mt-4 z-10 p-2 bg-white hover:bg-gray-100 rounded-full transition-colors shadow-lg border border-gray-200 float-right"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-
-        {/* Header */}
-        <div className={`p-6 border-b ${
+        {/* Header - Sticky */}
+        <div className={`sticky top-0 z-20 p-6 border-b ${
           selectedItem.type === 'work'
             ? 'bg-secondary-50 border-secondary-200'
             : 'bg-accent-50 border-accent-200'
         }`}>
-          <div className="flex items-start gap-2 mb-3 flex-wrap">
+          {/* Close button */}
+          <button
+            onClick={() => setSelectedItem(null)}
+            className="absolute top-4 right-4 p-2 bg-white hover:bg-gray-100 rounded-full transition-colors shadow-lg border border-gray-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <div className="flex items-start gap-2 mb-3 flex-wrap pr-12">
             <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-accent-100 text-accent-800 border border-accent-200">
               {getDateString(selectedItem)}
             </div>
@@ -60,11 +59,11 @@ export default function SidePanel() {
             )}
           </div>
 
-          <h2 className="font-serif text-2xl font-bold text-gray-900 mb-3">
+          <h2 className="font-serif text-2xl font-bold text-gray-900 mb-3 pr-12">
             {selectedItem.title}
           </h2>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 pr-12">
             <div className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
               selectedItem.type === 'work'
                 ? 'bg-secondary-600 text-white'
@@ -88,8 +87,8 @@ export default function SidePanel() {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6">
+        {/* Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-6">
           <p className="font-sans text-sm text-gray-700 leading-relaxed mb-6">
             {selectedItem.description}
           </p>
@@ -188,15 +187,9 @@ export default function SidePanel() {
         </div>
       </div>
 
-      {/* Mobile: Backdrop */}
-      <div
-        className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 animate-fadeIn"
-        onClick={() => setSelectedItem(null)}
-      />
-
       {/* Mobile: Bottom Sheet Panel */}
       <div
-        className="md:hidden fixed z-50 bg-white shadow-2xl transition-transform duration-300 ease-in-out overflow-y-auto bottom-0 left-0 right-0 h-2/3 rounded-t-2xl border-t border-gray-200 translate-y-0"
+        className="md:hidden fixed z-50 bg-white shadow-2xl transition-transform duration-300 ease-in-out overflow-y-auto bottom-0 left-0 right-0 h-1/2 rounded-t-2xl border-t border-gray-200 translate-y-0"
       >
         {/* Close button */}
         <button

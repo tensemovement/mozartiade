@@ -33,8 +33,8 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 z-50 transition-all duration-300 ${
-        selectedItem ? 'md:w-[66.666667%]' : 'w-full'
+      className={`fixed top-0 left-0 z-50 transition-all duration-300 w-full ${
+        selectedItem ? 'md:w-[66.666667%]' : ''
       } ${
         isScrolled
           ? 'bg-white/95 backdrop-blur-md shadow-lg'
