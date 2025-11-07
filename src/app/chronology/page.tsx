@@ -123,7 +123,7 @@ export default function ChronologyPage() {
           {/* Background Image */}
           <div className="absolute inset-0">
             <Image
-              src="/images/m/mozart001.jpg"
+              src="/images/m/mozart004.jpg"
               alt="Mozart"
               fill
               className="object-cover opacity-20"
