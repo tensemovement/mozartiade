@@ -335,12 +335,11 @@ export default function ChronologyPage() {
                 })}
               </div>
             </div>
-              </div>
-            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <Footer />
+      <Footer />
       </div>
 
       {/* Desktop: Side Panel - Fixed on right */}
