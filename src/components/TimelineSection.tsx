@@ -117,11 +117,16 @@ export default function TimelineSection() {
 
                     {/* Dot on line */}
                     <div className="absolute left-32 top-6 -translate-x-1/2 z-10">
-                      <div className={`w-3 h-3 rounded-full transition-all ${
-                        item.highlight
-                          ? 'bg-secondary-600 shadow-lg shadow-secondary-300 animate-pulse'
-                          : 'bg-gray-400'
-                      }`}></div>
+                      <div className="relative">
+                        <div className={`w-3 h-3 rounded-full transition-all ${
+                          item.highlight
+                            ? 'bg-secondary-600 shadow-lg shadow-secondary-300'
+                            : 'bg-gray-400'
+                        }`}></div>
+                        {item.highlight && (
+                          <div className="absolute inset-0 w-3 h-3 rounded-full bg-secondary-600 animate-ping opacity-75"></div>
+                        )}
+                      </div>
                     </div>
 
                     {/* Card */}

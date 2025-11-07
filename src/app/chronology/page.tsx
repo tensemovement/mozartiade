@@ -197,11 +197,10 @@ export default function ChronologyPage() {
                       {/* Year marker - Sticky */}
                       <div
                         ref={(el) => { yearRefs.current[year] = el; }}
-                        className="sticky top-32 z-30 mb-8"
+                        className="sticky top-32 z-30 mb-8 bg-white pb-2"
                       >
                         <div className="flex items-center gap-4">
-                          <div className="flex-1 h-px bg-gray-300"></div>
-                          <div className="bg-primary-900 text-white px-6 py-3 rounded-xl font-serif text-2xl font-bold shadow-lg">
+                          <div className="bg-white border-2 border-gray-300 text-gray-900 px-4 py-2 rounded-lg font-serif text-xl font-bold shadow-sm">
                             {year}
                           </div>
                           <div className="flex-1 h-px bg-gray-300"></div>
@@ -226,11 +225,16 @@ export default function ChronologyPage() {
 
                             {/* Dot on line */}
                             <div className="absolute left-32 top-2 -translate-x-1/2 z-10">
-                              <div className={`w-2 h-2 rounded-full transition-all ${
-                                item.highlight
-                                  ? 'bg-secondary-600 shadow-lg shadow-secondary-300 animate-pulse'
-                                  : 'bg-gray-400 group-hover:bg-secondary-500'
-                              }`}></div>
+                              <div className="relative">
+                                <div className={`w-2 h-2 rounded-full transition-all ${
+                                  item.highlight
+                                    ? 'bg-secondary-600 shadow-lg shadow-secondary-300'
+                                    : 'bg-gray-400 group-hover:bg-secondary-500'
+                                }`}></div>
+                                {item.highlight && (
+                                  <div className="absolute inset-0 w-2 h-2 rounded-full bg-secondary-600 animate-ping opacity-75"></div>
+                                )}
+                              </div>
                             </div>
 
                         {/* Card */}
