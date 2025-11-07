@@ -16,6 +16,7 @@ export default function ChronologyPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [hasDragged, setHasDragged] = useState(false);
 
   // Extract unique years and sort them
   const uniqueYears = Array.from(new Set(chronologyData.map(item => item.year))).sort((a, b) => a - b);
@@ -24,6 +25,7 @@ export default function ChronologyPage() {
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!yearFilterRef.current) return;
     setIsDragging(true);
+    setHasDragged(false);
     setStartX(e.pageX - yearFilterRef.current.offsetLeft);
     setScrollLeft(yearFilterRef.current.scrollLeft);
   };
@@ -34,14 +36,22 @@ export default function ChronologyPage() {
     const x = e.pageX - yearFilterRef.current.offsetLeft;
     const walk = (x - startX) * 2;
     yearFilterRef.current.scrollLeft = scrollLeft - walk;
+
+    // Mark as dragged if moved more than 5 pixels
+    if (Math.abs(walk) > 5) {
+      setHasDragged(true);
+    }
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    // Reset hasDragged after a short delay to allow click prevention
+    setTimeout(() => setHasDragged(false), 10);
   };
 
   const handleMouseLeave = () => {
     setIsDragging(false);
+    setTimeout(() => setHasDragged(false), 10);
   };
 
   // Scroll year filter to center active year button
@@ -171,7 +181,15 @@ export default function ChronologyPage() {
                 <button
                   key={year}
                   ref={(el) => { yearButtonRefs.current[year] = el; }}
-                  onClick={() => scrollToYear(year)}
+                  onClick={(e) => {
+                    // Prevent click if we just finished dragging
+                    if (hasDragged) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      return;
+                    }
+                    scrollToYear(year);
+                  }}
                   className={`px-4 py-1.5 rounded-lg font-mono text-xs font-bold transition-all duration-200 whitespace-nowrap ${
                     isActive
                       ? 'bg-accent-500 text-primary-900 shadow-lg scale-105'
