@@ -118,9 +118,16 @@ export default function ChronologyPage() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-accent-500 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary-500 rounded-full blur-3xl"></div>
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/m/mozart001.jpg"
+            alt="Mozart"
+            fill
+            className="object-cover opacity-20"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/85 to-secondary-900/90"></div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -180,33 +187,35 @@ export default function ChronologyPage() {
               {/* Vertical line */}
               <div className="absolute left-32 top-0 bottom-0 w-px bg-gray-300"></div>
 
-              {/* Timeline items */}
-              <div className="space-y-6">
-                {chronologyData.map((item, index) => {
-                  const isFirstOfYear = index === 0 || chronologyData[index - 1].year !== item.year;
+              {/* Timeline items grouped by year */}
+              <div className="space-y-12">
+                {uniqueYears.map((year) => {
+                  const yearItems = chronologyData.filter(item => item.year === year);
 
                   return (
-                    <div key={item.id}>
-                      {/* Year marker */}
-                      {isFirstOfYear && (
-                        <div
-                          ref={(el) => { yearRefs.current[item.year] = el; }}
-                          className="relative mb-6 flex items-center gap-4"
-                        >
-                          <div className="w-32 flex-shrink-0 text-right pr-6">
-                            <div className="inline-block bg-primary-900 text-white px-4 py-2 rounded-lg font-serif text-2xl font-bold shadow-lg">
-                              {item.year}
-                            </div>
+                    <div key={year} className="relative">
+                      {/* Year marker - Sticky */}
+                      <div
+                        ref={(el) => { yearRefs.current[year] = el; }}
+                        className="sticky top-32 z-30 mb-8"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="flex-1 h-px bg-gray-300"></div>
+                          <div className="bg-primary-900 text-white px-6 py-3 rounded-xl font-serif text-2xl font-bold shadow-lg">
+                            {year}
                           </div>
                           <div className="flex-1 h-px bg-gray-300"></div>
                         </div>
-                      )}
+                      </div>
 
-                      {/* Timeline item */}
-                      <div
-                        className="relative flex items-start gap-4 group cursor-pointer"
-                        onClick={() => setSelectedItem(item)}
-                      >
+                      {/* Items for this year */}
+                      <div className="space-y-6">
+                        {yearItems.map((item) => (
+                          <div
+                            key={item.id}
+                            className="relative flex items-start gap-4 group cursor-pointer"
+                            onClick={() => setSelectedItem(item)}
+                          >
                         {/* Date column */}
                         <div className="w-32 flex-shrink-0 text-right pr-6">
                           <div className="text-gray-600 font-mono text-xs">
@@ -215,14 +224,14 @@ export default function ChronologyPage() {
                           </div>
                         </div>
 
-                        {/* Dot on line */}
-                        <div className="absolute left-32 top-2 -translate-x-1/2 z-10">
-                          <div className={`w-2 h-2 rounded-full transition-all ${
-                            item.highlight
-                              ? 'bg-secondary-600 shadow-lg shadow-secondary-300'
-                              : 'bg-gray-400 group-hover:bg-secondary-500'
-                          }`}></div>
-                        </div>
+                            {/* Dot on line */}
+                            <div className="absolute left-32 top-2 -translate-x-1/2 z-10">
+                              <div className={`w-2 h-2 rounded-full transition-all ${
+                                item.highlight
+                                  ? 'bg-secondary-600 shadow-lg shadow-secondary-300 animate-pulse'
+                                  : 'bg-gray-400 group-hover:bg-secondary-500'
+                              }`}></div>
+                            </div>
 
                         {/* Card */}
                         <div className="flex-1 pl-4">
@@ -241,15 +250,6 @@ export default function ChronologyPage() {
                               <div className={`flex-1 p-4 ${item.type === 'work' ? 'pl-5' : ''}`}>
                                 {/* Header */}
                                 <div className="flex items-center gap-2 mb-2">
-                                  {item.type === 'work' ? (
-                                    <div className="px-2 py-0.5 bg-secondary-100 text-secondary-800 rounded text-xs font-bold">
-                                      작품
-                                    </div>
-                                  ) : (
-                                    <div className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs font-bold">
-                                      생애
-                                    </div>
-                                  )}
                                   {item.catalogNumber && (
                                     <span className="px-2 py-0.5 bg-accent-100 text-accent-800 border border-accent-200 rounded text-xs font-mono">
                                       {item.catalogNumber}
@@ -298,6 +298,8 @@ export default function ChronologyPage() {
                             </div>
                           </div>
                         </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   );
@@ -373,21 +375,21 @@ export default function ChronologyPage() {
             </div>
 
             {/* Content */}
-            <div className="p-6">
-              <p className="font-sans text-base text-gray-300 leading-relaxed mb-6">
+            <div className="p-6 bg-white">
+              <p className="font-sans text-base text-gray-700 leading-relaxed mb-6">
                 {selectedItem.description}
               </p>
 
               {selectedItem.compositionDetails && (
-                <div className="mb-6 p-5 bg-secondary-900/30 rounded-xl border border-secondary-700/50">
-                  <h3 className="font-serif text-lg font-bold text-white mb-2 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-accent-400" fill="currentColor" viewBox="0 0 20 20">
+                <div className="mb-6 p-5 bg-secondary-50 rounded-xl border border-secondary-200">
+                  <h3 className="font-serif text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-secondary-600" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                       <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                     </svg>
                     작곡 배경
                   </h3>
-                  <p className="font-sans text-sm text-gray-400 leading-relaxed">
+                  <p className="font-sans text-sm text-gray-700 leading-relaxed">
                     {selectedItem.compositionDetails}
                   </p>
                 </div>
@@ -397,13 +399,13 @@ export default function ChronologyPage() {
               {selectedItem.type === 'work' && (
                 <div className="space-y-3">
                   {selectedItem.youtubeUrl && (
-                    <div className="rounded-xl overflow-hidden bg-primary-900 border border-accent-500/30">
-                      <div className="aspect-video bg-primary-950 flex items-center justify-center">
+                    <div className="rounded-xl overflow-hidden bg-gray-100 border border-gray-300">
+                      <div className="aspect-video bg-gray-200 flex items-center justify-center">
                         <div className="text-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-accent-500/30 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
                           </svg>
-                          <p className="text-gray-500 text-xs font-sans">
+                          <p className="text-gray-600 text-xs font-sans">
                             유튜브 연동 준비 중
                           </p>
                         </div>
@@ -416,23 +418,23 @@ export default function ChronologyPage() {
                       href={selectedItem.sheetMusicUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block p-4 bg-accent-900/20 rounded-xl border border-accent-700/50 hover:border-accent-500 transition-all group"
+                      className="block p-4 bg-accent-50 rounded-xl border border-accent-200 hover:border-accent-400 transition-all group"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-accent-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <div className="w-10 h-10 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-serif text-base font-bold text-white mb-0.5">
+                          <h4 className="font-serif text-base font-bold text-gray-900 mb-0.5">
                             악보 다운로드
                           </h4>
-                          <p className="font-sans text-xs text-gray-400">
+                          <p className="font-sans text-xs text-gray-600">
                             IMSLP에서 무료 악보 열람하기
                           </p>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-accent-400 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-accent-600 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       </div>
@@ -443,7 +445,7 @@ export default function ChronologyPage() {
 
               {/* Image if available */}
               {selectedItem.image && (
-                <div className="mt-6 rounded-xl overflow-hidden border border-accent-500/30 relative aspect-video">
+                <div className="mt-6 rounded-xl overflow-hidden border border-gray-300 relative aspect-video">
                   <Image
                     src={selectedItem.image}
                     alt={selectedItem.title}
