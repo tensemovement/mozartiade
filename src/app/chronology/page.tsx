@@ -123,10 +123,10 @@ export default function ChronologyPage() {
           {/* Background Image */}
           <div className="absolute inset-0">
             <Image
-              src="/images/m/mozart004.jpg"
+              src="/images/m/mozart001.jpg"
               alt="Mozart"
               fill
-              className="object-cover opacity-40"
+              className="object-cover opacity-80"
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-br from-primary-900/80 via-primary-800/75 to-secondary-900/80"></div>
