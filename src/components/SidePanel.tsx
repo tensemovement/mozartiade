@@ -44,7 +44,7 @@ export default function SidePanel() {
       {/* Desktop: Side Panel - Fixed on right */}
       <div
         className={`hidden md:flex md:flex-col fixed top-0 right-0 bg-white z-50 w-1/3 animate-slideInRight shadow-[0_0_50px_rgba(0,0,0,0.15)] transition-all duration-300 ${
-          isScrolled ? 'rounded-l-3xl' : ''
+          isScrolled ? 'rounded-tl-3xl' : ''
         }`}
         style={{ height: '100vh' }}
       >
