@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { selectedItemState } from '@/store/atoms';
 import Image from 'next/image';
 import { formatVoteCount } from '@/utils/format';
+import { MdFullscreen, MdFavorite } from 'react-icons/md';
 
 export default function FeaturedWorksSection() {
   const { ref, isVisible } = useScrollAnimation();
@@ -97,9 +98,7 @@ export default function FeaturedWorksSection() {
                   {/* Vote count badge */}
                   {originalWork?.voteCount && (
                     <div className="absolute bottom-4 left-4 px-3 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                      </svg>
+                      <MdFavorite className="h-3 w-3" />
                       {formatVoteCount(originalWork.voteCount)}
                     </div>
                   )}
@@ -129,9 +128,7 @@ export default function FeaturedWorksSection() {
                     className="absolute bottom-3 right-3 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md"
                     title="전체 화면으로 보기"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                    </svg>
+                    <MdFullscreen className="h-4 w-4" />
                   </button>
                 </div>
 
