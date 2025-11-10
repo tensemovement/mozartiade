@@ -22,13 +22,9 @@ export default function Navigation() {
 
   const menuItems = [
     { label: '홈', href: '/' },
-    { label: '카탈로그', href: '/catalog' },
     { label: '연대기', href: '/chronology' },
     { label: '작품', href: '/works' },
-    { label: '악보', href: '/scores' },
-    { label: '음원', href: '/audio' },
     { label: '영상', href: '/video' },
-    { label: '해설', href: '/commentary' },
   ];
 
   return (
