@@ -26,7 +26,7 @@ export default function Navigation() {
     { label: '연대기', href: '/chronology' },
     { label: '작품', href: '/works' },
     { label: '영상', href: '/video' },
-    { label: '공연', href: '/concerts' },
+    { label: '공연', href: '/concert' },
     { label: '퀴즈', href: '/quiz' },
     { label: '굿즈', href: '/goods' },
   ];
