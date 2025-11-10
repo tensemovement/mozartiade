@@ -226,7 +226,7 @@ export default function WorksPage() {
                 <div
                   key={work.id}
                   className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-100"
-                  onClick={() => setSelectedItem(work)}
+                  onClick={() => setSelectedItem({ ...work, type: 'work' as const })}
                 >
                   {/* Header with K number */}
                   <div className="relative h-28 bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center overflow-hidden">
@@ -261,8 +261,23 @@ export default function WorksPage() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5">
-                    <h3 className="font-serif text-lg font-bold text-gray-900 mb-1 group-hover:text-primary-700 transition-colors line-clamp-2">
+                  <div className="p-5 relative">
+                    {/* Fullscreen Icon */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // TODO: 상세페이지로 전환
+                        console.log('Navigate to detail page:', work.id);
+                      }}
+                      className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-primary-100 rounded-lg transition-all hover:scale-110 shadow-sm border border-gray-200 z-10"
+                      title="전체화면으로 보기"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                      </svg>
+                    </button>
+
+                    <h3 className="font-serif text-lg font-bold text-gray-900 mb-1 group-hover:text-primary-700 transition-colors line-clamp-2 pr-10">
                       {work.title}
                     </h3>
                     {work.titleEn && (
@@ -270,54 +285,9 @@ export default function WorksPage() {
                         {work.titleEn}
                       </p>
                     )}
-                    <p className="font-sans text-sm text-gray-600 mb-4 line-clamp-2">
+                    <p className="font-sans text-sm text-gray-600 line-clamp-3">
                       {work.description}
                     </p>
-
-                    {/* Location */}
-                    {work.location && (
-                      <div className="flex items-center gap-1 text-xs text-gray-500 mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        </svg>
-                        {work.location}
-                      </div>
-                    )}
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-2">
-                      {work.sheetMusicUrl && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(work.sheetMusicUrl, '_blank');
-                          }}
-                          className="flex-1 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg font-sans text-xs font-semibold transition-colors"
-                        >
-                          악보
-                        </button>
-                      )}
-                      {work.youtubeUrl && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(work.youtubeUrl, '_blank');
-                          }}
-                          className="flex-1 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg font-sans text-xs font-semibold transition-colors"
-                        >
-                          음원
-                        </button>
-                      )}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedItem(work);
-                        }}
-                        className="flex-1 px-3 py-1.5 bg-primary-100 hover:bg-primary-200 text-primary-900 rounded-lg font-sans text-xs font-semibold transition-colors"
-                      >
-                        상세
-                      </button>
-                    </div>
                   </div>
 
                   {/* Bottom accent */}

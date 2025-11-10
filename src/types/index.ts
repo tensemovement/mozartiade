@@ -19,6 +19,26 @@ export interface ApiResponse<T = unknown> {
 export type LoadingState = "idle" | "loading" | "success" | "error";
 
 /**
+ * Work (작품) types
+ */
+export interface Work {
+  id: string;
+  year: number;
+  month?: number;
+  day?: number;
+  title: string;
+  titleEn?: string; // English title
+  description: string;
+  catalogNumber?: string; // K. number
+  genre?: string;
+  youtubeUrl?: string;
+  sheetMusicUrl?: string;
+  compositionDetails?: string;
+  highlight?: boolean;
+  image?: string;
+}
+
+/**
  * Chronology & Timeline types
  */
 export type ChronologyItemType = 'life' | 'work';

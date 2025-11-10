@@ -2,10 +2,13 @@
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { worksData } from '@/data/works';
+import { useRecoilState } from 'recoil';
+import { selectedItemState } from '@/store/atoms';
 import Image from 'next/image';
 
 export default function FeaturedWorksSection() {
   const { ref, isVisible } = useScrollAnimation();
+  const [, setSelectedItem] = useRecoilState(selectedItemState);
 
   // Get featured works from worksData
   const featuredWorks = worksData
@@ -51,14 +54,23 @@ export default function FeaturedWorksSection() {
 
           {/* Works Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredWorks.map((work, index) => (
-              <div
-                key={work.id}
-                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer hover:-translate-y-2 border border-gray-100"
-                style={{
-                  transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
-                }}
-              >
+            {featuredWorks.map((work, index) => {
+              // Find original work data for side panel
+              const originalWork = worksData.find(w => w.id === work.id.replace('K. ', '').toLowerCase());
+
+              return (
+                <div
+                  key={work.id}
+                  onClick={() => {
+                    if (originalWork) {
+                      setSelectedItem({ ...originalWork, type: 'work' as const });
+                    }
+                  }}
+                  className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer hover:-translate-y-2 border border-gray-100"
+                  style={{
+                    transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
+                  }}
+                >
                 {/* Header with K number */}
                 <div className="relative h-32 bg-gray-100 flex items-center justify-center overflow-hidden">
                   {work.bgImage && (
@@ -89,8 +101,23 @@ export default function FeaturedWorksSection() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                  <h3 className="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors">
+                <div className="p-6 relative">
+                  {/* Fullscreen Icon */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // TODO: 상세페이지로 전환
+                      console.log('Navigate to detail page:', work.id);
+                    }}
+                    className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-primary-100 rounded-lg transition-all hover:scale-110 shadow-sm border border-gray-200 z-10"
+                    title="전체화면으로 보기"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                    </svg>
+                  </button>
+
+                  <h3 className="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors pr-10">
                     {work.titleKr}
                   </h3>
                   {work.titleEn && (
@@ -98,28 +125,16 @@ export default function FeaturedWorksSection() {
                       {work.titleEn}
                     </p>
                   )}
-                  <p className="font-sans text-sm text-gray-600 mb-6">
+                  <p className="font-sans text-sm text-gray-600 line-clamp-3">
                     {work.description}
                   </p>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2">
-                    <button className="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg font-sans text-sm font-semibold transition-colors">
-                      악보
-                    </button>
-                    <button className="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg font-sans text-sm font-semibold transition-colors">
-                      음원
-                    </button>
-                    <button className="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg font-sans text-sm font-semibold transition-colors">
-                      해설
-                    </button>
-                  </div>
                 </div>
 
                 {/* Bottom accent */}
                 <div className="h-1 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* CTA */}

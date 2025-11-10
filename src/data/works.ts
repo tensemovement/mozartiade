@@ -1,13 +1,12 @@
-import { ChronologyItem } from '@/types';
+import { Work } from '@/types';
 
 /**
  * 모차르트의 작품 목록
  * 작품 화면과 홈 화면에서 공유하여 사용
  */
-export const worksData: ChronologyItem[] = [
+export const worksData: Work[] = [
   {
     id: 'first-composition',
-    type: 'work',
     year: 1761,
     title: '안단테 C장조',
     titleEn: 'Andante in C major',
@@ -20,7 +19,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'symphony-no1',
-    type: 'work',
     year: 1764,
     title: '교향곡 제1번 E♭장조',
     titleEn: 'Symphony No. 1 in E♭ major',
@@ -34,7 +32,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'mitridate',
-    type: 'work',
     year: 1770,
     title: '미트리다테, 폰토의 왕',
     titleEn: 'Mitridate, re di Ponto',
@@ -48,7 +45,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'violin-concerto-5',
-    type: 'work',
     year: 1775,
     title: '바이올린 협주곡 제5번 A장조 "터키풍"',
     titleEn: 'Violin Concerto No. 5 in A major "Turkish"',
@@ -62,7 +58,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'idomeneo',
-    type: 'work',
     year: 1781,
     title: '이도메네오',
     titleEn: 'Idomeneo',
@@ -76,7 +71,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'abduction',
-    type: 'work',
     year: 1782,
     title: '후궁으로부터의 도주',
     titleEn: 'Die Entführung aus dem Serail',
@@ -90,7 +84,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'piano-concerto-21',
-    type: 'work',
     year: 1785,
     month: 3,
     title: '피아노 협주곡 제21번 C장조',
@@ -105,7 +98,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'figaro',
-    type: 'work',
     year: 1786,
     month: 5,
     day: 1,
@@ -122,7 +114,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'don-giovanni',
-    type: 'work',
     year: 1787,
     month: 10,
     day: 29,
@@ -138,7 +129,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'jupiter',
-    type: 'work',
     year: 1788,
     month: 8,
     day: 10,
@@ -154,7 +144,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'cosi-fan-tutte',
-    type: 'work',
     year: 1790,
     month: 1,
     day: 26,
@@ -170,7 +159,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'magic-flute',
-    type: 'work',
     year: 1791,
     month: 9,
     day: 30,
@@ -186,7 +174,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'clarinet-concerto',
-    type: 'work',
     year: 1791,
     month: 10,
     title: '클라리넷 협주곡 A장조',
@@ -201,7 +188,6 @@ export const worksData: ChronologyItem[] = [
   },
   {
     id: 'requiem',
-    type: 'work',
     year: 1791,
     month: 12,
     title: '레퀴엠 D단조',
