@@ -10,7 +10,12 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
   return (
     <>
       {/* Main Content Wrapper - shrinks width when panel opens */}
-      <div className={`transition-all duration-300 ${selectedItem ? 'md:w-[66.666667%]' : 'md:w-full'}`}>
+      <div
+        className={`${selectedItem ? 'md:w-[66.666667%]' : 'md:w-full'}`}
+        style={{
+          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+        }}
+      >
         {children}
       </div>
 

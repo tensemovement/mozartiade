@@ -28,17 +28,23 @@ export default function SidePanel() {
 
   return (
     <>
+      {/* Backdrop Overlay */}
+      <div
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 animate-fadeIn"
+        onClick={() => setSelectedItem(null)}
+      />
+
       {/* Desktop: Side Panel - Fixed on right */}
       <div
-        className="hidden md:flex md:flex-col fixed top-0 right-0 transition-all duration-300 ease-in-out bg-white border-l border-gray-200 shadow-2xl z-50 w-1/3"
+        className="hidden md:flex md:flex-col fixed top-0 right-0 bg-white z-50 w-1/3 animate-slideInRight rounded-l-3xl shadow-[0_0_50px_rgba(0,0,0,0.15)]"
         style={{ height: '100vh' }}
       >
         {/* Header - Sticky */}
-        <div className="sticky top-0 z-20 p-6 border-b bg-primary-800 border-primary-900">
+        <div className="sticky top-0 z-20 p-8 border-b bg-primary-800 border-primary-900 rounded-tl-3xl">
           {/* Close button */}
           <button
             onClick={() => setSelectedItem(null)}
-            className="absolute top-4 right-4 p-2 bg-white hover:bg-gray-100 rounded-full transition-colors shadow-lg border border-gray-200"
+            className="absolute top-6 right-6 p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -84,7 +90,7 @@ export default function SidePanel() {
         </div>
 
         {/* Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-8">
           <p className="font-sans text-sm text-gray-700 leading-relaxed mb-6">
             {selectedItem.description}
           </p>
@@ -185,14 +191,14 @@ export default function SidePanel() {
 
       {/* Mobile: Bottom Sheet Panel */}
       <div
-        className="md:hidden flex flex-col fixed z-50 bg-white shadow-2xl transition-transform duration-300 ease-in-out bottom-0 left-0 right-0 h-1/2 rounded-t-2xl border-t border-gray-200 translate-y-0"
+        className="md:hidden flex flex-col fixed z-50 bg-white bottom-0 left-0 right-0 h-1/2 rounded-t-3xl shadow-[0_-10px_50px_rgba(0,0,0,0.15)] animate-slideInUp"
       >
         {/* Header - Sticky */}
-        <div className="sticky top-0 z-20 p-6 border-b bg-primary-800 border-primary-900 rounded-t-2xl">
+        <div className="sticky top-0 z-20 p-6 border-b bg-primary-800 border-primary-900 rounded-t-3xl">
           {/* Close button */}
           <button
             onClick={() => setSelectedItem(null)}
-            className="absolute top-4 right-4 p-2 bg-white hover:bg-gray-100 rounded-full transition-colors shadow-lg border border-gray-200"
+            className="absolute top-4 right-4 p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -239,7 +245,7 @@ export default function SidePanel() {
         </div>
 
         {/* Content - Scrollable */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-8">
           <p className="font-sans text-sm text-gray-700 leading-relaxed mb-6">
             {selectedItem.description}
           </p>
@@ -340,12 +346,46 @@ export default function SidePanel() {
 
       <style jsx global>{`
         .animate-fadeIn {
-          animation: fadeIn 0.2s ease-out;
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        .animate-slideInRight {
+          animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-slideInUp {
+          animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideInRight {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideInUp {
+          from {
+            transform: translateY(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
         }
       `}</style>
     </>
