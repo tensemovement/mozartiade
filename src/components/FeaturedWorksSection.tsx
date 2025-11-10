@@ -15,18 +15,7 @@ export default function FeaturedWorksSection() {
   // Get featured works from worksData
   const featuredWorks = worksData
     .filter(work => work.highlight)
-    .slice(0, 6)
-    .map(work => ({
-      id: work.catalogNumber || work.id,
-      title: work.title,
-      titleKr: work.title,
-      titleEn: work.titleEn,
-      year: work.year.toString(),
-      genre: work.genre || '',
-      description: work.description,
-      popular: work.highlight,
-      bgImage: work.image,
-    }));
+    .slice(0, 6);
 
   return (
     <section className="py-24 bg-gray-50">
@@ -56,45 +45,42 @@ export default function FeaturedWorksSection() {
 
           {/* Works Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredWorks.map((work, index) => {
-              // Find original work data for side panel
-              const originalWork = worksData.find(w => w.id === work.id.replace('K. ', '').toLowerCase());
-
-              return (
-                <div
-                  key={work.id}
-                  onClick={() => {
-                    if (originalWork) {
-                      setSelectedItem({ ...originalWork, type: 'work' as const });
-                    }
-                  }}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer hover:-translate-y-2 border border-gray-100"
-                  style={{
-                    transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
-                  }}
-                >
+            {featuredWorks.map((work, index) => (
+              <div
+                key={work.id}
+                onClick={() => {
+                  setSelectedItem({ ...work, type: 'work' as const });
+                }}
+                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer hover:-translate-y-2 border border-gray-100"
+                style={{
+                  transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
+                }}
+              >
                 {/* Header with K number */}
                 <div className="relative h-32 bg-gray-100 flex items-center justify-center overflow-hidden">
-                  {work.bgImage && (
+                  {work.image && (
                     <Image
-                      src={work.bgImage}
-                      alt={work.titleKr}
+                      src={work.image}
+                      alt={work.title}
                       fill
                       className="object-cover opacity-30"
                     />
                   )}
                   <div className="relative text-center z-10">
                     <div className="font-serif text-4xl font-bold text-gray-900 mb-1 drop-shadow-sm">
-                      {work.id}
+                      {work.catalogNumber}
                     </div>
                     <div className="text-sm font-sans text-gray-800 font-semibold drop-shadow-sm">
                       {work.year}
+                      {work.month && `.${String(work.month).padStart(2, '0')}`}
                     </div>
                   </div>
                   {/* Genre badge - Top Left */}
-                  <div className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold z-10">
-                    {work.genre}
-                  </div>
+                  {work.genre && (
+                    <div className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold z-10">
+                      {work.genre}
+                    </div>
+                  )}
                   {/* Fullscreen button - Top Right */}
                   <button
                     onClick={(e) => {
@@ -108,10 +94,10 @@ export default function FeaturedWorksSection() {
                     <MdFullscreen className="h-4 w-4" />
                   </button>
                   {/* Vote count badge */}
-                  {originalWork?.voteCount && (
+                  {work.voteCount && (
                     <div className="absolute bottom-4 left-4 px-3 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
                       <MdFavorite className="h-3 w-3" />
-                      {formatVoteCount(originalWork.voteCount)}
+                      {formatVoteCount(work.voteCount)}
                     </div>
                   )}
                 </div>
@@ -119,7 +105,7 @@ export default function FeaturedWorksSection() {
                 {/* Content */}
                 <div className="p-6 relative">
                   <h3 className="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors">
-                    {work.titleKr}
+                    {work.title}
                   </h3>
                   {work.titleEn && (
                     <p className="font-sans text-sm text-gray-500 mb-3 italic">
@@ -134,8 +120,7 @@ export default function FeaturedWorksSection() {
                 {/* Bottom accent */}
                 <div className="h-1 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </div>
-              );
-            })}
+            ))}
           </div>
 
           {/* CTA */}
