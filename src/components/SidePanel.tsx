@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { selectedItemState } from '@/store/atoms';
 import Image from 'next/image';
-import { MdFullscreen } from 'react-icons/md';
+import { MdFullscreen, MdClose, MdLocationOn, MdDescription } from 'react-icons/md';
 
 export default function SidePanel() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
@@ -71,9 +71,7 @@ export default function SidePanel() {
               onClick={() => setSelectedItem(null)}
               className="p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <MdClose className="h-5 w-5 text-gray-700" />
             </button>
           </div>
           <div className="flex items-start gap-2 mb-3 flex-wrap pr-24">
@@ -106,9 +104,7 @@ export default function SidePanel() {
             )}
             {selectedItem.location && (
               <div className="px-2.5 py-0.5 bg-white/20 rounded-full text-xs font-bold text-white flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                </svg>
+                <MdLocationOn className="h-3 w-3" />
                 {selectedItem.location}
               </div>
             )}
@@ -124,10 +120,7 @@ export default function SidePanel() {
           {selectedItem.compositionDetails && (
             <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-200">
               <h3 className="font-serif text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-secondary-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-                </svg>
+                <MdDescription className="h-4 w-4 text-secondary-600" />
                 작곡 배경
               </h3>
               <p className="font-sans text-xs text-gray-700 leading-relaxed">
@@ -243,9 +236,7 @@ export default function SidePanel() {
               onClick={() => setSelectedItem(null)}
               className="p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <MdClose className="h-5 w-5 text-gray-700" />
             </button>
           </div>
 
@@ -279,9 +270,7 @@ export default function SidePanel() {
             )}
             {selectedItem.location && (
               <div className="px-2.5 py-0.5 bg-white/20 rounded-full text-xs font-bold text-white flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                </svg>
+                <MdLocationOn className="h-3 w-3" />
                 {selectedItem.location}
               </div>
             )}
@@ -297,10 +286,7 @@ export default function SidePanel() {
           {selectedItem.compositionDetails && (
             <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-200">
               <h3 className="font-serif text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-secondary-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-                </svg>
+                <MdDescription className="h-4 w-4 text-secondary-600" />
                 작곡 배경
               </h3>
               <p className="font-sans text-xs text-gray-700 leading-relaxed">

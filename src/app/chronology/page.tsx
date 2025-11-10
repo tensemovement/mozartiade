@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import { chronologyData } from '@/data/chronology';
 import { selectedItemState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
-import { MdFavorite } from 'react-icons/md';
+import { MdFavorite, MdLocationOn } from 'react-icons/md';
 
 export default function ChronologyPage() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
@@ -307,9 +307,7 @@ export default function ChronologyPage() {
                                 {/* Location */}
                                 {item.location && (
                                   <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    </svg>
+                                    <MdLocationOn className="h-3 w-3" />
                                     {item.location}
                                   </div>
                                 )}
