@@ -52,16 +52,32 @@ export default function SidePanel() {
         <div className={`sticky top-0 z-20 p-8 border-b bg-primary-800 border-primary-900 transition-all duration-300 ${
           isScrolled ? 'rounded-tl-3xl' : ''
         }`}>
-          {/* Close button */}
-          <button
-            onClick={() => setSelectedItem(null)}
-            className="absolute top-6 right-6 p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-          <div className="flex items-start gap-2 mb-3 flex-wrap pr-12">
+          {/* Action buttons */}
+          <div className="absolute top-6 right-6 flex gap-2">
+            {/* Fullscreen button */}
+            <button
+              onClick={() => {
+                // TODO: 상세페이지로 전환
+                console.log('Navigate to detail page:', selectedItem.id);
+              }}
+              className="p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full transition-all hover:scale-110 shadow-lg"
+              title="전체 화면으로 보기"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              </svg>
+            </button>
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedItem(null)}
+              className="p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="flex items-start gap-2 mb-3 flex-wrap pr-24">
             <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-white/20 text-white border border-white/30">
               {getDateString(selectedItem)}
             </div>
@@ -72,11 +88,11 @@ export default function SidePanel() {
             )}
           </div>
 
-          <h2 className="font-serif text-2xl font-bold text-white mb-3 pr-12">
+          <h2 className="font-serif text-2xl font-bold text-white mb-3 pr-24">
             {selectedItem.title}
           </h2>
 
-          <div className="flex flex-wrap gap-2 pr-12">
+          <div className="flex flex-wrap gap-2 pr-24">
             <div className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
               selectedItem.type === 'work'
                 ? 'bg-secondary-600 text-white'
@@ -210,17 +226,33 @@ export default function SidePanel() {
         <div className={`sticky top-0 z-20 p-6 border-b bg-primary-800 border-primary-900 transition-all duration-300 ${
           isScrolled ? 'rounded-t-3xl' : ''
         }`}>
-          {/* Close button */}
-          <button
-            onClick={() => setSelectedItem(null)}
-            className="absolute top-4 right-4 p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          {/* Action buttons */}
+          <div className="absolute top-4 right-4 flex gap-2">
+            {/* Fullscreen button */}
+            <button
+              onClick={() => {
+                // TODO: 상세페이지로 전환
+                console.log('Navigate to detail page:', selectedItem.id);
+              }}
+              className="p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full transition-all hover:scale-110 shadow-lg"
+              title="전체 화면으로 보기"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              </svg>
+            </button>
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedItem(null)}
+              className="p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
 
-          <div className="flex items-start gap-2 mb-3 flex-wrap pr-12">
+          <div className="flex items-start gap-2 mb-3 flex-wrap pr-24">
             <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-white/20 text-white border border-white/30">
               {getDateString(selectedItem)}
             </div>
@@ -231,11 +263,11 @@ export default function SidePanel() {
             )}
           </div>
 
-          <h2 className="font-serif text-2xl font-bold text-white mb-3 pr-12">
+          <h2 className="font-serif text-2xl font-bold text-white mb-3 pr-24">
             {selectedItem.title}
           </h2>
 
-          <div className="flex flex-wrap gap-2 pr-12">
+          <div className="flex flex-wrap gap-2 pr-24">
             <div className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
               selectedItem.type === 'work'
                 ? 'bg-secondary-600 text-white'
