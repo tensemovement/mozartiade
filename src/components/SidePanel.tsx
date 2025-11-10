@@ -30,7 +30,8 @@ export default function SidePanel() {
     <>
       {/* Backdrop Overlay */}
       <div
-        className="fixed inset-0 z-40 animate-fadeIn"
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 animate-fadeIn"
+        onClick={() => setSelectedItem(null)}
       />
 
       {/* Desktop: Side Panel - Fixed on right */}
