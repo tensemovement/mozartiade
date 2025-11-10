@@ -1,11 +1,24 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { selectedItemState } from '@/store/atoms';
 import Image from 'next/image';
 
 export default function SidePanel() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial scroll position
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const getDateString = (item: any) => {
     if (item.day && item.month) {
@@ -30,11 +43,15 @@ export default function SidePanel() {
     <>
       {/* Desktop: Side Panel - Fixed on right */}
       <div
-        className="hidden md:flex md:flex-col fixed top-0 right-0 bg-white z-50 w-1/3 animate-slideInRight rounded-l-3xl shadow-[0_0_50px_rgba(0,0,0,0.15)]"
+        className={`hidden md:flex md:flex-col fixed top-0 right-0 bg-white z-50 w-1/3 animate-slideInRight shadow-[0_0_50px_rgba(0,0,0,0.15)] transition-all duration-300 ${
+          isScrolled ? 'rounded-l-3xl' : ''
+        }`}
         style={{ height: '100vh' }}
       >
         {/* Header - Sticky */}
-        <div className="sticky top-0 z-20 p-8 border-b bg-primary-800 border-primary-900 rounded-tl-3xl">
+        <div className={`sticky top-0 z-20 p-8 border-b bg-primary-800 border-primary-900 transition-all duration-300 ${
+          isScrolled ? 'rounded-tl-3xl' : ''
+        }`}>
           {/* Close button */}
           <button
             onClick={() => setSelectedItem(null)}
@@ -185,10 +202,14 @@ export default function SidePanel() {
 
       {/* Mobile: Bottom Sheet Panel */}
       <div
-        className="md:hidden flex flex-col fixed z-50 bg-white bottom-0 left-0 right-0 h-1/2 rounded-t-3xl shadow-[0_-10px_50px_rgba(0,0,0,0.15)] animate-slideInUp"
+        className={`md:hidden flex flex-col fixed z-50 bg-white bottom-0 left-0 right-0 h-1/2 shadow-[0_-10px_50px_rgba(0,0,0,0.15)] animate-slideInUp transition-all duration-300 ${
+          isScrolled ? 'rounded-t-3xl' : ''
+        }`}
       >
         {/* Header - Sticky */}
-        <div className="sticky top-0 z-20 p-6 border-b bg-primary-800 border-primary-900 rounded-t-3xl">
+        <div className={`sticky top-0 z-20 p-6 border-b bg-primary-800 border-primary-900 transition-all duration-300 ${
+          isScrolled ? 'rounded-t-3xl' : ''
+        }`}>
           {/* Close button */}
           <button
             onClick={() => setSelectedItem(null)}
