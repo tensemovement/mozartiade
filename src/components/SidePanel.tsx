@@ -28,11 +28,6 @@ export default function SidePanel() {
 
   return (
     <>
-      {/* Backdrop Overlay */}
-      <div
-        className="fixed inset-0 z-40 animate-fadeIn"
-      />
-
       {/* Desktop: Side Panel - Fixed on right */}
       <div
         className="hidden md:flex md:flex-col fixed top-0 right-0 bg-white z-50 w-1/3 animate-slideInRight rounded-l-3xl shadow-[0_0_50px_rgba(0,0,0,0.15)]"
