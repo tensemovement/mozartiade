@@ -36,6 +36,7 @@ export interface Work {
   compositionDetails?: string;
   highlight?: boolean;
   image?: string;
+  voteCount?: number; // 투표/좋아요 수
 }
 
 /**
@@ -60,6 +61,7 @@ export interface ChronologyItem {
   youtubeUrl?: string;
   sheetMusicUrl?: string;
   compositionDetails?: string;
+  voteCount?: number; // 투표/좋아요 수
 
   // UI
   highlight?: boolean;

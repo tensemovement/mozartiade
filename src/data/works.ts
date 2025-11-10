@@ -16,6 +16,7 @@ export const worksData: Work[] = [
     youtubeUrl: 'https://www.youtube.com/watch?v=example1',
     sheetMusicUrl: 'https://imslp.org/wiki/K.1a',
     compositionDetails: '모차르트가 5세 때 작곡한 최초의 작품으로, 아버지 레오폴트가 기록했습니다.',
+    voteCount: 342,
   },
   {
     id: 'symphony-no1',
@@ -29,6 +30,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Symphony_No.1',
     compositionDetails: '런던 체류 중 작곡된 이 작품은 J.C. 바흐의 영향을 받았습니다.',
     highlight: true,
+    voteCount: 1823,
   },
   {
     id: 'mitridate',
@@ -42,6 +44,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Mitridate',
     compositionDetails: '밀라노 스칼라 극장에서 초연되어 22회 연속 공연되었습니다.',
     highlight: true,
+    voteCount: 2456,
   },
   {
     id: 'violin-concerto-5',
@@ -55,6 +58,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Violin_Concerto_No.5',
     compositionDetails: '터키 음악의 요소를 담은 생동감 넘치는 작품입니다.',
     highlight: true,
+    voteCount: 3128,
   },
   {
     id: 'idomeneo',
@@ -68,6 +72,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Idomeneo',
     compositionDetails: '그리스 신화를 바탕으로 한 감동적인 오페라입니다.',
     highlight: true,
+    voteCount: 1567,
   },
   {
     id: 'abduction',
@@ -81,6 +86,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Die_Entf%C3%BChrung',
     compositionDetails: '터키를 배경으로 한 유쾌한 징슈필(singspiel)입니다.',
     highlight: true,
+    voteCount: 2891,
   },
   {
     id: 'piano-concerto-21',
@@ -95,6 +101,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Piano_Concerto_No.21',
     compositionDetails: '2악장 안단테는 특히 유명하며 영화 "엘비라 마디간"에 사용되었습니다.',
     highlight: true,
+    voteCount: 5234,
   },
   {
     id: 'figaro',
@@ -111,6 +118,7 @@ export const worksData: Work[] = [
     compositionDetails: '보마르셰의 희곡을 바탕으로 다 폰테가 대본을 쓴 불멸의 걸작입니다.',
     highlight: true,
     image: '/images/m/mozart007.jpg',
+    voteCount: 8542,
   },
   {
     id: 'don-giovanni',
@@ -126,6 +134,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Don_Giovanni',
     compositionDetails: '비극과 희극이 완벽하게 결합된 오페라의 걸작입니다.',
     highlight: true,
+    voteCount: 7123,
   },
   {
     id: 'jupiter',
@@ -141,6 +150,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Symphony_No.41',
     compositionDetails: '대위법의 극치를 보여주는 장엄한 피날레가 특징입니다.',
     highlight: true,
+    voteCount: 6789,
   },
   {
     id: 'cosi-fan-tutte',
@@ -156,6 +166,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Cos%C3%AC_fan_tutte',
     compositionDetails: '사랑의 충실함을 시험하는 풍자적인 오페라입니다.',
     highlight: true,
+    voteCount: 4321,
   },
   {
     id: 'magic-flute',
@@ -171,6 +182,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Die_Zauberfl%C3%B6te',
     compositionDetails: '독일어 징슈필로 프리메이슨의 상징과 계몽사상이 담긴 작품입니다.',
     highlight: true,
+    voteCount: 9876,
   },
   {
     id: 'clarinet-concerto',
@@ -185,6 +197,7 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Clarinet_Concerto',
     compositionDetails: '클라리넷의 아름다운 음색을 완벽하게 살린 걸작입니다.',
     highlight: true,
+    voteCount: 4567,
   },
   {
     id: 'requiem',
@@ -199,5 +212,6 @@ export const worksData: Work[] = [
     sheetMusicUrl: 'https://imslp.org/wiki/Requiem',
     compositionDetails: '모차르트가 완성하지 못하고 제자 쥐스마이어가 완성했습니다.',
     highlight: true,
+    voteCount: 12453,
   },
 ];

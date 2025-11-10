@@ -7,6 +7,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { chronologyData } from '@/data/chronology';
 import { selectedItemState } from '@/store/atoms';
+import { formatVoteCount } from '@/utils/format';
 
 export default function ChronologyPage() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
@@ -268,15 +269,23 @@ export default function ChronologyPage() {
                               {/* Content */}
                               <div className={`flex-1 p-4 ${item.type === 'work' ? 'pl-5' : ''}`}>
                                 {/* Header */}
-                                <div className="flex items-center gap-2 mb-2">
+                                <div className="flex items-center gap-2 mb-2 flex-wrap">
                                   {item.catalogNumber && (
                                     <span className="px-2 py-0.5 bg-accent-100 text-accent-800 border border-accent-200 rounded text-xs font-mono">
                                       {item.catalogNumber}
                                     </span>
                                   )}
-                                  {item.genre && (
-                                    <span className="px-2 py-0.5 text-gray-500 text-xs">
+                                  {item.type === 'work' && item.genre && (
+                                    <span className="px-2 py-0.5 bg-secondary-100 text-secondary-800 border border-secondary-200 rounded text-xs font-sans font-medium">
                                       {item.genre}
+                                    </span>
+                                  )}
+                                  {item.type === 'work' && item.voteCount && (
+                                    <span className="px-2 py-0.5 bg-rose-100 text-rose-800 border border-rose-200 rounded text-xs font-sans font-medium flex items-center gap-1">
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                      </svg>
+                                      {formatVoteCount(item.voteCount)}
                                     </span>
                                   )}
                                 </div>
