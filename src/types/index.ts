@@ -19,6 +19,27 @@ export interface ApiResponse<T = unknown> {
 export type LoadingState = "idle" | "loading" | "success" | "error";
 
 /**
+ * Work (작품) types
+ */
+export interface Work {
+  id: string;
+  year: number;
+  month?: number;
+  day?: number;
+  title: string;
+  titleEn?: string; // English title
+  description: string;
+  catalogNumber?: string; // K. number
+  genre?: string;
+  youtubeUrl?: string;
+  sheetMusicUrl?: string;
+  compositionDetails?: string;
+  highlight?: boolean;
+  image?: string;
+  voteCount?: number; // 투표/좋아요 수
+}
+
+/**
  * Chronology & Timeline types
  */
 export type ChronologyItemType = 'life' | 'work';
@@ -30,6 +51,7 @@ export interface ChronologyItem {
   month?: number;
   day?: number;
   title: string;
+  titleEn?: string; // English title for works
   description: string;
   location?: string;
 
@@ -39,6 +61,7 @@ export interface ChronologyItem {
   youtubeUrl?: string;
   sheetMusicUrl?: string;
   compositionDetails?: string;
+  voteCount?: number; // 투표/좋아요 수
 
   // UI
   highlight?: boolean;

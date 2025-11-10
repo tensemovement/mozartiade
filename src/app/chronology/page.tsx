@@ -7,6 +7,8 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { chronologyData } from '@/data/chronology';
 import { selectedItemState } from '@/store/atoms';
+import { formatVoteCount } from '@/utils/format';
+import { MdFavorite, MdLocationOn } from 'react-icons/md';
 
 export default function ChronologyPage() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
@@ -268,15 +270,21 @@ export default function ChronologyPage() {
                               {/* Content */}
                               <div className={`flex-1 p-4 ${item.type === 'work' ? 'pl-5' : ''}`}>
                                 {/* Header */}
-                                <div className="flex items-center gap-2 mb-2">
+                                <div className="flex items-center gap-2 mb-2 flex-wrap">
                                   {item.catalogNumber && (
                                     <span className="px-2 py-0.5 bg-accent-100 text-accent-800 border border-accent-200 rounded text-xs font-mono">
                                       {item.catalogNumber}
                                     </span>
                                   )}
-                                  {item.genre && (
-                                    <span className="px-2 py-0.5 text-gray-500 text-xs">
+                                  {item.type === 'work' && item.genre && (
+                                    <span className="px-2 py-0.5 bg-secondary-100 text-secondary-800 border border-secondary-200 rounded text-xs font-sans font-medium">
                                       {item.genre}
+                                    </span>
+                                  )}
+                                  {item.type === 'work' && item.voteCount && (
+                                    <span className="px-2 py-0.5 bg-rose-100 text-rose-800 border border-rose-200 rounded text-xs font-sans font-medium flex items-center gap-1">
+                                      <MdFavorite className="h-3 w-3" />
+                                      {formatVoteCount(item.voteCount)}
                                     </span>
                                   )}
                                 </div>
@@ -285,6 +293,11 @@ export default function ChronologyPage() {
                                 <h3 className="font-serif text-lg font-bold text-gray-900 mb-1">
                                   {item.title}
                                 </h3>
+                                {item.titleEn && (
+                                  <p className="font-sans text-xs text-gray-500 italic mb-1">
+                                    {item.titleEn}
+                                  </p>
+                                )}
 
                                 {/* Description */}
                                 <p className="font-sans text-xs text-gray-600 leading-relaxed line-clamp-2">
@@ -294,9 +307,7 @@ export default function ChronologyPage() {
                                 {/* Location */}
                                 {item.location && (
                                   <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    </svg>
+                                    <MdLocationOn className="h-3 w-3" />
                                     {item.location}
                                   </div>
                                 )}

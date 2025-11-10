@@ -386,6 +386,43 @@ export function useDebounce<T>(value: T, delay: number): T {
 - Implement CSRF protection
 - Use Prisma for SQL injection prevention
 
+### 아이콘 사용
+```
+RULE: Use react-icons library for all icons
+
+✅ CORRECT:
+import { MdFullscreen, MdFavorite } from 'react-icons/md'
+
+<button>
+  <MdFullscreen className="h-5 w-5" />
+</button>
+
+❌ INCORRECT:
+<button>
+  <svg xmlns="http://www.w3.org/2000/svg" ...>
+    <path d="..." />
+  </svg>
+</button>
+
+🎯 BENEFITS:
+- Consistency across the codebase
+- Better maintainability
+- Smaller bundle size with tree-shaking
+- Wide variety of icon sets available
+- Type-safe with TypeScript
+
+📝 RECOMMENDED ICON SETS:
+- Material Design: react-icons/md (MdXxx)
+- Feather Icons: react-icons/fi (FiXxx)
+- Heroicons: react-icons/hi (HiXxx)
+- Font Awesome: react-icons/fa (FaXxx)
+
+💡 USAGE:
+- Always use className for sizing (h-4 w-4, h-5 w-5)
+- Use same icon set consistently within a feature
+- Prefer Material Design (md) for primary UI elements
+```
+
 ---
 
 ## Quick Reference
