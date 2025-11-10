@@ -3,6 +3,7 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { MdChevronRight } from 'react-icons/md';
 
 export default function TimelineSection() {
   const { ref, isVisible } = useScrollAnimation();
@@ -179,20 +180,7 @@ export default function TimelineSection() {
               className="inline-flex items-center px-8 py-4 bg-primary-900 text-white rounded-xl font-sans text-lg font-semibold hover:bg-primary-800 transition-all duration-300 shadow-lg hover:shadow-xl group"
             >
               전체 연대기 탐색
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              <MdChevronRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>

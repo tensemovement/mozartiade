@@ -1,6 +1,7 @@
 'use client';
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { MdChevronRight } from 'react-icons/md';
 
 export default function EventsNewsSection() {
   const { ref, isVisible } = useScrollAnimation();
@@ -92,8 +93,9 @@ export default function EventsNewsSection() {
                 <h3 className="font-serif text-3xl font-bold text-gray-900">
                   이벤트
                 </h3>
-                <button className="font-sans text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors">
-                  전체보기 →
+                <button className="font-sans text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors inline-flex items-center gap-1">
+                  전체보기
+                  <MdChevronRight className="h-4 w-4" />
                 </button>
               </div>
 
@@ -176,8 +178,9 @@ export default function EventsNewsSection() {
                 <h3 className="font-serif text-3xl font-bold text-gray-900">
                   최신 소식
                 </h3>
-                <button className="font-sans text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors">
-                  전체보기 →
+                <button className="font-sans text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors inline-flex items-center gap-1">
+                  전체보기
+                  <MdChevronRight className="h-4 w-4" />
                 </button>
               </div>
 
