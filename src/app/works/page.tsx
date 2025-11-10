@@ -229,7 +229,7 @@ export default function WorksPage() {
                   onClick={() => setSelectedItem({ ...work, type: 'work' as const })}
                 >
                   {/* Header with K number */}
-                  <div className="relative h-28 bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center overflow-hidden">
+                  <div className="relative h-28 bg-gray-100 flex items-center justify-center overflow-hidden">
                     {work.image && (
                       <Image
                         src={work.image}
@@ -261,23 +261,8 @@ export default function WorksPage() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5 relative">
-                    {/* Fullscreen Icon */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // TODO: 상세페이지로 전환
-                        console.log('Navigate to detail page:', work.id);
-                      }}
-                      className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-primary-100 rounded-lg transition-all hover:scale-110 shadow-sm border border-gray-200 z-10"
-                      title="전체화면으로 보기"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                      </svg>
-                    </button>
-
-                    <h3 className="font-serif text-lg font-bold text-gray-900 mb-1 group-hover:text-primary-700 transition-colors line-clamp-2 pr-10">
+                  <div className="p-5 pb-14 relative">
+                    <h3 className="font-serif text-lg font-bold text-gray-900 mb-1 group-hover:text-primary-700 transition-colors line-clamp-2">
                       {work.title}
                     </h3>
                     {work.titleEn && (
@@ -288,6 +273,21 @@ export default function WorksPage() {
                     <p className="font-sans text-sm text-gray-600 line-clamp-3">
                       {work.description}
                     </p>
+
+                    {/* Navigate Button - Bottom Right */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // TODO: 상세페이지로 전환
+                        console.log('Navigate to detail page:', work.id);
+                      }}
+                      className="absolute bottom-3 right-3 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md"
+                      title="상세 페이지로 이동"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </button>
                   </div>
 
                   {/* Bottom accent */}
