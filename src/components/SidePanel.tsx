@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { selectedItemState } from '@/store/atoms';
 import Image from 'next/image';
-import { MdFullscreen, MdClose, MdLocationOn, MdDescription, MdArticle, MdOpenInNew } from 'react-icons/md';
+import { MdFullscreen, MdClose, MdLocationOn, MdDescription, MdArticle, MdOpenInNew, MdOndemandVideo } from 'react-icons/md';
 
 export default function SidePanel() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
@@ -151,9 +151,7 @@ export default function SidePanel() {
                   <div className="rounded-lg overflow-hidden bg-gray-100 border border-gray-300">
                     <div className="aspect-video bg-gray-200 flex items-center justify-center">
                       <div className="text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-400 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-                        </svg>
+                        <MdOndemandVideo className="h-10 w-10 text-gray-400 mx-auto mb-2" />
                         <p className="text-gray-600 text-xs font-sans">
                           유튜브 연동 준비 중
                         </p>
@@ -313,9 +311,7 @@ export default function SidePanel() {
                   <div className="rounded-lg overflow-hidden bg-gray-100 border border-gray-300">
                     <div className="aspect-video bg-gray-200 flex items-center justify-center">
                       <div className="text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-400 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-                        </svg>
+                        <MdOndemandVideo className="h-10 w-10 text-gray-400 mx-auto mb-2" />
                         <p className="text-gray-600 text-xs font-sans">
                           유튜브 연동 준비 중
                         </p>
