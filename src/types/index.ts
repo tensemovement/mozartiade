@@ -30,6 +30,7 @@ export interface ChronologyItem {
   month?: number;
   day?: number;
   title: string;
+  titleEn?: string; // English title for works
   description: string;
   location?: string;
 

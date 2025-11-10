@@ -265,9 +265,14 @@ export default function WorksPage() {
 
                   {/* Content */}
                   <div className="p-5">
-                    <h3 className="font-serif text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors line-clamp-2">
+                    <h3 className="font-serif text-lg font-bold text-gray-900 mb-1 group-hover:text-primary-700 transition-colors line-clamp-2">
                       {work.title}
                     </h3>
+                    {work.titleEn && (
+                      <p className="font-sans text-sm text-gray-500 italic mb-3">
+                        {work.titleEn}
+                      </p>
+                    )}
                     <p className="font-sans text-sm text-gray-600 mb-4 line-clamp-2">
                       {work.description}
                     </p>
