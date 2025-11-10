@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { chronologyData } from '@/data/chronology';
+import { worksData } from '@/data/works';
 import { selectedItemState } from '@/store/atoms';
 
 export default function WorksPage() {
@@ -15,11 +15,8 @@ export default function WorksPage() {
   const [selectedInstrument, setSelectedInstrument] = useState<string>('all');
   const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title'>('year-desc');
 
-  // Extract works only from chronology data
-  const allWorks = useMemo(() =>
-    chronologyData.filter(item => item.type === 'work'),
-    []
-  );
+  // Use works data
+  const allWorks = useMemo(() => worksData, []);
 
   // Extract unique genres and instruments
   const genres = useMemo(() => {

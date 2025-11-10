@@ -285,6 +285,11 @@ export default function ChronologyPage() {
                                 <h3 className="font-serif text-lg font-bold text-gray-900 mb-1">
                                   {item.title}
                                 </h3>
+                                {item.titleEn && (
+                                  <p className="font-sans text-xs text-gray-500 italic mb-1">
+                                    {item.titleEn}
+                                  </p>
+                                )}
 
                                 {/* Description */}
                                 <p className="font-sans text-xs text-gray-600 leading-relaxed line-clamp-2">

@@ -1,70 +1,27 @@
 'use client';
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { worksData } from '@/data/works';
 import Image from 'next/image';
 
 export default function FeaturedWorksSection() {
   const { ref, isVisible } = useScrollAnimation();
 
-  const featuredWorks = [
-    {
-      id: 'K626',
-      title: 'Requiem in D minor',
-      titleKr: '레퀴엠 D단조',
-      year: '1791',
-      genre: '성악',
-      description: '미완성의 마지막 걸작',
-      popular: true,
-      bgImage: '/images/m/mozart001.jpg',
-    },
-    {
-      id: 'K525',
-      title: 'Eine kleine Nachtmusik',
-      titleKr: '아이네 클라이네 나흐트무지크',
-      year: '1787',
-      genre: '세레나데',
-      description: '가장 사랑받는 세레나데',
-      popular: true,
-      bgImage: '/images/m/mozart002.jpg',
-    },
-    {
-      id: 'K492',
-      title: 'Le nozze di Figaro',
-      titleKr: '피가로의 결혼',
-      year: '1786',
-      genre: '오페라',
-      description: '오페라 부파의 정점',
-      popular: true,
-      bgImage: '/images/m/mozart003.jpg',
-    },
-    {
-      id: 'K551',
-      title: 'Symphony No. 41 "Jupiter"',
-      titleKr: '교향곡 41번 "주피터"',
-      year: '1788',
-      genre: '교향곡',
-      description: '교향곡의 완성',
-      popular: false,
-    },
-    {
-      id: 'K466',
-      title: 'Piano Concerto No. 20',
-      titleKr: '피아노 협주곡 20번',
-      year: '1785',
-      genre: '협주곡',
-      description: '극적인 단조 협주곡',
-      popular: false,
-    },
-    {
-      id: 'K620',
-      title: 'Die Zauberflöte',
-      titleKr: '마술피리',
-      year: '1791',
-      genre: '오페라',
-      description: '환상적인 징슈필',
-      popular: true,
-    },
-  ];
+  // Get featured works from worksData
+  const featuredWorks = worksData
+    .filter(work => work.highlight)
+    .slice(0, 6)
+    .map(work => ({
+      id: work.catalogNumber || work.id,
+      title: work.title,
+      titleKr: work.title,
+      titleEn: work.titleEn,
+      year: work.year.toString(),
+      genre: work.genre || '',
+      description: work.description,
+      popular: work.highlight,
+      bgImage: work.image,
+    }));
 
   return (
     <section className="py-24 bg-gray-50">
@@ -136,10 +93,12 @@ export default function FeaturedWorksSection() {
                   <h3 className="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors">
                     {work.titleKr}
                   </h3>
-                  <p className="font-sans text-sm text-gray-600 mb-3 italic">
-                    {work.title}
-                  </p>
-                  <p className="font-sans text-sm text-gray-500 mb-6">
+                  {work.titleEn && (
+                    <p className="font-sans text-sm text-gray-500 mb-3 italic">
+                      {work.titleEn}
+                    </p>
+                  )}
+                  <p className="font-sans text-sm text-gray-600 mb-6">
                     {work.description}
                   </p>
 
