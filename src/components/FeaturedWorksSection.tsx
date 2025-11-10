@@ -91,10 +91,22 @@ export default function FeaturedWorksSection() {
                       {work.year}
                     </div>
                   </div>
-                  {/* Genre badge */}
-                  <div className="absolute top-4 right-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold z-10">
+                  {/* Genre badge - Top Left */}
+                  <div className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold z-10">
                     {work.genre}
                   </div>
+                  {/* Fullscreen button - Top Right */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // TODO: 상세페이지로 전환
+                      console.log('Navigate to detail page:', work.id);
+                    }}
+                    className="absolute top-4 right-4 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md z-10"
+                    title="전체 화면으로 보기"
+                  >
+                    <MdFullscreen className="h-4 w-4" />
+                  </button>
                   {/* Vote count badge */}
                   {originalWork?.voteCount && (
                     <div className="absolute bottom-4 left-4 px-3 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
@@ -105,7 +117,7 @@ export default function FeaturedWorksSection() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6 pb-14 relative">
+                <div className="p-6 relative">
                   <h3 className="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors">
                     {work.titleKr}
                   </h3>
@@ -117,19 +129,6 @@ export default function FeaturedWorksSection() {
                   <p className="font-sans text-sm text-gray-600 line-clamp-3">
                     {work.description}
                   </p>
-
-                  {/* Navigate Button - Bottom Right */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // TODO: 상세페이지로 전환
-                      console.log('Navigate to detail page:', work.id);
-                    }}
-                    className="absolute bottom-3 right-3 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md"
-                    title="전체 화면으로 보기"
-                  >
-                    <MdFullscreen className="h-4 w-4" />
-                  </button>
                 </div>
 
                 {/* Bottom accent */}

@@ -215,20 +215,32 @@ export default function WorksPage() {
                       />
                     )}
                     <div className="relative text-center z-10">
-                      <div className="font-mono text-3xl font-bold text-primary-900 mb-1 drop-shadow-sm">
+                      <div className="font-serif text-4xl font-bold text-gray-900 mb-1 drop-shadow-sm">
                         {work.catalogNumber}
                       </div>
-                      <div className="text-xs font-sans text-primary-800 font-semibold drop-shadow-sm">
+                      <div className="text-sm font-sans text-gray-800 font-semibold drop-shadow-sm">
                         {work.year}
                         {work.month && `.${String(work.month).padStart(2, '0')}`}
                       </div>
                     </div>
-                    {/* Genre badge */}
+                    {/* Genre badge - Top Left */}
                     {work.genre && (
-                      <div className="absolute top-3 right-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold z-10 shadow-sm">
+                      <div className="absolute top-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold z-10 shadow-sm">
                         {work.genre}
                       </div>
                     )}
+                    {/* Fullscreen button - Top Right */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // TODO: 상세페이지로 전환
+                        console.log('Navigate to detail page:', work.id);
+                      }}
+                      className="absolute top-3 right-3 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md z-10"
+                      title="전체 화면으로 보기"
+                    >
+                      <MdFullscreen className="h-4 w-4" />
+                    </button>
                     {/* Vote count badge */}
                     {work.voteCount && (
                       <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
@@ -239,7 +251,7 @@ export default function WorksPage() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5 pb-14 relative">
+                  <div className="p-5 relative">
                     <h3 className="font-serif text-lg font-bold text-gray-900 mb-1 group-hover:text-primary-700 transition-colors line-clamp-2">
                       {work.title}
                     </h3>
@@ -251,19 +263,6 @@ export default function WorksPage() {
                     <p className="font-sans text-sm text-gray-600 line-clamp-3">
                       {work.description}
                     </p>
-
-                    {/* Navigate Button - Bottom Right */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // TODO: 상세페이지로 전환
-                        console.log('Navigate to detail page:', work.id);
-                      }}
-                      className="absolute bottom-3 right-3 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md"
-                      title="전체 화면으로 보기"
-                    >
-                      <MdFullscreen className="h-4 w-4" />
-                    </button>
                   </div>
 
                   {/* Bottom accent */}
