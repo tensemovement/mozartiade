@@ -110,7 +110,7 @@ export default function EventsNewsSection() {
                 {events.map((event, index) => (
                   <div
                     key={event.id}
-                    className={`group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 flex flex-col h-[340px] ${
+                    className={`group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-200 ease-out cursor-pointer hover:-translate-y-2 flex flex-col h-[340px] will-change-transform ${
                       event.featured
                         ? 'border-2 border-primary-300'
                         : 'border border-gray-200'
@@ -181,7 +181,7 @@ export default function EventsNewsSection() {
                 {news.map((item, index) => (
                   <div
                     key={item.id}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 border border-gray-200 flex flex-col h-[340px]"
+                    className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-200 ease-out cursor-pointer hover:-translate-y-2 border border-gray-200 flex flex-col h-[340px] will-change-transform"
                     style={{
                       transitionDelay: isVisible
                         ? `${(index + 3) * 100}ms`

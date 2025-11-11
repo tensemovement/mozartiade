@@ -65,7 +65,7 @@ export default function AdBannerSection() {
           {/* Services Grid - Banner Style with Images */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Service 1 - Instruments */}
-            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 h-64">
+            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 ease-out cursor-pointer hover:-translate-y-2 h-64 will-change-transform">
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
@@ -99,7 +99,7 @@ export default function AdBannerSection() {
             </div>
 
             {/* Service 2 - Lessons */}
-            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 h-64">
+            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 ease-out cursor-pointer hover:-translate-y-2 h-64 will-change-transform">
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
@@ -133,7 +133,7 @@ export default function AdBannerSection() {
             </div>
 
             {/* Service 3 - Concerts */}
-            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 h-64">
+            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 ease-out cursor-pointer hover:-translate-y-2 h-64 will-change-transform">
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image

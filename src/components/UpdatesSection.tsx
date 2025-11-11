@@ -103,7 +103,7 @@ export default function UpdatesSection() {
                   <Link
                     key={update.id}
                     href={update.link}
-                    className={`group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer hover:-translate-y-4 hover:scale-105 ${offsetClasses[index]}`}
+                    className={`group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 ease-out cursor-pointer hover:-translate-y-4 hover:scale-105 will-change-transform ${offsetClasses[index]}`}
                     style={{
                       transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
                     }}

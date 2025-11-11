@@ -71,7 +71,7 @@ export default function UnifiedWorksSection() {
             {categories.map((category, index) => (
               <div
                 key={category.id}
-                className="group relative bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200 hover:border-primary-300 hover:-translate-y-2 overflow-hidden"
+                className="group relative bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-all duration-200 ease-out cursor-pointer border border-gray-200 hover:border-primary-300 hover:-translate-y-2 overflow-hidden will-change-transform"
                 style={{
                   transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
                 }}
@@ -114,7 +114,7 @@ export default function UnifiedWorksSection() {
                 onClick={() => {
                   setSelectedItem({ ...work, type: 'work' as const });
                 }}
-                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 cursor-pointer hover:-translate-y-2 border border-gray-100"
+                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-200 ease-out cursor-pointer hover:-translate-y-2 border border-gray-100 will-change-transform"
                 style={{
                   transitionDelay: isVisible ? `${(index + 4) * 100}ms` : '0ms',
                 }}
