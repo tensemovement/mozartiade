@@ -103,9 +103,11 @@ export default function UpdatesSection() {
                   <Link
                     key={update.id}
                     href={update.link}
-                    className={`group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200 ease-out cursor-pointer hover:-translate-y-4 hover:scale-105 will-change-transform ${offsetClasses[index]}`}
+                    className={`group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-150 ease-out cursor-pointer hover:-translate-y-4 hover:scale-105 will-change-transform transform-gpu backface-hidden ${offsetClasses[index]}`}
                     style={{
                       transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
                     }}
                   >
                     {/* Background Image */}
@@ -114,7 +116,7 @@ export default function UpdatesSection() {
                         src={update.image}
                         alt={update.title}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
                       />
 
                       {/* Gradient Overlay */}
