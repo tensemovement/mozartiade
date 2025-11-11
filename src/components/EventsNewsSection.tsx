@@ -115,9 +115,6 @@ export default function EventsNewsSection() {
                         ? 'border-2 border-primary-300'
                         : 'border border-gray-200'
                     }`}
-                    style={{
-                      transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
-                    }}
                   >
                     {/* Image Header */}
                     <div className="relative h-44 overflow-hidden flex-shrink-0">
@@ -182,11 +179,6 @@ export default function EventsNewsSection() {
                   <div
                     key={item.id}
                     className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-200 flex flex-col h-[340px]"
-                    style={{
-                      transitionDelay: isVisible
-                        ? `${(index + 3) * 100}ms`
-                        : '0ms',
-                    }}
                   >
                     {/* Image Header */}
                     <div className="relative h-44 overflow-hidden flex-shrink-0">

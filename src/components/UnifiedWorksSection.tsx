@@ -72,9 +72,6 @@ export default function UnifiedWorksSection() {
               <div
                 key={category.id}
                 className="group relative bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200 hover:border-primary-300 hover:-translate-y-1 overflow-hidden"
-                style={{
-                  transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
-                }}
               >
                 <div className="text-sm font-sans font-semibold text-primary-600 mb-3">
                   {category.id}
@@ -115,9 +112,6 @@ export default function UnifiedWorksSection() {
                   setSelectedItem({ ...work, type: 'work' as const });
                 }}
                 className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-100"
-                style={{
-                  transitionDelay: isVisible ? `${(index + 4) * 100}ms` : '0ms',
-                }}
               >
                 {/* Header with K number */}
                 <div className="relative h-32 bg-gray-100 flex items-center justify-center overflow-hidden">
