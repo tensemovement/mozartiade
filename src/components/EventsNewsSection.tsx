@@ -110,7 +110,7 @@ export default function EventsNewsSection() {
                 {events.map((event, index) => (
                   <div
                     key={event.id}
-                    className={`group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 ${
+                    className={`group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 flex flex-col h-[340px] ${
                       event.featured
                         ? 'border-2 border-primary-300'
                         : 'border border-gray-200'
@@ -120,7 +120,7 @@ export default function EventsNewsSection() {
                     }}
                   >
                     {/* Image Header */}
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="relative h-44 overflow-hidden flex-shrink-0">
                       <Image
                         src={event.image}
                         alt={event.title}
@@ -138,25 +138,25 @@ export default function EventsNewsSection() {
 
                       {/* Title on Image */}
                       <div className="absolute bottom-4 left-4 right-4">
-                        <h4 className="font-serif text-xl md:text-2xl font-bold text-white drop-shadow-lg">
+                        <h4 className="font-serif text-xl md:text-2xl font-bold text-white drop-shadow-lg line-clamp-2">
                           {event.title}
                         </h4>
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="p-6">
-                      <p className="font-sans text-sm text-gray-600 mb-4">
+                    <div className="p-6 flex-1 flex flex-col justify-between">
+                      <p className="font-sans text-sm text-gray-600 mb-4 line-clamp-2">
                         {event.description}
                       </p>
                       <div className="flex items-center gap-4 text-sm">
                         <span className="flex items-center text-gray-600">
-                          <MdCalendarToday className="h-4 w-4 mr-1" />
-                          {event.date}
+                          <MdCalendarToday className="h-4 w-4 mr-1 flex-shrink-0" />
+                          <span className="truncate">{event.date}</span>
                         </span>
                         <span className="flex items-center text-gray-600">
-                          <MdLocationOn className="h-4 w-4 mr-1" />
-                          {event.location}
+                          <MdLocationOn className="h-4 w-4 mr-1 flex-shrink-0" />
+                          <span className="truncate">{event.location}</span>
                         </span>
                       </div>
                     </div>
@@ -181,7 +181,7 @@ export default function EventsNewsSection() {
                 {news.map((item, index) => (
                   <div
                     key={item.id}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 border border-gray-200"
+                    className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 border border-gray-200 flex flex-col h-[340px]"
                     style={{
                       transitionDelay: isVisible
                         ? `${(index + 3) * 100}ms`
@@ -189,7 +189,7 @@ export default function EventsNewsSection() {
                     }}
                   >
                     {/* Image Header */}
-                    <div className="relative h-40 overflow-hidden">
+                    <div className="relative h-44 overflow-hidden flex-shrink-0">
                       <Image
                         src={item.image}
                         alt={item.title}
@@ -210,11 +210,11 @@ export default function EventsNewsSection() {
                     </div>
 
                     {/* Content */}
-                    <div className="p-6">
-                      <h4 className="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors">
+                    <div className="p-6 flex-1 flex flex-col">
+                      <h4 className="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors line-clamp-2">
                         {item.title}
                       </h4>
-                      <p className="font-sans text-sm text-gray-600">
+                      <p className="font-sans text-sm text-gray-600 line-clamp-3">
                         {item.excerpt}
                       </p>
                     </div>
