@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
 import { worksData } from '@/data/works';
 import { selectedItemState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
-import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied } from 'react-icons/md';
+import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList } from 'react-icons/md';
 
 export default function WorksPage() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
@@ -17,6 +17,7 @@ export default function WorksPage() {
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
   const [selectedInstrument, setSelectedInstrument] = useState<string>('all');
   const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title'>('year-desc');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   // Use works data
   const allWorks = useMemo(() => worksData, []);
@@ -180,6 +181,32 @@ export default function WorksPage() {
                 <option value="title">제목순</option>
               </select>
             </div>
+
+            {/* View Mode Toggle */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-lg transition-all ${
+                  viewMode === 'grid'
+                    ? 'bg-primary-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+                title="카드 뷰"
+              >
+                <MdGridView className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-lg transition-all ${
+                  viewMode === 'list'
+                    ? 'bg-primary-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+                title="리스트 뷰"
+              >
+                <MdViewList className="h-5 w-5" />
+              </button>
+            </div>
           </div>
 
           {/* Results count */}
@@ -189,7 +216,7 @@ export default function WorksPage() {
         </div>
       </div>
 
-      {/* Works Grid Section */}
+      {/* Works Grid/List Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           {filteredWorks.length === 0 ? (
@@ -197,7 +224,8 @@ export default function WorksPage() {
               <MdSentimentDissatisfied className="h-16 w-16 mx-auto text-gray-400 mb-4" />
               <p className="text-gray-500 text-lg">검색 결과가 없습니다</p>
             </div>
-          ) : (
+          ) : viewMode === 'grid' ? (
+            /* Grid View */
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredWorks.map((work) => (
                 <div
@@ -267,6 +295,72 @@ export default function WorksPage() {
 
                   {/* Bottom accent */}
                   <div className="h-1 bg-gradient-to-r from-primary-600 to-secondary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* List View */
+            <div className="space-y-3">
+              {filteredWorks.map((work) => (
+                <div
+                  key={work.id}
+                  className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-gray-100 hover:border-primary-300"
+                  onClick={() => setSelectedItem({ ...work, type: 'work' as const })}
+                >
+                  <div className="flex items-center gap-4 p-4">
+                    {/* Left: K Number & Year */}
+                    <div className="flex-shrink-0 text-center w-24">
+                      <div className="font-serif text-xl font-bold text-gray-900 group-hover:text-primary-700 transition-colors">
+                        {work.catalogNumber}
+                      </div>
+                      <div className="text-xs font-sans text-gray-500 mt-0.5">
+                        {work.year}
+                        {work.month && `.${String(work.month).padStart(2, '0')}`}
+                      </div>
+                    </div>
+
+                    {/* Center: Title & Genre */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-serif text-base font-bold text-gray-900 group-hover:text-primary-700 transition-colors truncate">
+                          {work.title}
+                        </h3>
+                        {work.genre && (
+                          <span className="flex-shrink-0 px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs font-semibold">
+                            {work.genre}
+                          </span>
+                        )}
+                      </div>
+                      {work.titleEn && (
+                        <p className="font-sans text-sm text-gray-500 italic truncate">
+                          {work.titleEn}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Right: Actions & Vote Count */}
+                    <div className="flex-shrink-0 flex items-center gap-3">
+                      {work.voteCount && (
+                        <div className="flex items-center gap-1 px-2.5 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-semibold">
+                          <MdFavorite className="h-3 w-3" />
+                          {formatVoteCount(work.voteCount)}
+                        </div>
+                      )}
+                      <Link
+                        href={`/works/${work.id}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        className="p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-sm"
+                        title="작품 상세 보기"
+                      >
+                        <MdFullscreen className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Bottom accent */}
+                  <div className="h-0.5 bg-gradient-to-r from-primary-600 to-secondary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></div>
                 </div>
               ))}
             </div>
