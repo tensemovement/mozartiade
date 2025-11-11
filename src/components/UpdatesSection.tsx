@@ -103,7 +103,7 @@ export default function UpdatesSection() {
                   <Link
                     key={update.id}
                     href={update.link}
-                    className={`group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-1 ${offsetClasses[index]}`}
+                    className={`group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 cursor-pointer hover:-translate-y-1 ${offsetClasses[index]}`}
                   >
                     {/* Background Image */}
                     <div className="relative h-80 overflow-hidden">
