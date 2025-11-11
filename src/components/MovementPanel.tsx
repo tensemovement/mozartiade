@@ -39,7 +39,7 @@ export default function MovementPanel() {
     };
   }, [movement, setMovement]);
 
-  // 패널이 열릴 때 다른 패널 닫기
+  // 악장패널이 열릴 때 작품패널 닫기
   useEffect(() => {
     if (movement) {
       setSelectedItem(null);
@@ -61,7 +61,7 @@ export default function MovementPanel() {
 
   return (
     <>
-      {/* Desktop: Side Panel - Fixed on right */}
+      {/* Desktop: Movement Panel (악장 패널) - Fixed on right */}
       <div
         className={`hidden md:flex md:flex-col fixed top-0 right-0 bg-white z-50 w-1/3 animate-slideInRight shadow-[0_0_50px_rgba(0,0,0,0.15)] transition-all duration-300 ${
           isScrolled ? 'rounded-tl-3xl' : ''
@@ -181,7 +181,7 @@ export default function MovementPanel() {
         </div>
       </div>
 
-      {/* Mobile: Bottom Sheet Panel */}
+      {/* Mobile: Movement Panel (악장 패널) - Bottom Sheet */}
       <div
         className={`md:hidden flex flex-col fixed z-50 bg-white bottom-0 left-0 right-0 h-2/3 shadow-[0_-10px_50px_rgba(0,0,0,0.15)] animate-slideInUp transition-all duration-300 ${
           isScrolled ? 'rounded-t-3xl' : ''

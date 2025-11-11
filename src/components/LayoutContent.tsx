@@ -24,10 +24,10 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
         {children}
       </div>
 
-      {/* Side Panel */}
+      {/* Work Panel (작품 패널) */}
       <SidePanel />
 
-      {/* Movement Panel */}
+      {/* Movement Panel (악장 패널) */}
       <MovementPanel />
     </>
   );
