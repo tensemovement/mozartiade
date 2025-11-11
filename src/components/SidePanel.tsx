@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { selectedItemState } from '@/store/atoms';
+import { selectedItemState, selectedMovementState } from '@/store/atoms';
 import Image from 'next/image';
 import { MdFullscreen, MdClose, MdLocationOn, MdDescription, MdArticle, MdOpenInNew, MdOndemandVideo } from 'react-icons/md';
 
 export default function SidePanel() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
+  const [, setSelectedMovement] = useRecoilState(selectedMovementState);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -20,6 +21,13 @@ export default function SidePanel() {
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // 패널이 열릴 때 다른 패널 닫기
+  useEffect(() => {
+    if (selectedItem) {
+      setSelectedMovement(null);
+    }
+  }, [selectedItem, setSelectedMovement]);
 
   const getDateString = (item: any) => {
     if (item.day && item.month) {

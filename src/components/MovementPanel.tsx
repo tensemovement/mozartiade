@@ -2,12 +2,25 @@
 
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { selectedMovementState } from '@/store/atoms';
+import { selectedMovementState, selectedItemState } from '@/store/atoms';
 import { MdClose, MdPlayArrow, MdPerson, MdTimer, MdStars } from 'react-icons/md';
 
 export default function MovementPanel() {
   const [movement, setMovement] = useRecoilState(selectedMovementState);
+  const [, setSelectedItem] = useRecoilState(selectedItemState);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Window scroll 감지 (SidePanel과 동일)
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial scroll position
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // ESC 키로 닫기
   useEffect(() => {
@@ -19,14 +32,19 @@ export default function MovementPanel() {
 
     if (movement) {
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
     };
   }, [movement, setMovement]);
+
+  // 패널이 열릴 때 다른 패널 닫기
+  useEffect(() => {
+    if (movement) {
+      setSelectedItem(null);
+    }
+  }, [movement, setSelectedItem]);
 
   if (!movement) {
     return null;
@@ -101,13 +119,7 @@ export default function MovementPanel() {
         </div>
 
         {/* Content - Scrollable */}
-        <div
-          className="flex-1 overflow-y-auto p-8"
-          onScroll={(e) => {
-            const target = e.target as HTMLElement;
-            setIsScrolled(target.scrollTop > 20);
-          }}
-        >
+        <div className="flex-1 overflow-y-auto p-8">
           {/* Description */}
           {movement.description && (
             <div className="mb-6">
@@ -226,13 +238,7 @@ export default function MovementPanel() {
         </div>
 
         {/* Content - Scrollable */}
-        <div
-          className="flex-1 overflow-y-auto p-6"
-          onScroll={(e) => {
-            const target = e.target as HTMLElement;
-            setIsScrolled(target.scrollTop > 20);
-          }}
-        >
+        <div className="flex-1 overflow-y-auto p-6">
           {/* Description */}
           {movement.description && (
             <div className="mb-6">

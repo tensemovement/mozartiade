@@ -3,12 +3,12 @@
 import { notFound } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { worksData } from '@/data/works';
 import { Aria } from '@/types';
-import { selectedMovementState } from '@/store/atoms';
+import { selectedMovementState, selectedItemState } from '@/store/atoms';
 import MovementPanel from '@/components/MovementPanel';
 import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote } from 'react-icons/md';
 
@@ -21,6 +21,10 @@ interface PageProps {
 export default function WorkDetailPage({ params }: PageProps) {
   const work = worksData.find((w) => w.id === params.id);
   const [selectedMovement, setSelectedMovement] = useRecoilState(selectedMovementState);
+  const selectedItem = useRecoilValue(selectedItemState);
+
+  // 패널이 열려있는지 확인
+  const isPanelOpen = selectedMovement !== null || selectedItem !== null;
 
   if (!work) {
     notFound();
@@ -58,7 +62,7 @@ export default function WorkDetailPage({ params }: PageProps) {
         {/* 히어로 컨텐츠 */}
         <div
           className={`container mx-auto px-4 relative z-10 transition-all duration-300 ${
-            selectedMovement ? 'md:mr-[33.333333%]' : ''
+            isPanelOpen ? 'md:mr-[33.333333%]' : ''
           }`}
         >
           <div className="max-w-4xl mx-auto">
@@ -122,7 +126,7 @@ export default function WorkDetailPage({ params }: PageProps) {
       <section className="py-16 bg-gray-50">
         <div
           className={`container mx-auto px-4 transition-all duration-300 ${
-            selectedMovement ? 'md:mr-[33.333333%]' : ''
+            isPanelOpen ? 'md:mr-[33.333333%]' : ''
           }`}
         >
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
