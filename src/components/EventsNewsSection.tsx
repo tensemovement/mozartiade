@@ -110,15 +110,13 @@ export default function EventsNewsSection() {
                 {events.map((event, index) => (
                   <div
                     key={event.id}
-                    className={`group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-150 ease-out cursor-pointer hover:-translate-y-2 flex flex-col h-[340px] will-change-transform transform-gpu ${
+                    className={`group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 flex flex-col h-[340px] ${
                       event.featured
                         ? 'border-2 border-primary-300'
                         : 'border border-gray-200'
                     }`}
                     style={{
                       transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
                     }}
                   >
                     {/* Image Header */}
@@ -127,7 +125,7 @@ export default function EventsNewsSection() {
                         src={event.image}
                         alt={event.title}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        className="object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/40 to-transparent"></div>
 
@@ -183,13 +181,11 @@ export default function EventsNewsSection() {
                 {news.map((item, index) => (
                   <div
                     key={item.id}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-150 ease-out cursor-pointer hover:-translate-y-2 border border-gray-200 flex flex-col h-[340px] will-change-transform transform-gpu"
+                    className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-200 flex flex-col h-[340px]"
                     style={{
                       transitionDelay: isVisible
                         ? `${(index + 3) * 100}ms`
                         : '0ms',
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
                     }}
                   >
                     {/* Image Header */}
@@ -198,7 +194,7 @@ export default function EventsNewsSection() {
                         src={item.image}
                         alt={item.title}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        className="object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-gray-900/30 to-transparent"></div>
 

@@ -65,14 +65,14 @@ export default function AdBannerSection() {
           {/* Services Grid - Banner Style with Images */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Service 1 - Instruments */}
-            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-150 ease-out cursor-pointer hover:-translate-y-2 h-64 will-change-transform transform-gpu" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
+            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 h-64">
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
                   src="/images/m/mozart005.jpg"
                   alt="악기 구매 안내"
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="object-cover"
                 />
                 {/* Dark overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-900/85 to-gray-800/85 group-hover:from-gray-900/75 group-hover:to-gray-800/75 transition-colors duration-300"></div>
@@ -99,14 +99,14 @@ export default function AdBannerSection() {
             </div>
 
             {/* Service 2 - Lessons */}
-            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-150 ease-out cursor-pointer hover:-translate-y-2 h-64 will-change-transform transform-gpu" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
+            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 h-64">
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
                   src="/images/m/mozart006.jpg"
                   alt="온라인 레슨"
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="object-cover"
                 />
                 {/* Primary overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary-700/85 to-primary-600/85 group-hover:from-primary-700/75 group-hover:to-primary-600/75 transition-colors duration-300"></div>
@@ -133,14 +133,14 @@ export default function AdBannerSection() {
             </div>
 
             {/* Service 3 - Concerts */}
-            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-150 ease-out cursor-pointer hover:-translate-y-2 h-64 will-change-transform transform-gpu" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}>
+            <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 h-64">
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
                   src="/images/m/mozart001.jpg"
                   alt="공연 예매"
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="object-cover"
                 />
                 {/* Rose overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-rose-700/85 to-rose-600/85 group-hover:from-rose-700/75 group-hover:to-rose-600/75 transition-colors duration-300"></div>

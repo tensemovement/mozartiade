@@ -103,11 +103,9 @@ export default function UpdatesSection() {
                   <Link
                     key={update.id}
                     href={update.link}
-                    className={`group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-150 ease-out cursor-pointer hover:-translate-y-2 will-change-transform transform-gpu ${offsetClasses[index]}`}
+                    className={`group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-1 ${offsetClasses[index]}`}
                     style={{
                       transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
                     }}
                   >
                     {/* Background Image */}
@@ -116,7 +114,7 @@ export default function UpdatesSection() {
                         src={update.image}
                         alt={update.title}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        className="object-cover"
                       />
 
                       {/* Gradient Overlay */}
@@ -149,13 +147,10 @@ export default function UpdatesSection() {
                           </p>
                         </div>
                       </div>
-
-                      {/* Hover shine effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     </div>
 
                     {/* Bottom accent bar */}
-                    <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                    <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
                   </Link>
                 );
               })}

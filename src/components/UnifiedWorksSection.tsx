@@ -71,11 +71,9 @@ export default function UnifiedWorksSection() {
             {categories.map((category, index) => (
               <div
                 key={category.id}
-                className="group relative bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-all duration-150 ease-out cursor-pointer border border-gray-200 hover:border-primary-300 hover:-translate-y-2 overflow-hidden will-change-transform transform-gpu"
+                className="group relative bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200 hover:border-primary-300 hover:-translate-y-1 overflow-hidden"
                 style={{
                   transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
                 }}
               >
                 <div className="text-sm font-sans font-semibold text-primary-600 mb-3">
@@ -116,11 +114,9 @@ export default function UnifiedWorksSection() {
                 onClick={() => {
                   setSelectedItem({ ...work, type: 'work' as const });
                 }}
-                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-150 ease-out cursor-pointer hover:-translate-y-2 border border-gray-100 will-change-transform transform-gpu"
+                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-100"
                 style={{
                   transitionDelay: isVisible ? `${(index + 4) * 100}ms` : '0ms',
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
                 }}
               >
                 {/* Header with K number */}
