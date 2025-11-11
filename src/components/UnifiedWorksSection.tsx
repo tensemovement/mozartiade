@@ -5,6 +5,7 @@ import { worksData } from '@/data/works';
 import { useRecoilState } from 'recoil';
 import { selectedItemState } from '@/store/atoms';
 import Image from 'next/image';
+import Link from 'next/link';
 import { formatVoteCount } from '@/utils/format';
 import { MdFullscreen, MdFavorite, MdChevronRight } from 'react-icons/md';
 
@@ -138,17 +139,17 @@ export default function UnifiedWorksSection() {
                       {work.genre}
                     </div>
                   )}
-                  {/* Fullscreen button - Top Right */}
-                  <button
+                  {/* Detail page button - Top Right */}
+                  <Link
+                    href={`/works/${work.id}`}
                     onClick={(e) => {
                       e.stopPropagation();
-                      console.log('Navigate to detail page:', work.id);
                     }}
                     className="absolute top-4 right-4 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md z-10"
-                    title="전체 화면으로 보기"
+                    title="작품 상세 보기"
                   >
                     <MdFullscreen className="h-4 w-4" />
-                  </button>
+                  </Link>
                   {/* Vote count badge */}
                   {work.voteCount && (
                     <div className="absolute bottom-4 left-4 px-3 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
@@ -181,10 +182,13 @@ export default function UnifiedWorksSection() {
 
           {/* CTA */}
           <div className="text-center">
-            <button className="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-xl font-sans text-lg font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl group">
+            <Link
+              href="/works"
+              className="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-xl font-sans text-lg font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl group"
+            >
               전체 작품 카탈로그 보기
               <MdChevronRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -37,6 +37,27 @@ export interface Work {
   highlight?: boolean;
   image?: string;
   voteCount?: number; // 투표/좋아요 수
+
+  // 상세 페이지용 추가 정보
+  detailImage?: string; // 상세 페이지 배경 이미지
+  behindStory?: string; // 비하인드 스토리
+  usageExamples?: string[]; // 활용 사례 (공연, 이벤트 등)
+  arias?: Aria[]; // 아리아/악장 목록
+}
+
+/**
+ * Aria (아리아/악장) types
+ */
+export interface Aria {
+  id: string;
+  order: number; // 순서
+  title: string;
+  titleEn?: string;
+  character?: string; // 등장인물
+  description: string;
+  youtubeUrl?: string;
+  duration?: string; // 재생 시간
+  highlights?: string; // 하이라이트/특징
 }
 
 /**
