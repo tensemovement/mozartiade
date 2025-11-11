@@ -7,7 +7,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { worksData } from '@/data/works';
 import { Aria } from '@/types';
-import AriaPanel from '@/components/AriaPanel';
+import MovementPanel from '@/components/MovementPanel';
 import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote } from 'react-icons/md';
 
 interface PageProps {
@@ -18,7 +18,7 @@ interface PageProps {
 
 export default function WorkDetailPage({ params }: PageProps) {
   const work = worksData.find((w) => w.id === params.id);
-  const [selectedAria, setSelectedAria] = useState<Aria | null>(null);
+  const [selectedMovement, setSelectedMovement] = useState<Aria | null>(null);
 
   if (!work) {
     notFound();
@@ -175,27 +175,27 @@ export default function WorkDetailPage({ params }: PageProps) {
                       구성 악곡
                     </h2>
                     <div className="space-y-2 max-h-[600px] overflow-y-auto custom-scrollbar">
-                      {work.arias.map((aria) => (
+                      {work.arias.map((movement) => (
                         <button
-                          key={aria.id}
-                          onClick={() => setSelectedAria(aria)}
+                          key={movement.id}
+                          onClick={() => setSelectedMovement(movement)}
                           className="w-full text-left p-4 bg-gray-50 hover:bg-accent/10 rounded-xl transition-all duration-300 border border-gray-100 hover:border-accent/50 group"
                         >
                           <div className="flex items-start gap-3">
                             <div className="mt-1 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent group-hover:scale-110 transition-all">
                               <span className="text-accent group-hover:text-white text-sm font-bold">
-                                {aria.order}
+                                {movement.order}
                               </span>
                             </div>
                             <div className="flex-1 min-w-0">
                               <h3 className="text-gray-900 font-semibold text-sm mb-1 group-hover:text-accent transition-colors">
-                                {aria.title}
+                                {movement.title}
                               </h3>
-                              {aria.character && (
-                                <p className="text-gray-600 text-xs mb-1">{aria.character}</p>
+                              {movement.character && (
+                                <p className="text-gray-600 text-xs mb-1">{movement.character}</p>
                               )}
-                              {aria.duration && (
-                                <p className="text-gray-500 text-xs">{aria.duration}</p>
+                              {movement.duration && (
+                                <p className="text-gray-500 text-xs">{movement.duration}</p>
                               )}
                             </div>
                           </div>
@@ -212,10 +212,10 @@ export default function WorkDetailPage({ params }: PageProps) {
 
       <Footer />
 
-      {/* 아리아 상세 패널 */}
-      <AriaPanel
-        aria={selectedAria}
-        onClose={() => setSelectedAria(null)}
+      {/* 세부악장 패널 */}
+      <MovementPanel
+        movement={selectedMovement}
+        onClose={() => setSelectedMovement(null)}
       />
 
       <style jsx>{`
