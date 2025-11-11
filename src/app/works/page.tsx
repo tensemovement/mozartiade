@@ -97,7 +97,7 @@ export default function WorksPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/m/mozart002.jpg"
+            src="/images/o/sheet001.webp"
             alt="Mozart Works"
             fill
             className="object-cover opacity-80"
