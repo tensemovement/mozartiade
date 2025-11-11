@@ -1,8 +1,8 @@
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
-import CatalogSection from '@/components/CatalogSection';
+import UnifiedWorksSection from '@/components/UnifiedWorksSection';
 import TimelineSection from '@/components/TimelineSection';
-import FeaturedWorksSection from '@/components/FeaturedWorksSection';
+import UpdatesSection from '@/components/UpdatesSection';
 import EventsNewsSection from '@/components/EventsNewsSection';
 import AdBannerSection from '@/components/AdBannerSection';
 import Footer from '@/components/Footer';
@@ -13,9 +13,9 @@ export default function Home() {
       <Navigation />
       <main className="overflow-x-hidden">
         <HeroSection />
-        <CatalogSection />
+        <UnifiedWorksSection />
         <TimelineSection />
-        <FeaturedWorksSection />
+        <UpdatesSection />
         <EventsNewsSection />
         <AdBannerSection />
       </main>

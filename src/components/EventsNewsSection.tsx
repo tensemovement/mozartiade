@@ -2,6 +2,7 @@
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { MdChevronRight, MdCalendarToday, MdLocationOn } from 'react-icons/md';
+import Image from 'next/image';
 
 export default function EventsNewsSection() {
   const { ref, isVisible } = useScrollAnimation();
@@ -15,6 +16,7 @@ export default function EventsNewsSection() {
       location: '세종문화회관',
       description: '모차르트 서거 234주년 기념 공연',
       featured: true,
+      image: '/images/m/mozart001.jpg',
     },
     {
       id: 2,
@@ -24,6 +26,7 @@ export default function EventsNewsSection() {
       location: '국립중앙박물관',
       description: '오스트리아에서 온 귀중한 자필 악보',
       featured: false,
+      image: '/images/m/mozart002.jpg',
     },
     {
       id: 3,
@@ -33,6 +36,7 @@ export default function EventsNewsSection() {
       location: '온라인',
       description: '전문가와 함께하는 오페라 심화 과정',
       featured: false,
+      image: '/images/m/mozart003.jpg',
     },
   ];
 
@@ -43,6 +47,7 @@ export default function EventsNewsSection() {
       title: 'K.625 작품 신규 음원 추가',
       date: '2025.11.01',
       excerpt: '베를린 필하모닉 오케스트라의 최신 녹음본 업데이트',
+      image: '/images/m/mozart004.jpg',
     },
     {
       id: 2,
@@ -50,6 +55,7 @@ export default function EventsNewsSection() {
       title: '모차르트 미완성 작품 새로운 발견',
       date: '2025.10.28',
       excerpt: '빈 도서관에서 발견된 교향곡 스케치',
+      image: '/images/m/mozart005.jpg',
     },
     {
       id: 3,
@@ -57,6 +63,7 @@ export default function EventsNewsSection() {
       title: '모바일 앱 베타 출시',
       date: '2025.10.20',
       excerpt: 'iOS/Android에서 모차르트 카탈로그 이용 가능',
+      image: '/images/m/mozart006.jpg',
     },
   ];
 
@@ -103,37 +110,52 @@ export default function EventsNewsSection() {
                 {events.map((event, index) => (
                   <div
                     key={event.id}
-                    className={`bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 min-h-[180px] flex flex-col ${
+                    className={`group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 flex flex-col h-[340px] ${
                       event.featured
                         ? 'border-2 border-primary-300'
                         : 'border border-gray-200'
                     }`}
-                    style={{
-                      transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
-                    }}
                   >
-                    {event.featured && (
-                      <div className="inline-block px-3 py-1 bg-primary-500 text-white rounded-full font-sans text-xs font-bold mb-3">
-                        추천 이벤트
+                    {/* Image Header */}
+                    <div className="relative h-44 overflow-hidden flex-shrink-0">
+                      <Image
+                        src={event.image}
+                        alt={event.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/40 to-transparent"></div>
+
+                      {/* Featured Badge */}
+                      {event.featured && (
+                        <div className="absolute top-4 left-4 px-3 py-1 bg-primary-500 text-white rounded-full font-sans text-xs font-bold shadow-lg">
+                          추천 이벤트
+                        </div>
+                      )}
+
+                      {/* Title on Image */}
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h4 className="font-serif text-xl md:text-2xl font-bold text-white drop-shadow-lg line-clamp-2">
+                          {event.title}
+                        </h4>
                       </div>
-                    )}
-                    <div className="flex-1 mb-3">
-                      <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">
-                        {event.title}
-                      </h4>
-                      <p className="font-sans text-sm text-gray-600">
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6 flex-1 flex flex-col justify-between">
+                      <p className="font-sans text-sm text-gray-600 mb-4 line-clamp-2">
                         {event.description}
                       </p>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm mt-auto">
-                      <span className="flex items-center text-gray-600">
-                        <MdCalendarToday className="h-4 w-4 mr-1" />
-                        {event.date}
-                      </span>
-                      <span className="flex items-center text-gray-600">
-                        <MdLocationOn className="h-4 w-4 mr-1" />
-                        {event.location}
-                      </span>
+                      <div className="flex items-center gap-4 text-sm">
+                        <span className="flex items-center text-gray-600">
+                          <MdCalendarToday className="h-4 w-4 mr-1 flex-shrink-0" />
+                          <span className="truncate">{event.date}</span>
+                        </span>
+                        <span className="flex items-center text-gray-600">
+                          <MdLocationOn className="h-4 w-4 mr-1 flex-shrink-0" />
+                          <span className="truncate">{event.location}</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -156,26 +178,35 @@ export default function EventsNewsSection() {
                 {news.map((item, index) => (
                   <div
                     key={item.id}
-                    className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-200 min-h-[180px] flex flex-col"
-                    style={{
-                      transitionDelay: isVisible
-                        ? `${(index + 3) * 100}ms`
-                        : '0ms',
-                    }}
+                    className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-200 flex flex-col h-[340px]"
                   >
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full font-sans text-xs font-bold">
+                    {/* Image Header */}
+                    <div className="relative h-44 overflow-hidden flex-shrink-0">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-gray-900/30 to-transparent"></div>
+
+                      {/* Category Badge */}
+                      <div className="absolute top-4 left-4 px-3 py-1 bg-primary-100/90 backdrop-blur-sm text-primary-700 rounded-full font-sans text-xs font-bold shadow-sm">
                         {item.category}
-                      </span>
-                      <span className="text-sm text-gray-500 font-sans">
+                      </div>
+
+                      {/* Date */}
+                      <div className="absolute bottom-4 left-4 text-sm text-white/90 font-sans font-semibold drop-shadow">
                         {item.date}
-                      </span>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <h4 className="font-serif text-xl font-bold text-gray-900 mb-2">
+
+                    {/* Content */}
+                    <div className="p-6 flex-1 flex flex-col">
+                      <h4 className="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors line-clamp-2">
                         {item.title}
                       </h4>
-                      <p className="font-sans text-sm text-gray-600">
+                      <p className="font-sans text-sm text-gray-600 line-clamp-3">
                         {item.excerpt}
                       </p>
                     </div>
