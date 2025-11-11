@@ -4,13 +4,17 @@ import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import Link from 'next/link';
 import Image from 'next/image';
-import { selectedItemState } from '@/store/atoms';
+import { selectedItemState, selectedMovementState } from '@/store/atoms';
 import { MdSearch, MdMenu, MdClose } from 'react-icons/md';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const selectedItem = useRecoilValue(selectedItemState);
+  const selectedMovement = useRecoilValue(selectedMovementState);
+
+  // 어느 패널이라도 열려있으면 true
+  const isPanelOpen = selectedItem !== null || selectedMovement !== null;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,7 +38,7 @@ export default function Navigation() {
   return (
     <nav
       className={`fixed top-0 left-0 z-50 transition-all duration-300 w-full ${
-        selectedItem ? 'md:w-[66.666667%]' : ''
+        isPanelOpen ? 'md:w-[66.666667%]' : ''
       } ${
         isScrolled
           ? 'bg-white/95 backdrop-blur-md shadow-lg'
