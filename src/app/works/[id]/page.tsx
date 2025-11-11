@@ -9,7 +9,6 @@ import Footer from '@/components/Footer';
 import { worksData } from '@/data/works';
 import { Aria } from '@/types';
 import { selectedMovementState, selectedItemState } from '@/store/atoms';
-import MovementPanel from '@/components/MovementPanel';
 import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote } from 'react-icons/md';
 
 interface PageProps {
@@ -21,10 +20,6 @@ interface PageProps {
 export default function WorkDetailPage({ params }: PageProps) {
   const work = worksData.find((w) => w.id === params.id);
   const [selectedMovement, setSelectedMovement] = useRecoilState(selectedMovementState);
-  const selectedItem = useRecoilValue(selectedItemState);
-
-  // 패널이 열려있는지 확인
-  const isPanelOpen = selectedMovement !== null || selectedItem !== null;
 
   if (!work) {
     notFound();
@@ -60,11 +55,7 @@ export default function WorkDetailPage({ params }: PageProps) {
         </div>
 
         {/* 히어로 컨텐츠 */}
-        <div
-          className={`container mx-auto px-4 relative z-10 transition-all duration-300 ${
-            isPanelOpen ? 'md:mr-[33.333333%]' : ''
-          }`}
-        >
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
             {/* 카탈로그 번호 & 장르 */}
             <div className="flex items-center gap-4 mb-6">
@@ -124,11 +115,7 @@ export default function WorkDetailPage({ params }: PageProps) {
 
       {/* 메인 컨텐츠 섹션 */}
       <section className="py-16 bg-gray-50">
-        <div
-          className={`container mx-auto px-4 transition-all duration-300 ${
-            isPanelOpen ? 'md:mr-[33.333333%]' : ''
-          }`}
-        >
+        <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* 왼쪽 컬럼 - 상세 정보 */}
             <div className="lg:col-span-2 space-y-8">
@@ -225,9 +212,6 @@ export default function WorkDetailPage({ params }: PageProps) {
       </section>
 
       <Footer />
-
-      {/* 세부악장 패널 */}
-      <MovementPanel />
 
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
