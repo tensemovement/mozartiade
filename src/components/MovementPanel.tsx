@@ -1,22 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Aria } from '@/types';
+import { useRecoilState } from 'recoil';
+import { selectedMovementState } from '@/store/atoms';
 import { MdClose, MdPlayArrow, MdPerson, MdTimer, MdStars } from 'react-icons/md';
 
-interface MovementPanelProps {
-  movement: Aria | null;
-  onClose: () => void;
-}
-
-export default function MovementPanel({ movement, onClose }: MovementPanelProps) {
+export default function MovementPanel() {
+  const [movement, setMovement] = useRecoilState(selectedMovementState);
   const [isScrolled, setIsScrolled] = useState(false);
 
   // ESC 키로 닫기
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        setMovement(null);
       }
     };
 
@@ -29,7 +26,7 @@ export default function MovementPanel({ movement, onClose }: MovementPanelProps)
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
-  }, [movement, onClose]);
+  }, [movement, setMovement]);
 
   if (!movement) {
     return null;
@@ -60,7 +57,7 @@ export default function MovementPanel({ movement, onClose }: MovementPanelProps)
           {/* Close button */}
           <div className="absolute top-6 right-6">
             <button
-              onClick={onClose}
+              onClick={() => setMovement(null)}
               className="p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
             >
               <MdClose className="h-5 w-5 text-gray-700" />
@@ -185,7 +182,7 @@ export default function MovementPanel({ movement, onClose }: MovementPanelProps)
           {/* Close button */}
           <div className="absolute top-4 right-4">
             <button
-              onClick={onClose}
+              onClick={() => setMovement(null)}
               className="p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
             >
               <MdClose className="h-5 w-5 text-gray-700" />
