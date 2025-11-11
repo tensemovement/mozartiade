@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import Image from 'next/image';
+import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { worksData } from '@/data/works';
@@ -229,18 +230,17 @@ export default function WorksPage() {
                         {work.genre}
                       </div>
                     )}
-                    {/* Fullscreen button - Top Right */}
-                    <button
+                    {/* Detail page button - Top Right */}
+                    <Link
+                      href={`/works/${work.id}`}
                       onClick={(e) => {
                         e.stopPropagation();
-                        // TODO: 상세페이지로 전환
-                        console.log('Navigate to detail page:', work.id);
                       }}
                       className="absolute top-3 right-3 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md z-10"
-                      title="전체 화면으로 보기"
+                      title="작품 상세 보기"
                     >
                       <MdFullscreen className="h-4 w-4" />
-                    </button>
+                    </Link>
                     {/* Vote count badge */}
                     {work.voteCount && (
                       <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
