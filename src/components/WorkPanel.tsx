@@ -6,7 +6,7 @@ import { selectedItemState, selectedMovementState } from '@/store/atoms';
 import Image from 'next/image';
 import { MdFullscreen, MdClose, MdLocationOn, MdDescription, MdArticle, MdOpenInNew, MdOndemandVideo } from 'react-icons/md';
 
-export default function SidePanel() {
+export default function WorkPanel() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
   const [, setSelectedMovement] = useRecoilState(selectedMovementState);
   const selectedMovement = useRecoilValue(selectedMovementState);

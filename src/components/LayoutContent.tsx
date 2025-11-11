@@ -2,7 +2,7 @@
 
 import { useRecoilValue } from 'recoil';
 import { selectedItemState, selectedMovementState } from '@/store/atoms';
-import SidePanel from './SidePanel';
+import WorkPanel from './WorkPanel';
 import MovementPanel from './MovementPanel';
 
 export default function LayoutContent({ children }: { children: React.ReactNode }) {
@@ -25,7 +25,7 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
       </div>
 
       {/* Work Panel (작품 패널) */}
-      <SidePanel />
+      <WorkPanel />
 
       {/* Movement Panel (악장 패널) */}
       <MovementPanel />
