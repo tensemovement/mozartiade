@@ -17,3 +17,58 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Work {
+  id                  String   @id @default(cuid())
+  catalogNumber       String?  @unique // K. number (e.g., "K.525")
+  year                Int
+  month               Int?
+  day                 Int?
+  title               String
+  titleEn             String?
+  description         String   @db.Text
+  genre               String?
+  youtubeUrl          String?
+  sheetMusicUrl       String?
+  compositionDetails  String?  @db.Text
+  highlight           Boolean  @default(false)
+  image               String?
+  voteCount           Int      @default(0)
+
+  // Detail page fields
+  detailImage         String?
+  behindStory         String?  @db.Text
+  usageExamples       String[] // Array of usage examples
+
+  // Relations
+  arias               Aria[]
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([catalogNumber])
+  @@index([genre])
+  @@index([year])
+}
+
+model Aria {
+  id          String   @id @default(cuid())
+  workId      String
+  order       Int      // Order in the work
+  title       String
+  titleEn     String?
+  character   String?  // Character name
+  description String   @db.Text
+  youtubeUrl  String?
+  duration    String?  // e.g., "4:30"
+  highlights  String?  @db.Text
+
+  // Relations
+  work        Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([workId])
+  @@index([order])
+}

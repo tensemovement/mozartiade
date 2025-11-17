@@ -1,0 +1,832 @@
+[
+  {
+    "catalogNumber": "K. 1a",
+    "year": 1761,
+    "title": "안단테 C장조",
+    "titleEn": "Andante in C major",
+    "description": "5세 때 작곡한 첫 작품, 아버지의 지도 하에 완성",
+    "genre": "피아노",
+    "compositionDetails": "모차르트가 5세 때 작곡한 최초의 작품으로, 아버지 레오폴트가 기록했습니다.",
+    "voteCount": 342
+  },
+  {
+    "catalogNumber": "K. 16",
+    "year": 1764,
+    "title": "교향곡 제1번 E♭장조",
+    "titleEn": "Symphony No. 1 in E♭ major",
+    "description": "8세 때 런던에서 작곡한 첫 교향곡",
+    "genre": "교향곡",
+    "compositionDetails": "런던 체류 중 작곡된 이 작품은 J.C. 바흐의 영향을 받았습니다.",
+    "highlight": true,
+    "voteCount": 1823
+  },
+  {
+    "catalogNumber": "K. 73",
+    "year": 1772,
+    "title": "교향곡 제9번 C장조",
+    "titleEn": "Symphony No. 9 in C major",
+    "description": "밀라노에서 작곡한 초기 교향곡",
+    "genre": "교향곡",
+    "voteCount": 234
+  },
+  {
+    "catalogNumber": "K. 87",
+    "year": 1770,
+    "title": "미트리다테, 폰토의 왕",
+    "titleEn": "Mitridate, re di Ponto",
+    "description": "14세 때 작곡한 첫 오페라 세리아, 밀라노에서 대성공",
+    "genre": "오페라",
+    "compositionDetails": "밀라노 스칼라 극장에서 초연되어 22회 연속 공연되었습니다.",
+    "highlight": true,
+    "voteCount": 2456
+  },
+  {
+    "catalogNumber": "K. 111",
+    "year": 1771,
+    "title": "아스카니오 인 알바",
+    "titleEn": "Ascanio in Alba",
+    "description": "밀라노에서 초연된 세레나타",
+    "genre": "오페라",
+    "voteCount": 456
+  },
+  {
+    "catalogNumber": "K. 135",
+    "year": 1772,
+    "title": "루치오 실라",
+    "titleEn": "Lucio Silla",
+    "description": "밀라노의 오페라 세리아",
+    "genre": "오페라",
+    "voteCount": 567
+  },
+  {
+    "catalogNumber": "K. 183",
+    "year": 1773,
+    "title": "교향곡 제25번 G단조",
+    "titleEn": "Symphony No. 25 in G minor",
+    "description": "극적인 초기 단조 교향곡",
+    "genre": "교향곡",
+    "highlight": true,
+    "voteCount": 3421
+  },
+  {
+    "catalogNumber": "K. 196",
+    "year": 1775,
+    "title": "가짜 정원사",
+    "titleEn": "La finta giardiniera",
+    "description": "뮌헨에서 초연된 오페라 부파",
+    "genre": "오페라",
+    "voteCount": 678
+  },
+  {
+    "catalogNumber": "K. 201",
+    "year": 1774,
+    "title": "교향곡 제29번 A장조",
+    "titleEn": "Symphony No. 29 in A major",
+    "description": "우아하고 서정적인 교향곡",
+    "genre": "교향곡",
+    "highlight": true,
+    "voteCount": 2134
+  },
+  {
+    "catalogNumber": "K. 207",
+    "year": 1775,
+    "title": "바이올린 협주곡 제1번 B♭장조",
+    "titleEn": "Violin Concerto No. 1 in B♭ major",
+    "description": "모차르트의 첫 바이올린 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1234
+  },
+  {
+    "catalogNumber": "K. 211",
+    "year": 1775,
+    "title": "바이올린 협주곡 제2번 D장조",
+    "titleEn": "Violin Concerto No. 2 in D major",
+    "description": "밝고 경쾌한 바이올린 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1345
+  },
+  {
+    "catalogNumber": "K. 216",
+    "year": 1775,
+    "title": "바이올린 협주곡 제3번 G장조",
+    "titleEn": "Violin Concerto No. 3 in G major",
+    "description": "우아한 선율의 바이올린 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 2456
+  },
+  {
+    "catalogNumber": "K. 218",
+    "year": 1775,
+    "title": "바이올린 협주곡 제4번 D장조",
+    "titleEn": "Violin Concerto No. 4 in D major",
+    "description": "기교와 서정성이 조화로운 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1567
+  },
+  {
+    "catalogNumber": "K. 219",
+    "year": 1775,
+    "title": "바이올린 협주곡 제5번 A장조 '터키풍'",
+    "titleEn": "Violin Concerto No. 5 in A major 'Turkish'",
+    "description": "5개의 바이올린 협주곡 중 마지막 작품",
+    "genre": "협주곡",
+    "compositionDetails": "터키 음악의 요소를 담은 생동감 넘치는 작품입니다.",
+    "highlight": true,
+    "voteCount": 3128
+  },
+  {
+    "catalogNumber": "K. 242",
+    "year": 1776,
+    "title": "3대의 피아노를 위한 협주곡 F장조",
+    "titleEn": "Concerto for 3 Pianos in F major",
+    "description": "독특한 편성의 협주곡",
+    "genre": "협주곡",
+    "voteCount": 789
+  },
+  {
+    "catalogNumber": "K. 246",
+    "year": 1776,
+    "title": "피아노 협주곡 제8번 C장조",
+    "titleEn": "Piano Concerto No. 8 in C major",
+    "description": "뤼초우 백작부인을 위한 협주곡",
+    "genre": "협주곡",
+    "voteCount": 890
+  },
+  {
+    "catalogNumber": "K. 250",
+    "year": 1776,
+    "title": "세레나데 제7번 D장조 '하프너'",
+    "titleEn": "Serenade No. 7 in D major 'Haffner'",
+    "description": "하프너 가족의 결혼식을 위한 세레나데",
+    "genre": "세레나데",
+    "highlight": true,
+    "voteCount": 1678
+  },
+  {
+    "catalogNumber": "K. 271",
+    "year": 1777,
+    "month": 1,
+    "title": "피아노 협주곡 제9번 E♭장조 '주놈'",
+    "titleEn": "Piano Concerto No. 9 in E♭ major 'Jeunehomme'",
+    "description": "프랑스 피아니스트를 위한 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 2345
+  },
+  {
+    "catalogNumber": "K. 279",
+    "year": 1775,
+    "title": "피아노 소나타 제1번 C장조",
+    "titleEn": "Piano Sonata No. 1 in C major",
+    "description": "모차르트의 첫 피아노 소나타",
+    "genre": "피아노",
+    "voteCount": 1123
+  },
+  {
+    "catalogNumber": "K. 280",
+    "year": 1775,
+    "title": "피아노 소나타 제2번 F장조",
+    "titleEn": "Piano Sonata No. 2 in F major",
+    "description": "우아한 초기 소나타",
+    "genre": "피아노",
+    "voteCount": 998
+  },
+  {
+    "catalogNumber": "K. 281",
+    "year": 1775,
+    "title": "피아노 소나타 제3번 B♭장조",
+    "titleEn": "Piano Sonata No. 3 in B♭ major",
+    "description": "서정적인 피아노 소나타",
+    "genre": "피아노",
+    "voteCount": 1045
+  },
+  {
+    "catalogNumber": "K. 283",
+    "year": 1775,
+    "title": "피아노 소나타 제5번 G장조",
+    "titleEn": "Piano Sonata No. 5 in G major",
+    "description": "밝고 경쾌한 소나타",
+    "genre": "피아노",
+    "voteCount": 1234
+  },
+  {
+    "catalogNumber": "K. 297",
+    "year": 1778,
+    "month": 6,
+    "title": "교향곡 제31번 D장조 '파리'",
+    "titleEn": "Symphony No. 31 in D major 'Paris'",
+    "description": "파리에서 작곡한 화려한 교향곡",
+    "genre": "교향곡",
+    "highlight": true,
+    "voteCount": 2789
+  },
+  {
+    "catalogNumber": "K. 299",
+    "year": 1778,
+    "title": "플루트와 하프를 위한 협주곡 C장조",
+    "titleEn": "Concerto for Flute and Harp in C major",
+    "description": "독특한 편성의 아름다운 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 3456
+  },
+  {
+    "catalogNumber": "K. 310",
+    "year": 1778,
+    "title": "피아노 소나타 제8번 A단조",
+    "titleEn": "Piano Sonata No. 8 in A minor",
+    "description": "어머니의 죽음 후 작곡한 비극적 소나타",
+    "genre": "피아노",
+    "highlight": true,
+    "voteCount": 2567
+  },
+  {
+    "catalogNumber": "K. 313",
+    "year": 1778,
+    "title": "플루트 협주곡 제1번 G장조",
+    "titleEn": "Flute Concerto No. 1 in G major",
+    "description": "플루트의 아름다움을 담은 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1890
+  },
+  {
+    "catalogNumber": "K. 314",
+    "year": 1778,
+    "title": "플루트 협주곡 제2번 D장조",
+    "titleEn": "Flute Concerto No. 2 in D major",
+    "description": "경쾌한 플루트 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1678
+  },
+  {
+    "catalogNumber": "K. 330",
+    "year": 1783,
+    "title": "피아노 소나타 제10번 C장조",
+    "titleEn": "Piano Sonata No. 10 in C major",
+    "description": "우아하고 밝은 소나타",
+    "genre": "피아노",
+    "highlight": true,
+    "voteCount": 2123
+  },
+  {
+    "catalogNumber": "K. 331",
+    "year": 1783,
+    "title": "피아노 소나타 제11번 A장조 '터키 행진곡'",
+    "titleEn": "Piano Sonata No. 11 in A major 'Turkish March'",
+    "description": "유명한 터키 행진곡이 포함된 소나타",
+    "genre": "피아노",
+    "highlight": true,
+    "voteCount": 8765
+  },
+  {
+    "catalogNumber": "K. 332",
+    "year": 1783,
+    "title": "피아노 소나타 제12번 F장조",
+    "titleEn": "Piano Sonata No. 12 in F major",
+    "description": "서정적인 피아노 소나타",
+    "genre": "피아노",
+    "voteCount": 1456
+  },
+  {
+    "catalogNumber": "K. 333",
+    "year": 1783,
+    "title": "피아노 소나타 제13번 B♭장조",
+    "titleEn": "Piano Sonata No. 13 in B♭ major",
+    "description": "우아한 피아노 소나타",
+    "genre": "피아노",
+    "voteCount": 1567
+  },
+  {
+    "catalogNumber": "K. 338",
+    "year": 1780,
+    "title": "교향곡 제34번 C장조",
+    "titleEn": "Symphony No. 34 in C major",
+    "description": "잘츠부르크 시대의 교향곡",
+    "genre": "교향곡",
+    "voteCount": 1234
+  },
+  {
+    "catalogNumber": "K. 361",
+    "year": 1784,
+    "title": "세레나데 제10번 B♭장조 '그란 파르티타'",
+    "titleEn": "Serenade No. 10 in B♭ major 'Gran Partita'",
+    "description": "13개 관악기를 위한 대규모 세레나데",
+    "genre": "세레나데",
+    "highlight": true,
+    "voteCount": 3234
+  },
+  {
+    "catalogNumber": "K. 364",
+    "year": 1779,
+    "title": "바이올린과 비올라를 위한 협주 교향곡 E♭장조",
+    "titleEn": "Sinfonia Concertante for Violin and Viola in E♭ major",
+    "description": "바이올린과 비올라의 대화",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 2890
+  },
+  {
+    "catalogNumber": "K. 366",
+    "year": 1781,
+    "title": "이도메네오",
+    "titleEn": "Idomeneo",
+    "description": "뮌헨에서 초연된 오페라 세리아의 걸작",
+    "genre": "오페라",
+    "compositionDetails": "그리스 신화를 바탕으로 한 감동적인 오페라입니다.",
+    "highlight": true,
+    "voteCount": 1567
+  },
+  {
+    "catalogNumber": "K. 384",
+    "year": 1782,
+    "title": "후궁으로부터의 도주",
+    "titleEn": "Die Entführung aus dem Serail",
+    "description": "빈에서 초연된 독일 오페라의 걸작",
+    "genre": "오페라",
+    "compositionDetails": "터키를 배경으로 한 유쾌한 징슈필(singspiel)입니다.",
+    "highlight": true,
+    "voteCount": 2891
+  },
+  {
+    "catalogNumber": "K. 385",
+    "year": 1782,
+    "month": 7,
+    "title": "교향곡 제35번 D장조 '하프너'",
+    "titleEn": "Symphony No. 35 in D major 'Haffner'",
+    "description": "하프너 가족을 위한 축하 교향곡",
+    "genre": "교향곡",
+    "highlight": true,
+    "voteCount": 3123
+  },
+  {
+    "catalogNumber": "K. 387",
+    "year": 1782,
+    "title": "현악 4중주 제14번 G장조",
+    "titleEn": "String Quartet No. 14 in G major",
+    "description": "하이든 4중주 중 첫 작품",
+    "genre": "실내악",
+    "voteCount": 1456
+  },
+  {
+    "catalogNumber": "K. 414",
+    "year": 1782,
+    "title": "피아노 협주곡 제12번 A장조",
+    "titleEn": "Piano Concerto No. 12 in A major",
+    "description": "빈 시대의 첫 피아노 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1789
+  },
+  {
+    "catalogNumber": "K. 415",
+    "year": 1782,
+    "title": "피아노 협주곡 제13번 C장조",
+    "titleEn": "Piano Concerto No. 13 in C major",
+    "description": "밝고 화려한 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1567
+  },
+  {
+    "catalogNumber": "K. 421",
+    "year": 1783,
+    "title": "현악 4중주 제15번 D단조",
+    "titleEn": "String Quartet No. 15 in D minor",
+    "description": "하이든 4중주 중 가장 극적인 작품",
+    "genre": "실내악",
+    "highlight": true,
+    "voteCount": 1890
+  },
+  {
+    "catalogNumber": "K. 425",
+    "year": 1783,
+    "month": 10,
+    "title": "교향곡 제36번 C장조 '린츠'",
+    "titleEn": "Symphony No. 36 in C major 'Linz'",
+    "description": "린츠에서 4일만에 작곡한 교향곡",
+    "genre": "교향곡",
+    "highlight": true,
+    "voteCount": 2456
+  },
+  {
+    "catalogNumber": "K. 427",
+    "year": 1783,
+    "title": "미사 C단조 '대미사'",
+    "titleEn": "Mass in C minor 'Great Mass'",
+    "description": "미완성으로 남은 대규모 미사곡",
+    "genre": "종교음악",
+    "highlight": true,
+    "voteCount": 2789
+  },
+  {
+    "catalogNumber": "K. 448",
+    "year": 1781,
+    "title": "두 대의 피아노를 위한 소나타 D장조",
+    "titleEn": "Sonata for Two Pianos in D major",
+    "description": "두 피아노의 완벽한 대화",
+    "genre": "피아노",
+    "highlight": true,
+    "voteCount": 3456
+  },
+  {
+    "catalogNumber": "K. 449",
+    "year": 1784,
+    "title": "피아노 협주곡 제14번 E♭장조",
+    "titleEn": "Piano Concerto No. 14 in E♭ major",
+    "description": "바르바라 폰 플로이어를 위한 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1678
+  },
+  {
+    "catalogNumber": "K. 450",
+    "year": 1784,
+    "title": "피아노 협주곡 제15번 B♭장조",
+    "titleEn": "Piano Concerto No. 15 in B♭ major",
+    "description": "화려한 빈 스타일의 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1789
+  },
+  {
+    "catalogNumber": "K. 451",
+    "year": 1784,
+    "title": "피아노 협주곡 제16번 D장조",
+    "titleEn": "Piano Concerto No. 16 in D major",
+    "description": "밝고 경쾌한 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1456
+  },
+  {
+    "catalogNumber": "K. 453",
+    "year": 1784,
+    "title": "피아노 협주곡 제17번 G장조",
+    "titleEn": "Piano Concerto No. 17 in G major",
+    "description": "바르바라 폰 플로이어를 위한 두 번째 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 2123
+  },
+  {
+    "catalogNumber": "K. 456",
+    "year": 1784,
+    "title": "피아노 협주곡 제18번 B♭장조",
+    "titleEn": "Piano Concerto No. 18 in B♭ major",
+    "description": "우아한 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1567
+  },
+  {
+    "catalogNumber": "K. 458",
+    "year": 1784,
+    "title": "현악 4중주 제17번 B♭장조 '사냥'",
+    "titleEn": "String Quartet No. 17 in B♭ major 'Hunt'",
+    "description": "하이든 4중주 중 가장 경쾌한 작품",
+    "genre": "실내악",
+    "voteCount": 1678
+  },
+  {
+    "catalogNumber": "K. 459",
+    "year": 1784,
+    "title": "피아노 협주곡 제19번 F장조",
+    "titleEn": "Piano Concerto No. 19 in F major",
+    "description": "밝고 우아한 협주곡",
+    "genre": "협주곡",
+    "voteCount": 1890
+  },
+  {
+    "catalogNumber": "K. 464",
+    "year": 1785,
+    "title": "현악 4중주 제18번 A장조",
+    "titleEn": "String Quartet No. 18 in A major",
+    "description": "베토벤이 가장 존경한 4중주",
+    "genre": "실내악",
+    "highlight": true,
+    "voteCount": 2234
+  },
+  {
+    "catalogNumber": "K. 465",
+    "year": 1785,
+    "title": "현악 4중주 제19번 C장조 '불협화음'",
+    "titleEn": "String Quartet No. 19 in C major 'Dissonance'",
+    "description": "하이든 4중주의 마지막 작품",
+    "genre": "실내악",
+    "highlight": true,
+    "voteCount": 2567
+  },
+  {
+    "catalogNumber": "K. 466",
+    "year": 1785,
+    "month": 2,
+    "title": "피아노 협주곡 제20번 D단조",
+    "titleEn": "Piano Concerto No. 20 in D minor",
+    "description": "극적이고 어두운 단조 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 4567
+  },
+  {
+    "catalogNumber": "K. 467",
+    "year": 1785,
+    "month": 3,
+    "title": "피아노 협주곡 제21번 C장조",
+    "titleEn": "Piano Concerto No. 21 in C major",
+    "description": "'엘비라 마디간'으로도 알려진 아름다운 협주곡",
+    "genre": "협주곡",
+    "compositionDetails": "2악장 안단테는 특히 유명하며 영화 '엘비라 마디간'에 사용되었습니다.",
+    "highlight": true,
+    "voteCount": 5234
+  },
+  {
+    "catalogNumber": "K. 478",
+    "year": 1785,
+    "title": "피아노 4중주 제1번 G단조",
+    "titleEn": "Piano Quartet No. 1 in G minor",
+    "description": "피아노와 현악을 위한 실내악",
+    "genre": "실내악",
+    "voteCount": 1567
+  },
+  {
+    "catalogNumber": "K. 482",
+    "year": 1785,
+    "title": "피아노 협주곡 제22번 E♭장조",
+    "titleEn": "Piano Concerto No. 22 in E♭ major",
+    "description": "관악의 아름다움이 돋보이는 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 2456
+  },
+  {
+    "catalogNumber": "K. 488",
+    "year": 1786,
+    "month": 3,
+    "title": "피아노 협주곡 제23번 A장조",
+    "titleEn": "Piano Concerto No. 23 in A major",
+    "description": "서정적이고 아름다운 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 4123
+  },
+  {
+    "catalogNumber": "K. 491",
+    "year": 1786,
+    "month": 3,
+    "title": "피아노 협주곡 제24번 C단조",
+    "titleEn": "Piano Concerto No. 24 in C minor",
+    "description": "극적이고 비극적인 단조 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 3789
+  },
+  {
+    "catalogNumber": "K. 492",
+    "year": 1786,
+    "month": 5,
+    "day": 1,
+    "title": "피가로의 결혼",
+    "titleEn": "Le nozze di Figaro",
+    "description": "빈에서 초연된 오페라 부파의 최고봉",
+    "genre": "오페라",
+    "compositionDetails": "보마르셰의 희곡을 바탕으로 다 폰테가 대본을 쓴 불멸의 걸작입니다.",
+    "highlight": true,
+    "voteCount": 8542
+  },
+  {
+    "catalogNumber": "K. 493",
+    "year": 1786,
+    "title": "피아노 4중주 제2번 E♭장조",
+    "titleEn": "Piano Quartet No. 2 in E♭ major",
+    "description": "우아한 피아노 4중주",
+    "genre": "실내악",
+    "voteCount": 1456
+  },
+  {
+    "catalogNumber": "K. 499",
+    "year": 1786,
+    "title": "현악 4중주 제20번 D장조 '호프마이스터'",
+    "titleEn": "String Quartet No. 20 in D major 'Hoffmeister'",
+    "description": "출판업자 호프마이스터에게 헌정",
+    "genre": "실내악",
+    "voteCount": 1567
+  },
+  {
+    "catalogNumber": "K. 503",
+    "year": 1786,
+    "month": 12,
+    "title": "피아노 협주곡 제25번 C장조",
+    "titleEn": "Piano Concerto No. 25 in C major",
+    "description": "웅장하고 화려한 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 3234
+  },
+  {
+    "catalogNumber": "K. 504",
+    "year": 1786,
+    "month": 12,
+    "title": "교향곡 제38번 D장조 '프라하'",
+    "titleEn": "Symphony No. 38 in D major 'Prague'",
+    "description": "프라하에서 대성공을 거둔 교향곡",
+    "genre": "교향곡",
+    "highlight": true,
+    "voteCount": 3567
+  },
+  {
+    "catalogNumber": "K. 515",
+    "year": 1787,
+    "title": "현악 5중주 제3번 C장조",
+    "titleEn": "String Quintet No. 3 in C major",
+    "description": "모차르트 최고의 실내악 중 하나",
+    "genre": "실내악",
+    "highlight": true,
+    "voteCount": 2456
+  },
+  {
+    "catalogNumber": "K. 516",
+    "year": 1787,
+    "title": "현악 5중주 제4번 G단조",
+    "titleEn": "String Quintet No. 4 in G minor",
+    "description": "깊은 감정의 단조 5중주",
+    "genre": "실내악",
+    "highlight": true,
+    "voteCount": 2678
+  },
+  {
+    "catalogNumber": "K. 525",
+    "year": 1787,
+    "month": 8,
+    "title": "세레나데 제13번 G장조 '아이네 클라이네 나흐트무지크'",
+    "titleEn": "Serenade No. 13 in G major 'Eine kleine Nachtmusik'",
+    "description": "모차르트의 가장 유명한 세레나데",
+    "genre": "세레나데",
+    "highlight": true,
+    "voteCount": 12345
+  },
+  {
+    "catalogNumber": "K. 527",
+    "year": 1787,
+    "month": 10,
+    "day": 29,
+    "title": "돈 조반니",
+    "titleEn": "Don Giovanni",
+    "description": "프라하에서 초연된 '오페라들의 오페라'",
+    "genre": "오페라",
+    "compositionDetails": "비극과 희극이 완벽하게 결합된 오페라의 걸작입니다.",
+    "highlight": true,
+    "voteCount": 7123
+  },
+  {
+    "catalogNumber": "K. 537",
+    "year": 1788,
+    "title": "피아노 협주곡 제26번 D장조 '대관식'",
+    "titleEn": "Piano Concerto No. 26 in D major 'Coronation'",
+    "description": "레오폴트 2세의 대관식에서 연주",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 2890
+  },
+  {
+    "catalogNumber": "K. 543",
+    "year": 1788,
+    "month": 6,
+    "day": 26,
+    "title": "교향곡 제39번 E♭장조",
+    "titleEn": "Symphony No. 39 in E♭ major",
+    "description": "마지막 3대 교향곡 중 첫 번째",
+    "genre": "교향곡",
+    "highlight": true,
+    "voteCount": 4234
+  },
+  {
+    "catalogNumber": "K. 550",
+    "year": 1788,
+    "month": 7,
+    "day": 25,
+    "title": "교향곡 제40번 G단조",
+    "titleEn": "Symphony No. 40 in G minor",
+    "description": "가장 유명한 단조 교향곡",
+    "genre": "교향곡",
+    "highlight": true,
+    "voteCount": 9876
+  },
+  {
+    "catalogNumber": "K. 551",
+    "year": 1788,
+    "month": 8,
+    "day": 10,
+    "title": "교향곡 제41번 C장조 '주피터'",
+    "titleEn": "Symphony No. 41 in C major 'Jupiter'",
+    "description": "모차르트의 마지막이자 가장 웅장한 교향곡",
+    "genre": "교향곡",
+    "compositionDetails": "대위법의 극치를 보여주는 장엄한 피날레가 특징입니다.",
+    "highlight": true,
+    "voteCount": 6789
+  },
+  {
+    "catalogNumber": "K. 563",
+    "year": 1788,
+    "title": "현악 3중주 E♭장조 '디베르티멘토'",
+    "titleEn": "String Trio in E♭ major 'Divertimento'",
+    "description": "최고의 현악 3중주 작품",
+    "genre": "실내악",
+    "highlight": true,
+    "voteCount": 2123
+  },
+  {
+    "catalogNumber": "K. 581",
+    "year": 1789,
+    "title": "클라리넷 5중주 A장조",
+    "titleEn": "Clarinet Quintet in A major",
+    "description": "클라리넷과 현악을 위한 걸작",
+    "genre": "실내악",
+    "highlight": true,
+    "voteCount": 3678
+  },
+  {
+    "catalogNumber": "K. 588",
+    "year": 1790,
+    "month": 1,
+    "day": 26,
+    "title": "코지 판 투테",
+    "titleEn": "Così fan tutte",
+    "description": "다 폰테와의 마지막 합작 오페라",
+    "genre": "오페라",
+    "compositionDetails": "사랑의 충실함을 시험하는 풍자적인 오페라입니다.",
+    "highlight": true,
+    "voteCount": 4321
+  },
+  {
+    "catalogNumber": "K. 595",
+    "year": 1791,
+    "month": 1,
+    "title": "피아노 협주곡 제27번 B♭장조",
+    "titleEn": "Piano Concerto No. 27 in B♭ major",
+    "description": "모차르트의 마지막 피아노 협주곡",
+    "genre": "협주곡",
+    "highlight": true,
+    "voteCount": 3890
+  },
+  {
+    "catalogNumber": "K. 614",
+    "year": 1791,
+    "title": "현악 5중주 제6번 E♭장조",
+    "titleEn": "String Quintet No. 6 in E♭ major",
+    "description": "모차르트의 마지막 실내악 작품",
+    "genre": "실내악",
+    "voteCount": 1789
+  },
+  {
+    "catalogNumber": "K. 618",
+    "year": 1791,
+    "title": "아베 베룸 코르푸스",
+    "titleEn": "Ave verum corpus",
+    "description": "짧지만 완벽한 모테트",
+    "genre": "종교음악",
+    "highlight": true,
+    "voteCount": 5678
+  },
+  {
+    "catalogNumber": "K. 620",
+    "year": 1791,
+    "month": 9,
+    "day": 30,
+    "title": "마술피리",
+    "titleEn": "Die Zauberflöte",
+    "description": "빈에서 초연된 모차르트의 마지막 오페라",
+    "genre": "오페라",
+    "compositionDetails": "독일어 징슈필로 프리메이슨의 상징과 계몽사상이 담긴 작품입니다.",
+    "highlight": true,
+    "voteCount": 9876
+  },
+  {
+    "catalogNumber": "K. 621",
+    "year": 1791,
+    "title": "라 클레멘차 디 티토",
+    "titleEn": "La clemenza di Tito",
+    "description": "레오폴트 2세의 대관식을 위한 오페라 세리아",
+    "genre": "오페라",
+    "highlight": true,
+    "voteCount": 2345
+  },
+  {
+    "catalogNumber": "K. 622",
+    "year": 1791,
+    "month": 10,
+    "title": "클라리넷 협주곡 A장조",
+    "titleEn": "Clarinet Concerto in A major",
+    "description": "모차르트의 마지막 완성된 기악 작품",
+    "genre": "협주곡",
+    "compositionDetails": "클라리넷의 아름다운 음색을 완벽하게 살린 걸작입니다.",
+    "highlight": true,
+    "voteCount": 4567
+  },
+  {
+    "catalogNumber": "K. 626",
+    "year": 1791,
+    "month": 12,
+    "title": "레퀴엠 D단조",
+    "titleEn": "Requiem in D minor",
+    "description": "미완성으로 남은 모차르트의 마지막 작품",
+    "genre": "종교음악",
+    "compositionDetails": "모차르트가 완성하지 못하고 제자 쥐스마이어가 완성했습니다.",
+    "highlight": true,
+    "voteCount": 12453
+  }
+]
