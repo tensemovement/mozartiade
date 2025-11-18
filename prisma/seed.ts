@@ -35,8 +35,19 @@ interface MovementData {
   highlights?: string
 }
 
+interface SeedLifeEvent {
+  year: number
+  month?: number | null
+  day?: number | null
+  title: string
+  description: string
+  location?: string | null
+  highlight?: boolean
+  image?: string | null
+}
+
 async function main() {
-  console.log('🎵 Starting Mozart works seeding...')
+  console.log('🎵 Starting Mozart database seeding...')
 
   // Read seed data
   const seedDataPath = path.join(__dirname, 'seed-data.json')
@@ -48,13 +59,19 @@ async function main() {
     fs.readFileSync(movementsDataPath, 'utf-8')
   )
 
+  // Read life events data
+  const lifeEventsDataPath = path.join(__dirname, 'life-events-data.json')
+  const lifeEventsData: SeedLifeEvent[] = JSON.parse(fs.readFileSync(lifeEventsDataPath, 'utf-8'))
+
   console.log(`📚 Found ${seedData.length} works to seed`)
   console.log(`🎼 Found ${Object.keys(movementsData).length} works with movement data`)
+  console.log(`📖 Found ${lifeEventsData.length} life events to seed`)
 
   // Clear existing data
-  console.log('🗑️  Clearing existing works...')
+  console.log('🗑️  Clearing existing data...')
   await prisma.movement.deleteMany({})
   await prisma.work.deleteMany({})
+  await prisma.lifeEvent.deleteMany({})
 
   // Seed works
   let successCount = 0
@@ -118,11 +135,43 @@ async function main() {
     }
   }
 
+  // Seed life events
+  console.log('\n📖 Seeding life events...')
+  let lifeEventSuccessCount = 0
+  let lifeEventErrorCount = 0
+
+  for (const eventData of lifeEventsData) {
+    try {
+      await prisma.lifeEvent.create({
+        data: {
+          year: eventData.year,
+          month: eventData.month || undefined,
+          day: eventData.day || undefined,
+          title: eventData.title,
+          description: eventData.description,
+          location: eventData.location || undefined,
+          highlight: eventData.highlight || false,
+          image: eventData.image || undefined,
+        },
+      })
+
+      console.log(`✅ Created life event: ${eventData.year} - ${eventData.title}`)
+      lifeEventSuccessCount++
+    } catch (error) {
+      lifeEventErrorCount++
+      console.error(`❌ Failed to create life event ${eventData.year} - ${eventData.title}:`, error)
+    }
+  }
+
   console.log('\n🎉 Seeding completed!')
   console.log(`✅ Successfully created: ${successCount} works`)
   console.log(`🎼 Successfully created: ${movementsCreated} movements`)
+  console.log(`📖 Successfully created: ${lifeEventSuccessCount} life events`)
   if (errorCount > 0) {
     console.log(`❌ Failed: ${errorCount} works`)
+  }
+  if (lifeEventErrorCount > 0) {
+    console.log(`❌ Failed: ${lifeEventErrorCount} life events`)
   }
 
   console.log('\n✨ All done!')

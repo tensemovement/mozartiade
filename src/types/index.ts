@@ -64,6 +64,23 @@ export interface Movement {
 }
 
 /**
+ * LifeEvent (일대기) types
+ */
+export interface LifeEvent {
+  id: string;
+  year: number;
+  month?: number;
+  day?: number;
+  title: string;
+  description: string;
+  location?: string;
+  highlight?: boolean;
+  image?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+/**
  * Chronology & Timeline types
  */
 export type ChronologyItemType = 'life' | 'work';

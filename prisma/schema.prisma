@@ -77,3 +77,21 @@ model Movement {
   @@index([workId])
   @@index([order])
 }
+
+model LifeEvent {
+  id          String   @id @default(cuid())
+  year        Int
+  month       Int?
+  day         Int?
+  title       String
+  description String   @db.Text
+  location    String?
+  highlight   Boolean  @default(false)
+  image       String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([year])
+  @@index([year, month, day])
+}
