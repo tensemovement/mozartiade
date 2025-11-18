@@ -1,0 +1,329 @@
+[
+  {
+    "type": "life",
+    "year": 1756,
+    "month": 1,
+    "day": 27,
+    "title": "잘츠부르크에서 탄생",
+    "description": "볼프강 아마데우스 모차르트, 레오폴트 모차르트와 안나 마리아 페르틀의 아들로 태어남",
+    "location": "잘츠부르크, 오스트리아",
+    "highlight": true,
+    "image": "/images/m/mozart001.jpg"
+  },
+  {
+    "type": "work",
+    "year": 1761,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 1",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1762,
+    "month": 1,
+    "day": null,
+    "title": "첫 공개 연주 여행",
+    "description": "6세 때 뮌헨과 빈에서 신동으로 연주하며 명성을 얻기 시작",
+    "location": "뮌헨, 빈",
+    "highlight": false,
+    "image": "/images/m/mozart004.jpg"
+  },
+  {
+    "type": "life",
+    "year": 1763,
+    "month": 6,
+    "day": null,
+    "title": "유럽 대여행 시작",
+    "description": "아버지, 누나 난네를과 함께 3년 반에 걸친 유럽 순회공연 시작. 파리, 런던, 암스테르담 등을 방문",
+    "location": "유럽 각지",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1764,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 16",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1769,
+    "month": 12,
+    "day": null,
+    "title": "이탈리아 여행 시작",
+    "description": "아버지와 함께 이탈리아로 떠나 3년간 여행하며 오페라 작곡 시작",
+    "location": "이탈리아",
+    "highlight": false,
+    "image": "/images/m/mozart002.jpg"
+  },
+  {
+    "type": "work",
+    "year": 1770,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 87",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1773,
+    "month": null,
+    "day": null,
+    "title": "잘츠부르크 궁정 음악가",
+    "description": "잘츠부르크 대주교 궁정의 콘서트마스터로 임명됨",
+    "location": "잘츠부르크",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1775,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 219",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1777,
+    "month": 9,
+    "day": 23,
+    "title": "만하임과 파리 여행",
+    "description": "어머니와 함께 만하임을 거쳐 파리로 여행. 베버 가족을 만남",
+    "location": "만하임, 파리",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1778,
+    "month": 7,
+    "day": 3,
+    "title": "어머니 안나 마리아 사망",
+    "description": "파리에서 어머니가 사망. 모차르트에게 큰 충격",
+    "location": "파리, 프랑스",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1781,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 366",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1781,
+    "month": 3,
+    "day": null,
+    "title": "빈으로 이주",
+    "description": "대주교와 결별하고 빈으로 이주, 자유 음악가로 독립",
+    "location": "빈, 오스트리아",
+    "highlight": true,
+    "image": "/images/m/mozart005.jpg"
+  },
+  {
+    "type": "life",
+    "year": 1782,
+    "month": 8,
+    "day": 4,
+    "title": "콘스탄체 베버와 결혼",
+    "description": "콘스탄체 베버와 결혼식을 올림",
+    "location": "빈",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1782,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 384",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1784,
+    "month": 12,
+    "day": 14,
+    "title": "프리메이슨 가입",
+    "description": "빈의 프리메이슨 롯지 '자선(Zur Wohltätigkeit)'에 가입",
+    "location": "빈",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1784,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 449",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1785,
+    "month": 3,
+    "day": null,
+    "catalogNumber": "K. 467",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1786,
+    "month": 5,
+    "day": 1,
+    "catalogNumber": "K. 492",
+    "highlight": true,
+    "image": "/images/m/mozart007.jpg"
+  },
+  {
+    "type": "life",
+    "year": 1787,
+    "month": 5,
+    "day": 28,
+    "title": "아버지 레오폴트 모차르트 사망",
+    "description": "잘츠부르크에서 아버지가 사망. 모차르트는 참석하지 못함",
+    "location": "잘츠부르크",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1787,
+    "month": 10,
+    "day": 29,
+    "catalogNumber": "K. 527",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1787,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 525",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1788,
+    "month": 12,
+    "day": null,
+    "title": "궁정작곡가 임명",
+    "description": "요제프 2세 황제의 궁정작곡가로 임명됨",
+    "location": "빈",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1788,
+    "month": 6,
+    "day": 26,
+    "catalogNumber": "K. 543",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1788,
+    "month": 7,
+    "day": 25,
+    "catalogNumber": "K. 550",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1788,
+    "month": 8,
+    "day": 10,
+    "catalogNumber": "K. 551",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1790,
+    "month": 1,
+    "day": 26,
+    "catalogNumber": "K. 588",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1790,
+    "month": 2,
+    "day": 20,
+    "title": "요제프 2세 황제 사망",
+    "description": "모차르트의 후원자였던 요제프 2세가 사망하고 레오폴트 2세가 즉위",
+    "location": "빈",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1791,
+    "month": 7,
+    "day": null,
+    "title": "레퀴엠 의뢰",
+    "description": "익명의 의뢰인으로부터 레퀴엠 작곡 의뢰를 받음",
+    "location": "빈",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1791,
+    "month": 9,
+    "day": 30,
+    "catalogNumber": "K. 620",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1791,
+    "month": 10,
+    "day": null,
+    "catalogNumber": "K. 622",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1791,
+    "month": 12,
+    "day": null,
+    "catalogNumber": "K. 626",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1791,
+    "month": 12,
+    "day": 5,
+    "title": "빈에서 별세",
+    "description": "35세의 나이로 레퀴엠 작곡 중 사망",
+    "location": "빈, 오스트리아",
+    "highlight": true,
+    "image": "/images/m/mozart006.jpg"
+  }
+]

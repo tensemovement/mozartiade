@@ -64,9 +64,39 @@ export interface Movement {
 }
 
 /**
- * Chronology & Timeline types
+ * Chronicle (연대기) types
+ * 생애 사건과 작품 작곡을 모두 포함하는 타임라인
  */
-export type ChronologyItemType = 'life' | 'work';
+export type ChronicleType = 'life' | 'work';
+
+export interface Chronicle {
+  id: string;
+  type: ChronicleType;
+  year: number;
+  month?: number;
+  day?: number;
+
+  // 생애 사건 정보 (type='life'일 때만 사용)
+  title?: string;
+  description?: string;
+  location?: string;
+
+  // 작품 참조 (type='work'일 때만 사용)
+  workId?: string;
+  work?: Work; // 관계 포함 시
+
+  // 공통 필드
+  highlight?: boolean;
+  image?: string;
+
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+/**
+ * Chronology & Timeline types (기존 하드코딩 데이터용 - 호환성)
+ */
+export type ChronologyItemType = ChronicleType; // 'life' | 'work'
 
 export interface ChronologyItem {
   id: string;
