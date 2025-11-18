@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useRecoilState } from 'recoil';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { Work, Aria } from '@/types';
+import { Work, Movement } from '@/types';
 import { selectedMovementState } from '@/store/atoms';
 import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote } from 'react-icons/md';
 
@@ -206,8 +206,8 @@ export default function WorkDetailPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* 오른쪽 컬럼 - 아리아 목록 */}
-            {work.arias && work.arias.length > 0 && (
+            {/* 오른쪽 컬럼 - 악장 목록 */}
+            {work.movements && work.movements.length > 0 && (
               <div className="lg:col-span-1">
                 <div className="sticky top-24">
                   <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
@@ -215,7 +215,7 @@ export default function WorkDetailPage({ params }: PageProps) {
                       구성 악곡
                     </h2>
                     <div className="space-y-2 max-h-[600px] overflow-y-auto custom-scrollbar">
-                      {work.arias.map((movement) => (
+                      {work.movements.map((movement) => (
                         <button
                           key={movement.id}
                           onClick={() => setSelectedMovement(movement)}

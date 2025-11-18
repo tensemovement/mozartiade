@@ -42,13 +42,13 @@ export interface Work {
   detailImage?: string; // 상세 페이지 배경 이미지
   behindStory?: string; // 비하인드 스토리
   usageExamples?: string[]; // 활용 사례 (공연, 이벤트 등)
-  arias?: Aria[]; // 아리아/악장 목록
+  movements?: Movement[]; // 악장 목록
 }
 
 /**
- * Aria (아리아/악장) types
+ * Movement (악장) types
  */
-export interface Aria {
+export interface Movement {
   id: string;
   order: number; // 순서
   title: string;

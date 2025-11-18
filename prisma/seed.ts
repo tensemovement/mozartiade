@@ -35,7 +35,7 @@ async function main() {
 
   // Clear existing data
   console.log('🗑️  Clearing existing works...')
-  await prisma.aria.deleteMany({})
+  await prisma.movement.deleteMany({})
   await prisma.work.deleteMany({})
 
   // Seed works
@@ -79,15 +79,15 @@ async function main() {
     console.log(`❌ Failed: ${errorCount} works`)
   }
 
-  // Also seed the detailed "Magic Flute" arias if not already in data
-  console.log('\n🎼 Seeding Magic Flute arias...')
+  // Also seed the detailed "Magic Flute" movements if not already in data
+  console.log('\n🎼 Seeding Magic Flute movements...')
 
   const magicFlute = await prisma.work.findFirst({
     where: { catalogNumber: 'K. 620' }
   })
 
   if (magicFlute) {
-    const arias = [
+    const movements = [
       {
         workId: magicFlute.id,
         order: 1,
@@ -171,11 +171,11 @@ async function main() {
       },
     ]
 
-    for (const aria of arias) {
-      await prisma.aria.create({ data: aria })
+    for (const movement of movements) {
+      await prisma.movement.create({ data: movement })
     }
 
-    console.log(`✅ Created ${arias.length} arias for Magic Flute`)
+    console.log(`✅ Created ${movements.length} movements for Magic Flute`)
   }
 
   console.log('\n✨ All done!')

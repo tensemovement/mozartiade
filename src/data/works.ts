@@ -197,7 +197,7 @@ export const worksData: Work[] = [
       '결혼식, 축하 행사 등에서 자주 연주되는 "밤의 여왕 아리아"',
       '세계 각국의 오케스트라 신년음악회 레퍼토리',
     ],
-    arias: [
+    movements: [
       {
         id: 'overture',
         order: 1,

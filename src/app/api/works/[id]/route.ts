@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 
 /**
  * GET /api/works/[id]
- * Fetch a single Mozart work with all details including arias
+ * Fetch a single Mozart work with all details including movements
  */
 export async function GET(
   request: NextRequest,
@@ -15,7 +15,7 @@ export async function GET(
     const work = await prisma.work.findUnique({
       where: { id },
       include: {
-        arias: {
+        movements: {
           orderBy: {
             order: 'asc',
           },

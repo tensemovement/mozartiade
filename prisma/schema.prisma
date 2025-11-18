@@ -41,7 +41,7 @@ model Work {
   usageExamples       String[] // Array of usage examples
 
   // Relations
-  arias               Aria[]
+  movements           Movement[]
 
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -51,7 +51,7 @@ model Work {
   @@index([year])
 }
 
-model Aria {
+model Movement {
   id          String   @id @default(cuid())
   workId      String
   order       Int      // Order in the work
