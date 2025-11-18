@@ -5,14 +5,16 @@ import { useRecoilState } from 'recoil';
 import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { chronologyData } from '@/data/chronology';
 import { selectedItemState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFavorite, MdLocationOn } from 'react-icons/md';
+import { ChronologyItem } from '@/types';
 
 export default function ChronologyPage() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
   const [activeYear, setActiveYear] = useState<number | null>(null);
+  const [chronologyData, setChronologyData] = useState<ChronologyItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const yearRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const yearFilterRef = useRef<HTMLDivElement>(null);
   const yearButtonRefs = useRef<{ [key: number]: HTMLButtonElement | null }>({});
@@ -20,6 +22,29 @@ export default function ChronologyPage() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [hasDragged, setHasDragged] = useState(false);
+
+  // Fetch chronicles from API
+  useEffect(() => {
+    const fetchChronicles = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/chronicles');
+        const result = await response.json();
+
+        if (result.success) {
+          setChronologyData(result.data);
+        } else {
+          console.error('Failed to fetch chronicles:', result.error);
+        }
+      } catch (error) {
+        console.error('Error fetching chronicles:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchChronicles();
+  }, []);
 
   // Extract unique years and sort them
   const uniqueYears = Array.from(new Set(chronologyData.map(item => item.year))).sort((a, b) => a - b);
@@ -202,14 +227,32 @@ export default function ChronologyPage() {
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
-              {/* Timeline */}
-              <div className="relative">
-              {/* Vertical line */}
-              <div className="absolute left-32 top-0 bottom-0 w-px bg-gray-300"></div>
+              {/* Loading State */}
+              {isLoading && (
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-center">
+                    <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-accent-500 border-r-transparent"></div>
+                    <p className="mt-4 text-gray-600">연대기를 불러오는 중...</p>
+                  </div>
+                </div>
+              )}
 
-              {/* Timeline items grouped by year */}
-              <div className="space-y-12">
-                {uniqueYears.map((year) => {
+              {/* Empty State */}
+              {!isLoading && chronologyData.length === 0 && (
+                <div className="text-center py-20">
+                  <p className="text-gray-600">연대기 데이터가 없습니다.</p>
+                </div>
+              )}
+
+              {/* Timeline */}
+              {!isLoading && chronologyData.length > 0 && (
+                <div className="relative">
+                  {/* Vertical line */}
+                  <div className="absolute left-32 top-0 bottom-0 w-px bg-gray-300"></div>
+
+                  {/* Timeline items grouped by year */}
+                  <div className="space-y-12">
+                    {uniqueYears.map((year) => {
                   const yearItems = chronologyData.filter(item => item.year === year);
 
                   return (
@@ -333,12 +376,13 @@ export default function ChronologyPage() {
                       </div>
                     </div>
                   );
-                })}
-              </div>
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       <Footer />
 
