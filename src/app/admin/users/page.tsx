@@ -4,16 +4,23 @@ import { useState, useEffect } from 'react';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import Modal from '@/components/admin/Modal';
+import ConfirmModal from '@/components/admin/ConfirmModal';
+import EmptyState from '@/components/admin/EmptyState';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { User } from '@/types';
-import { MdEdit, MdDelete, MdSearch } from 'react-icons/md';
+import { MdEdit, MdDelete, MdSearch, MdPeople } from 'react-icons/md';
 
 export default function UsersManagementPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; user: User | null }>({
+    isOpen: false,
+    user: null,
+  });
   const [search, setSearch] = useState('');
-  const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
+  const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -25,6 +32,7 @@ export default function UsersManagementPage() {
   }, [pagination.page, search]);
 
   const fetchUsers = async () => {
+    setIsLoading(true);
     try {
       const data = await get<any>(
         `/api/admin/users?page=${pagination.page}&search=${search}`
@@ -33,6 +41,8 @@ export default function UsersManagementPage() {
       setPagination(data.pagination);
     } catch (error) {
       console.error('Failed to fetch users:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,11 +74,15 @@ export default function UsersManagementPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('정말 삭제하시겠습니까?')) return;
+  const handleDelete = async (user: User) => {
+    setDeleteConfirm({ isOpen: true, user });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirm.user) return;
 
     try {
-      await del(`/api/admin/users/${id}`);
+      await del(`/api/admin/users/${deleteConfirm.user.id}`);
       await fetchUsers();
     } catch (error) {
       alert(error instanceof Error ? error.message : '삭제 중 오류가 발생했습니다.');
@@ -86,7 +100,7 @@ export default function UsersManagementPage() {
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-gray-900">회원 관리</h1>
               <p className="mt-2 text-gray-600">
-                가입한 회원들을 관리합니다
+                가입한 회원들을 관리합니다 (총 {pagination.total}명)
               </p>
             </div>
 
@@ -98,7 +112,10 @@ export default function UsersManagementPage() {
                   type="text"
                   placeholder="이름 또는 이메일로 검색..."
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setPagination({ ...pagination, page: 1 });
+                  }}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                 />
               </div>
@@ -106,82 +123,100 @@ export default function UsersManagementPage() {
 
             {/* Table */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      이름
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      이메일
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      가입일
-                    </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                      작업
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {users.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {user.name || '-'}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">
-                          {user.email}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(user.createdAt).toLocaleDateString('ko-KR')}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button
-                          onClick={() => handleOpenModal(user)}
-                          className="text-blue-600 hover:text-blue-900 mr-4"
-                        >
-                          <MdEdit className="w-5 h-5 inline" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(user.id)}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          <MdDelete className="w-5 h-5 inline" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+              {isLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-slate-900 border-t-transparent"></div>
+                </div>
+              ) : users.length === 0 ? (
+                <EmptyState
+                  icon={<MdPeople className="w-8 h-8 text-gray-400" />}
+                  title="회원이 없습니다"
+                  description="아직 가입한 회원이 없습니다."
+                />
+              ) : (
+                <>
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          이름
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          이메일
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          가입일
+                        </th>
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                          작업
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {users.map((user) => (
+                        <tr key={user.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900">
+                              {user.name || '-'}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-500">
+                              {user.email}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {new Date(user.createdAt).toLocaleDateString('ko-KR')}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button
+                              onClick={() => handleOpenModal(user)}
+                              className="text-blue-600 hover:text-blue-900 mr-4"
+                              title="수정"
+                            >
+                              <MdEdit className="w-5 h-5 inline" />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(user)}
+                              className="text-red-600 hover:text-red-900"
+                              title="삭제"
+                            >
+                              <MdDelete className="w-5 h-5 inline" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
 
-            {/* Pagination */}
-            <div className="mt-6 flex justify-center">
-              <div className="flex space-x-2">
-                {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => setPagination({ ...pagination, page })}
-                    className={`px-4 py-2 rounded-lg ${
-                      pagination.page === page
-                        ? 'bg-slate-900 text-white'
-                        : 'bg-white border border-gray-300 hover:bg-gray-50'
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
-              </div>
+                  {/* Pagination */}
+                  {pagination.totalPages > 1 && (
+                    <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                      <div className="flex justify-center space-x-2">
+                        {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
+                          <button
+                            key={page}
+                            onClick={() => setPagination({ ...pagination, page })}
+                            className={`px-4 py-2 rounded-lg transition ${
+                              pagination.page === page
+                                ? 'bg-slate-900 text-white'
+                                : 'bg-white border border-gray-300 hover:bg-gray-50'
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Edit Modal */}
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
@@ -234,6 +269,17 @@ export default function UsersManagementPage() {
           </div>
         </form>
       </Modal>
+
+      {/* Delete Confirm Modal */}
+      <ConfirmModal
+        isOpen={deleteConfirm.isOpen}
+        onClose={() => setDeleteConfirm({ isOpen: false, user: null })}
+        onConfirm={confirmDelete}
+        title="회원 삭제"
+        message={`정말 ${deleteConfirm.user?.email} 회원을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`}
+        confirmText="삭제"
+        type="danger"
+      />
     </AdminProtectedRoute>
   );
 }
