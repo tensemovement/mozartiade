@@ -353,6 +353,169 @@ additionalWorks.variations.forEach((vari: any) => {
   })
 })
 
+// Process String Quintets
+additionalWorks.string_quintets.forEach((sq: any) => {
+  seedData.push({
+    catalogNumber: sq.k,
+    year: sq.year,
+    title: `현악 5중주 ${sq.key}장조`,
+    titleEn: `String Quintet in ${sq.key}`,
+    description: `${sq.movements}악장으로 구성된 현악 5중주`,
+    genre: '실내악',
+    compositionDetails: `2대의 바이올린, 2대의 비올라, 첼로를 위한 ${sq.movements}악장 구성의 현악 5중주입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${sq.k.replace('K. ', 'K.')}`,
+    highlight: sq.highlight || false,
+    voteCount: sq.highlight ? Math.floor(Math.random() * 3500) + 2000 : Math.floor(Math.random() * 1200) + 400,
+  })
+})
+
+// Process String Trios
+additionalWorks.string_trios.forEach((st: any) => {
+  const keyText = st.key ? `${st.key}장조` : ''
+  const titleKo = st.title || `현악 3중주 ${keyText}`
+  const titleEn = st.title || `String Trio in ${st.key}`
+  seedData.push({
+    catalogNumber: st.k,
+    year: st.year,
+    title: titleKo,
+    titleEn: titleEn,
+    description: `바이올린, 비올라, 첼로를 위한 현악 3중주`,
+    genre: '실내악',
+    compositionDetails: `바이올린, 비올라, 첼로를 위한 ${st.movements || 3}악장 구성의 현악 3중주입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${st.k.replace('K. ', 'K.')}`,
+    highlight: st.highlight || false,
+    voteCount: st.highlight ? Math.floor(Math.random() * 3000) + 1500 : Math.floor(Math.random() * 1000) + 300,
+  })
+})
+
+// Process Piano Trios
+additionalWorks.piano_trios.forEach((pt: any) => {
+  seedData.push({
+    catalogNumber: pt.k,
+    year: pt.year,
+    title: `피아노 트리오 ${pt.key}장조`,
+    titleEn: `Piano Trio in ${pt.key}`,
+    description: `피아노, 바이올린, 첼로를 위한 트리오`,
+    genre: '실내악',
+    compositionDetails: `피아노, 바이올린, 첼로를 위한 ${pt.movements}악장 구성의 트리오입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${pt.k.replace('K. ', 'K.')}`,
+    highlight: false,
+    voteCount: Math.floor(Math.random() * 1200) + 400,
+  })
+})
+
+// Process Flute Quartets
+additionalWorks.flute_quartets.forEach((fq: any) => {
+  seedData.push({
+    catalogNumber: fq.k,
+    year: fq.year,
+    title: `플루트 4중주 ${fq.key}장조`,
+    titleEn: `Flute Quartet in ${fq.key}`,
+    description: `플루트, 바이올린, 비올라, 첼로를 위한 4중주`,
+    genre: '실내악',
+    compositionDetails: `플루트와 현악 3중주를 위한 ${fq.movements}악장 구성의 작품입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${fq.k.replace('K. ', 'K.')}`,
+    highlight: false,
+    voteCount: Math.floor(Math.random() * 1500) + 500,
+  })
+})
+
+// Process Wind Music
+additionalWorks.wind_music.forEach((wm: any) => {
+  seedData.push({
+    catalogNumber: wm.k,
+    year: wm.year,
+    title: wm.title,
+    titleEn: wm.title,
+    description: `${wm.movements}악장으로 구성된 관악 앙상블 작품`,
+    genre: '관악',
+    compositionDetails: `관악기를 위한 ${wm.movements}악장 구성의 작품입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${wm.k.replace('K. ', 'K.')}`,
+    highlight: wm.highlight || false,
+    voteCount: wm.highlight ? Math.floor(Math.random() * 5000) + 2500 : Math.floor(Math.random() * 1200) + 400,
+  })
+})
+
+// Process Lieder
+additionalWorks.lieder.forEach((lied: any) => {
+  seedData.push({
+    catalogNumber: lied.k,
+    year: lied.year,
+    title: `가곡: ${lied.title}`,
+    titleEn: lied.title,
+    description: `성악과 피아노를 위한 가곡`,
+    genre: '성악',
+    compositionDetails: `성악과 피아노를 위한 독일 가곡(Lied)입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${lied.k.replace('K. ', 'K.')}`,
+    highlight: lied.highlight || false,
+    voteCount: lied.highlight ? Math.floor(Math.random() * 2500) + 1000 : Math.floor(Math.random() * 800) + 200,
+  })
+})
+
+// Process Canons
+additionalWorks.canons.forEach((canon: any) => {
+  seedData.push({
+    catalogNumber: canon.k,
+    year: canon.year,
+    title: `카논: ${canon.title}`,
+    titleEn: `Canon: ${canon.title}`,
+    description: `다성 성악을 위한 카논`,
+    genre: '성악',
+    compositionDetails: `다성 성악을 위한 카논 형식의 작품입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${canon.k.replace('K. ', 'K.')}`,
+    highlight: false,
+    voteCount: Math.floor(Math.random() * 600) + 200,
+  })
+})
+
+// Process Marches
+additionalWorks.marches.forEach((march: any) => {
+  seedData.push({
+    catalogNumber: march.k,
+    year: march.year,
+    title: `행진곡 ${march.key}장조`,
+    titleEn: `March in ${march.key}`,
+    description: `관현악을 위한 행진곡`,
+    genre: '관현악',
+    compositionDetails: `관현악을 위한 행진곡입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${march.k.replace('K. ', 'K.')}`,
+    highlight: false,
+    voteCount: Math.floor(Math.random() * 800) + 200,
+  })
+})
+
+// Process Sacred Works
+additionalWorks.sacred_works.forEach((sw: any) => {
+  seedData.push({
+    catalogNumber: sw.k,
+    year: sw.year,
+    title: sw.title,
+    titleEn: sw.title,
+    description: `종교 음악 작품`,
+    genre: '종교음악',
+    compositionDetails: `${sw.year}년에 작곡된 종교 음악 작품입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${sw.title.replace(/ /g, '_')}`,
+    highlight: sw.highlight || false,
+    voteCount: sw.highlight ? Math.floor(Math.random() * 5000) + 2000 : Math.floor(Math.random() * 1000) + 300,
+  })
+})
+
+// Process Miscellaneous
+additionalWorks.miscellaneous.forEach((misc: any) => {
+  seedData.push({
+    catalogNumber: misc.k,
+    year: misc.year,
+    title: misc.title,
+    titleEn: misc.title,
+    description: `다양한 장르의 작품`,
+    genre: '기타',
+    compositionDetails: `${misc.year}년에 작곡된 작품입니다.`,
+    sheetMusicUrl: `https://imslp.org/wiki/${misc.title.replace(/ /g, '_')}`,
+    highlight: misc.highlight || false,
+    voteCount: misc.highlight ? Math.floor(Math.random() * 4000) + 2000 : Math.floor(Math.random() * 1000) + 300,
+  })
+})
+
 // Sort by Köchel number
 seedData.sort((a, b) => {
   const getKNumber = (k: string) => {
@@ -371,7 +534,7 @@ fs.writeFileSync(
 
 console.log(`✅ Generated ${seedData.length} works!`)
 console.log(`📊 Breakdown:`)
-console.log(`\n🎼 Major Works:`)
+console.log(`\n🎼 Major Works (${completeWorks.symphonies.length + completeWorks.piano_concertos.length + completeWorks.operas.length + completeWorks.violin_concertos.length + completeWorks.piano_sonatas.length + completeWorks.string_quartets.length + completeWorks.serenades.length + completeWorks.religious_music.length + completeWorks.other_chamber.length} total):`)
 console.log(`  - Symphonies: ${completeWorks.symphonies.length}`)
 console.log(`  - Piano Concertos: ${completeWorks.piano_concertos.length}`)
 console.log(`  - Operas: ${completeWorks.operas.length}`)
@@ -381,7 +544,16 @@ console.log(`  - String Quartets: ${completeWorks.string_quartets.length}`)
 console.log(`  - Serenades: ${completeWorks.serenades.length}`)
 console.log(`  - Religious Music: ${completeWorks.religious_music.length}`)
 console.log(`  - Other Chamber: ${completeWorks.other_chamber.length}`)
-console.log(`\n🎵 Additional Works:`)
+
+const additionalTotal = additionalWorks.horn_concertos.length + additionalWorks.violin_sonatas.length +
+  additionalWorks.divertimenti.length + additionalWorks.minuets.length + additionalWorks.german_dances.length +
+  additionalWorks.contradances.length + additionalWorks.concert_arias.length + additionalWorks.church_sonatas.length +
+  additionalWorks.other_concertos.length + additionalWorks.variations.length + additionalWorks.string_quintets.length +
+  additionalWorks.string_trios.length + additionalWorks.piano_trios.length + additionalWorks.flute_quartets.length +
+  additionalWorks.wind_music.length + additionalWorks.lieder.length + additionalWorks.canons.length +
+  additionalWorks.marches.length + additionalWorks.sacred_works.length + additionalWorks.miscellaneous.length
+
+console.log(`\n🎵 Additional Works (${additionalTotal} total):`)
 console.log(`  - Horn Concertos: ${additionalWorks.horn_concertos.length}`)
 console.log(`  - Violin Sonatas: ${additionalWorks.violin_sonatas.length}`)
 console.log(`  - Divertimenti: ${additionalWorks.divertimenti.length}`)
@@ -392,3 +564,14 @@ console.log(`  - Concert Arias: ${additionalWorks.concert_arias.length}`)
 console.log(`  - Church Sonatas: ${additionalWorks.church_sonatas.length}`)
 console.log(`  - Other Concertos: ${additionalWorks.other_concertos.length}`)
 console.log(`  - Variations: ${additionalWorks.variations.length}`)
+console.log(`  - String Quintets: ${additionalWorks.string_quintets.length}`)
+console.log(`  - String Trios: ${additionalWorks.string_trios.length}`)
+console.log(`  - Piano Trios: ${additionalWorks.piano_trios.length}`)
+console.log(`  - Flute Quartets: ${additionalWorks.flute_quartets.length}`)
+console.log(`  - Wind Music: ${additionalWorks.wind_music.length}`)
+console.log(`  - Lieder: ${additionalWorks.lieder.length}`)
+console.log(`  - Canons: ${additionalWorks.canons.length}`)
+console.log(`  - Marches: ${additionalWorks.marches.length}`)
+console.log(`  - Sacred Works: ${additionalWorks.sacred_works.length}`)
+console.log(`  - Miscellaneous: ${additionalWorks.miscellaneous.length}`)
+console.log(`\n🎯 Progress: ${seedData.length}/626 works (${Math.round(seedData.length / 626 * 100)}%)`)
