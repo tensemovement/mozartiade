@@ -31,6 +31,17 @@
     "image": "/images/m/mozart004.jpg"
   },
   {
+    "type": "life",
+    "year": 1763,
+    "month": 6,
+    "day": null,
+    "title": "유럽 대여행 시작",
+    "description": "아버지, 누나 난네를과 함께 3년 반에 걸친 유럽 순회공연 시작. 파리, 런던, 암스테르담 등을 방문",
+    "location": "유럽 각지",
+    "highlight": true,
+    "image": null
+  },
+  {
     "type": "work",
     "year": 1764,
     "month": null,
@@ -80,6 +91,28 @@
     "image": null
   },
   {
+    "type": "life",
+    "year": 1777,
+    "month": 9,
+    "day": 23,
+    "title": "만하임과 파리 여행",
+    "description": "어머니와 함께 만하임을 거쳐 파리로 여행. 베버 가족을 만남",
+    "location": "만하임, 파리",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1778,
+    "month": 7,
+    "day": 3,
+    "title": "어머니 안나 마리아 사망",
+    "description": "파리에서 어머니가 사망. 모차르트에게 큰 충격",
+    "location": "파리, 프랑스",
+    "highlight": true,
+    "image": null
+  },
+  {
     "type": "work",
     "year": 1781,
     "month": null,
@@ -120,6 +153,26 @@
     "image": null
   },
   {
+    "type": "life",
+    "year": 1784,
+    "month": 12,
+    "day": 14,
+    "title": "프리메이슨 가입",
+    "description": "빈의 프리메이슨 롯지 '자선(Zur Wohltätigkeit)'에 가입",
+    "location": "빈",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1784,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 449",
+    "highlight": false,
+    "image": null
+  },
+  {
     "type": "work",
     "year": 1785,
     "month": 3,
@@ -138,11 +191,60 @@
     "image": "/images/m/mozart007.jpg"
   },
   {
+    "type": "life",
+    "year": 1787,
+    "month": 5,
+    "day": 28,
+    "title": "아버지 레오폴트 모차르트 사망",
+    "description": "잘츠부르크에서 아버지가 사망. 모차르트는 참석하지 못함",
+    "location": "잘츠부르크",
+    "highlight": true,
+    "image": null
+  },
+  {
     "type": "work",
     "year": 1787,
     "month": 10,
     "day": 29,
     "catalogNumber": "K. 527",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1787,
+    "month": null,
+    "day": null,
+    "catalogNumber": "K. 525",
+    "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1788,
+    "month": 12,
+    "day": null,
+    "title": "궁정작곡가 임명",
+    "description": "요제프 2세 황제의 궁정작곡가로 임명됨",
+    "location": "빈",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1788,
+    "month": 6,
+    "day": 26,
+    "catalogNumber": "K. 543",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "work",
+    "year": 1788,
+    "month": 7,
+    "day": 25,
+    "catalogNumber": "K. 550",
     "highlight": true,
     "image": null
   },
@@ -162,6 +264,28 @@
     "day": 26,
     "catalogNumber": "K. 588",
     "highlight": true,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1790,
+    "month": 2,
+    "day": 20,
+    "title": "요제프 2세 황제 사망",
+    "description": "모차르트의 후원자였던 요제프 2세가 사망하고 레오폴트 2세가 즉위",
+    "location": "빈",
+    "highlight": false,
+    "image": null
+  },
+  {
+    "type": "life",
+    "year": 1791,
+    "month": 7,
+    "day": null,
+    "title": "레퀴엠 의뢰",
+    "description": "익명의 의뢰인으로부터 레퀴엠 작곡 의뢰를 받음",
+    "location": "빈",
+    "highlight": false,
     "image": null
   },
   {
