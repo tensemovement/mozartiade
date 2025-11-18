@@ -1,0 +1,347 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
+import AdminSidebar from '@/components/admin/AdminSidebar';
+import ImageUpload from '@/components/admin/ImageUpload';
+import { useAdminApi } from '@/hooks/useAdminApi';
+import { MdArrowBack } from 'react-icons/md';
+import Link from 'next/link';
+
+export default function EditChroniclePage() {
+  const router = useRouter();
+  const params = useParams();
+  const chronicleId = params.id as string;
+  const { get, put } = useAdminApi();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [works, setWorks] = useState<any[]>([]);
+
+  const [formData, setFormData] = useState({
+    type: 'life' as 'life' | 'work',
+    year: new Date().getFullYear(),
+    month: '',
+    day: '',
+    title: '',
+    description: '',
+    location: '',
+    workId: '',
+    highlight: false,
+    image: '',
+  });
+
+  useEffect(() => {
+    fetchChronicle();
+    fetchWorks();
+  }, [chronicleId]);
+
+  const fetchChronicle = async () => {
+    setIsLoading(true);
+    try {
+      const chronicle = await get<any>(`/api/admin/chronicles/${chronicleId}`);
+
+      setFormData({
+        type: chronicle.type,
+        year: chronicle.year,
+        month: chronicle.month?.toString() || '',
+        day: chronicle.day?.toString() || '',
+        title: chronicle.title || '',
+        description: chronicle.description || '',
+        location: chronicle.location || '',
+        workId: chronicle.workId || '',
+        highlight: chronicle.highlight || false,
+        image: chronicle.image || '',
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '일대기 정보를 불러오는데 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchWorks = async () => {
+    try {
+      const data = await get<any>('/api/admin/works?limit=1000');
+      setWorks(data.works || []);
+    } catch (error) {
+      console.error('Failed to fetch works:', error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const submitData = {
+        ...formData,
+        month: formData.month ? parseInt(formData.month) : null,
+        day: formData.day ? parseInt(formData.day) : null,
+        workId: formData.type === 'work' && formData.workId ? formData.workId : null,
+        title: formData.type === 'life' ? formData.title : null,
+        description: formData.description || null,
+        location: formData.location || null,
+      };
+
+      await put(`/api/admin/chronicles/${chronicleId}`, submitData);
+
+      alert('일대기가 성공적으로 수정되었습니다.');
+      router.push('/admin/chronicles');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '일대기 수정에 실패했습니다.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <AdminProtectedRoute>
+        <div className="flex">
+          <AdminSidebar />
+          <div className="flex-1 ml-64 p-8">
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-slate-900 border-t-transparent"></div>
+            </div>
+          </div>
+        </div>
+      </AdminProtectedRoute>
+    );
+  }
+
+  return (
+    <AdminProtectedRoute>
+      <div className="flex">
+        <AdminSidebar />
+
+        <div className="flex-1 ml-64">
+          <div className="p-8">
+            {/* Header */}
+            <div className="mb-8">
+              <Link
+                href="/admin/chronicles"
+                className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
+              >
+                <MdArrowBack className="w-5 h-5 mr-2" />
+                일대기 목록으로
+              </Link>
+              <h1 className="text-3xl font-bold text-gray-900">일대기 수정</h1>
+            </div>
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Type Selection */}
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">유형</h2>
+
+                <div className="flex space-x-4">
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="type"
+                      value="life"
+                      checked={formData.type === 'life'}
+                      onChange={(e) =>
+                        setFormData({ ...formData, type: 'life', workId: '' })
+                      }
+                      className="w-4 h-4 text-slate-600 border-gray-300 focus:ring-slate-500"
+                    />
+                    <span className="text-sm font-medium text-gray-700">생애 사건</span>
+                  </label>
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="type"
+                      value="work"
+                      checked={formData.type === 'work'}
+                      onChange={(e) =>
+                        setFormData({ ...formData, type: 'work', title: '', location: '' })
+                      }
+                      className="w-4 h-4 text-slate-600 border-gray-300 focus:ring-slate-500"
+                    />
+                    <span className="text-sm font-medium text-gray-700">작품 작곡</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Basic Information */}
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">기본 정보</h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        년도 *
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.year}
+                        onChange={(e) =>
+                          setFormData({ ...formData, year: parseInt(e.target.value) })
+                        }
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        월
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.month}
+                        onChange={(e) =>
+                          setFormData({ ...formData, month: e.target.value })
+                        }
+                        min="1"
+                        max="12"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        일
+                      </label>
+                      <input
+                        type="number"
+                        value={formData.day}
+                        onChange={(e) =>
+                          setFormData({ ...formData, day: e.target.value })
+                        }
+                        min="1"
+                        max="31"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {formData.type === 'life' ? (
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          제목 *
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.title}
+                          onChange={(e) =>
+                            setFormData({ ...formData, title: e.target.value })
+                          }
+                          required
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          위치
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.location}
+                          onChange={(e) =>
+                            setFormData({ ...formData, location: e.target.value })
+                          }
+                          placeholder="예: 빈, 잘츠부르크"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        작품 선택 *
+                      </label>
+                      <select
+                        value={formData.workId}
+                        onChange={(e) =>
+                          setFormData({ ...formData, workId: e.target.value })
+                        }
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                      >
+                        <option value="">작품을 선택하세요</option>
+                        {works.map((work) => (
+                          <option key={work.id} value={work.id}>
+                            {work.catalogNumber} - {work.title}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      설명
+                    </label>
+                    <textarea
+                      value={formData.description}
+                      onChange={(e) =>
+                        setFormData({ ...formData, description: e.target.value })
+                      }
+                      rows={4}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={formData.highlight}
+                        onChange={(e) =>
+                          setFormData({ ...formData, highlight: e.target.checked })
+                        }
+                        className="w-4 h-4 text-slate-600 border-gray-300 rounded focus:ring-slate-500"
+                      />
+                      <span className="text-sm font-medium text-gray-700">
+                        하이라이트 이벤트로 표시
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Image */}
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">이미지</h2>
+
+                <ImageUpload
+                  label="일대기 이미지"
+                  value={formData.image}
+                  onChange={(url) => setFormData({ ...formData, image: url })}
+                />
+              </div>
+
+              {/* Submit Buttons */}
+              <div className="flex justify-end space-x-4">
+                <Link
+                  href="/admin/chronicles"
+                  className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                >
+                  취소
+                </Link>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition disabled:opacity-50"
+                >
+                  {isSubmitting ? '수정 중...' : '일대기 수정'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </AdminProtectedRoute>
+  );
+}
