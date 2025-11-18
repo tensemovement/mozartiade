@@ -5,16 +5,22 @@ import { useRouter } from 'next/navigation';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import ImageUpload from '@/components/admin/ImageUpload';
+import WorkSelectModal from '@/components/admin/WorkSelectModal';
 import { useAdminApi } from '@/hooks/useAdminApi';
-import { MdArrowBack } from 'react-icons/md';
+import { MdArrowBack, MdSearch } from 'react-icons/md';
 import Link from 'next/link';
 
 export default function NewChroniclePage() {
   const router = useRouter();
-  const { post, get } = useAdminApi();
+  const { post } = useAdminApi();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [works, setWorks] = useState<any[]>([]);
+  const [isWorkModalOpen, setIsWorkModalOpen] = useState(false);
+  const [selectedWork, setSelectedWork] = useState<{
+    id: string;
+    catalogNumber: string;
+    title: string;
+  } | null>(null);
 
   const [formData, setFormData] = useState({
     type: 'life' as 'life' | 'work',
@@ -28,19 +34,6 @@ export default function NewChroniclePage() {
     highlight: false,
     image: '',
   });
-
-  useEffect(() => {
-    fetchWorks();
-  }, []);
-
-  const fetchWorks = async () => {
-    try {
-      const data = await get<any>('/api/admin/works?limit=1000');
-      setWorks(data.works || []);
-    } catch (error) {
-      console.error('Failed to fetch works:', error);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -218,21 +211,28 @@ export default function NewChroniclePage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         작품 선택 *
                       </label>
-                      <select
-                        value={formData.workId}
-                        onChange={(e) =>
-                          setFormData({ ...formData, workId: e.target.value })
-                        }
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                      <button
+                        type="button"
+                        onClick={() => setIsWorkModalOpen(true)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none text-left hover:bg-gray-50 transition flex items-center justify-between"
                       >
-                        <option value="">작품을 선택하세요</option>
-                        {works.map((work) => (
-                          <option key={work.id} value={work.id}>
-                            {work.catalogNumber} - {work.title}
-                          </option>
-                        ))}
-                      </select>
+                        {selectedWork ? (
+                          <span className="text-gray-900">
+                            {selectedWork.catalogNumber} - {selectedWork.title}
+                          </span>
+                        ) : (
+                          <span className="text-gray-500">작품을 선택하세요</span>
+                        )}
+                        <MdSearch className="w-5 h-5 text-gray-400" />
+                      </button>
+                      {formData.type === 'work' && !formData.workId && (
+                        <input
+                          type="text"
+                          required
+                          value={formData.workId}
+                          className="hidden"
+                        />
+                      )}
                     </div>
                   )}
 
@@ -299,6 +299,21 @@ export default function NewChroniclePage() {
           </div>
         </div>
       </div>
+
+      {/* Work Select Modal */}
+      <WorkSelectModal
+        isOpen={isWorkModalOpen}
+        onClose={() => setIsWorkModalOpen(false)}
+        onSelect={(workId, work) => {
+          setFormData({ ...formData, workId });
+          setSelectedWork({
+            id: work.id,
+            catalogNumber: work.catalogNumber,
+            title: work.title,
+          });
+        }}
+        selectedWorkId={formData.workId}
+      />
     </AdminProtectedRoute>
   );
 }
