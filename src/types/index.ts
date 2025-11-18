@@ -26,6 +26,7 @@ export interface Work {
   year: number;
   month?: number;
   day?: number;
+  compositionOrder?: number; // Order within the year for precise chronological sorting
   title: string;
   titleEn?: string; // English title
   description: string;

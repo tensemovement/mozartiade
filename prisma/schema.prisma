@@ -26,6 +26,7 @@ model Work {
   year                   Int
   month                  Int?
   day                    Int?
+  compositionOrder       Int?     // Order within the year (1, 2, 3, ...) for precise chronological sorting
   title                  String
   titleEn                String?
   description            String   @db.Text
@@ -52,6 +53,7 @@ model Work {
   @@index([catalogNumberNumeric, catalogNumberSuffix])
   @@index([genre])
   @@index([year])
+  @@index([year, compositionOrder])
 }
 
 model Movement {

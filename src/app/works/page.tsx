@@ -98,10 +98,34 @@ export default function WorksPage() {
     // Sort
     filtered.sort((a, b) => {
       switch (sortOrder) {
-        case 'year-asc':
-          return a.year - b.year;
-        case 'year-desc':
-          return b.year - a.year;
+        case 'year-asc': {
+          // Year ascending with compositionOrder for precise chronological sorting
+          const yearDiff = a.year - b.year;
+          if (yearDiff !== 0) return yearDiff;
+
+          const orderA = (a as any).compositionOrder ?? 9999;
+          const orderB = (b as any).compositionOrder ?? 9999;
+          if (orderA !== orderB) return orderA - orderB;
+
+          const monthDiff = (a.month || 99) - (b.month || 99);
+          if (monthDiff !== 0) return monthDiff;
+
+          return (a.day || 99) - (b.day || 99);
+        }
+        case 'year-desc': {
+          // Year descending with compositionOrder
+          const yearDiff = b.year - a.year;
+          if (yearDiff !== 0) return yearDiff;
+
+          const orderA = (a as any).compositionOrder ?? 0;
+          const orderB = (b as any).compositionOrder ?? 0;
+          if (orderA !== orderB) return orderB - orderA;
+
+          const monthDiff = (b.month || 0) - (a.month || 0);
+          if (monthDiff !== 0) return monthDiff;
+
+          return (b.day || 0) - (a.day || 0);
+        }
         case 'title':
           return a.title.localeCompare(b.title);
         case 'catalog-asc': {

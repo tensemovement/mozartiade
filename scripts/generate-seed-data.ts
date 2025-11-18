@@ -51,6 +51,7 @@ interface SeedWork {
   year: number
   month?: number
   day?: number
+  compositionOrder?: number
   title: string
   titleEn: string
   description: string
@@ -880,6 +881,63 @@ seedData.sort((a, b) => {
   }
   return getKNumber(a.catalogNumber) - getKNumber(b.catalogNumber)
 })
+
+/**
+ * Calculate compositionOrder for each work
+ * Groups works by year and assigns order within each year based on:
+ * 1. Month/day if available (chronological)
+ * 2. Catalog number if no date (as proxy for composition order)
+ */
+function assignCompositionOrder(works: SeedWork[]) {
+  // Group works by year
+  const worksByYear = new Map<number, SeedWork[]>()
+
+  works.forEach(work => {
+    if (!worksByYear.has(work.year)) {
+      worksByYear.set(work.year, [])
+    }
+    worksByYear.get(work.year)!.push(work)
+  })
+
+  // For each year, sort works and assign order
+  worksByYear.forEach((yearWorks, year) => {
+    // Sort within year:
+    // 1. Works with month/day come first (by date)
+    // 2. Works without month/day come after (by catalog number)
+    yearWorks.sort((a, b) => {
+      const hasDateA = a.month !== undefined
+      const hasDateB = b.month !== undefined
+
+      // Both have dates - sort chronologically
+      if (hasDateA && hasDateB) {
+        const monthDiff = (a.month || 0) - (b.month || 0)
+        if (monthDiff !== 0) return monthDiff
+        return (a.day || 0) - (b.day || 0)
+      }
+
+      // One has date, one doesn't - date comes first
+      if (hasDateA && !hasDateB) return -1
+      if (!hasDateA && hasDateB) return 1
+
+      // Neither has date - sort by catalog number
+      const numA = a.catalogNumberNumeric || 9999
+      const numB = b.catalogNumberNumeric || 9999
+      if (numA !== numB) return numA - numB
+
+      const suffixA = a.catalogNumberSuffix || ''
+      const suffixB = b.catalogNumberSuffix || ''
+      return suffixA.localeCompare(suffixB)
+    })
+
+    // Assign order 1, 2, 3, ...
+    yearWorks.forEach((work, index) => {
+      work.compositionOrder = index + 1
+    })
+  })
+}
+
+// Assign composition order to all works
+assignCompositionOrder(seedData)
 
 // Write to file
 fs.writeFileSync(

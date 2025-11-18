@@ -61,6 +61,14 @@ export async function GET(request: NextRequest) {
         { catalogNumberNumeric: order },
         { catalogNumberSuffix: order },
       ]
+    } else if (sort === 'year') {
+      // Year sorting includes compositionOrder for proper chronological ordering
+      orderBy = [
+        { year: order },
+        { compositionOrder: order },
+        { month: order },
+        { day: order },
+      ]
     } else {
       orderBy = { [sort]: order }
     }
@@ -80,6 +88,7 @@ export async function GET(request: NextRequest) {
           year: true,
           month: true,
           day: true,
+          compositionOrder: true,
           title: true,
           titleEn: true,
           description: true,
