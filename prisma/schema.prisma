@@ -19,34 +19,37 @@ model User {
 }
 
 model Work {
-  id                  String   @id @default(cuid())
-  catalogNumber       String?  @unique // K. number (e.g., "K.525")
-  year                Int
-  month               Int?
-  day                 Int?
-  title               String
-  titleEn             String?
-  description         String   @db.Text
-  genre               String?
-  youtubeUrl          String?
-  sheetMusicUrl       String?
-  compositionDetails  String?  @db.Text
-  highlight           Boolean  @default(false)
-  image               String?
-  voteCount           Int      @default(0)
+  id                     String   @id @default(cuid())
+  catalogNumber          String?  @unique // K. number (e.g., "K.525", "K.297b")
+  catalogNumberNumeric   Int?     // Numeric part of K. number (e.g., 525, 297)
+  catalogNumberSuffix    String?  // Suffix part of K. number (e.g., "", "a", "b")
+  year                   Int
+  month                  Int?
+  day                    Int?
+  title                  String
+  titleEn                String?
+  description            String   @db.Text
+  genre                  String?
+  youtubeUrl             String?
+  sheetMusicUrl          String?
+  compositionDetails     String?  @db.Text
+  highlight              Boolean  @default(false)
+  image                  String?
+  voteCount              Int      @default(0)
 
   // Detail page fields
-  detailImage         String?
-  behindStory         String?  @db.Text
-  usageExamples       String[] // Array of usage examples
+  detailImage            String?
+  behindStory            String?  @db.Text
+  usageExamples          String[] // Array of usage examples
 
   // Relations
-  movements           Movement[]
+  movements              Movement[]
 
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 
   @@index([catalogNumber])
+  @@index([catalogNumberNumeric, catalogNumberSuffix])
   @@index([genre])
   @@index([year])
 }
