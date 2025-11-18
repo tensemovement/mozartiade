@@ -149,8 +149,7 @@
     {"k": "K. 336", "year": 1780, "key": "C"}
   ],
   "other_concertos": [
-    {"k": "K. 293", "year": 1778, "title": "Oboe Concerto in C", "genre": "Concerto", "movements": 3, "highlight": true},
-    {"k": "K. 191", "year": 1774, "title": "Bassoon Concerto in B♭", "genre": "Concerto", "movements": 3}
+    {"k": "K. 293", "year": 1778, "title": "Oboe Concerto in C", "genre": "Concerto", "movements": 3, "highlight": true}
   ],
   "variations": [
     {"k": "K. 24", "year": 1766, "title": "8 Variations on 'Laat ons juichen'"},
@@ -172,16 +171,12 @@
   "string_quintets": [
     {"k": "K. 174", "year": 1773, "key": "B♭", "movements": 4},
     {"k": "K. 406", "year": 1787, "key": "C minor", "movements": 4},
-    {"k": "K. 515", "year": 1787, "key": "C", "movements": 4, "highlight": true},
-    {"k": "K. 516", "year": 1787, "key": "G minor", "movements": 4, "highlight": true},
-    {"k": "K. 593", "year": 1790, "key": "D", "movements": 4},
-    {"k": "K. 614", "year": 1791, "key": "E♭", "movements": 4}
+    {"k": "K. 593", "year": 1790, "key": "D", "movements": 4}
   ],
   "string_trios": [
     {"k": "K. 266", "year": 1777, "key": "B♭", "movements": 6, "title": "Divertimento"},
     {"k": "K. 404", "year": 1782, "title": "String Trio in G"},
-    {"k": "K. 562", "year": 1788, "key": "E♭", "movements": 1, "title": "String Trio (incomplete)"},
-    {"k": "K. 563", "year": 1788, "key": "E♭", "movements": 6, "highlight": true}
+    {"k": "K. 562", "year": 1788, "key": "E♭", "movements": 1, "title": "String Trio (incomplete)"}
   ],
   "piano_trios": [
     {"k": "K. 254", "year": 1776, "key": "B♭", "movements": 3},
@@ -200,14 +195,6 @@
   ],
   "wind_music": [
     {"k": "K. 186", "year": 1773, "title": "Divertimento for Winds in B♭", "movements": 5},
-    {"k": "K. 196", "year": 1775, "title": "Divertimento for Winds in B♭", "movements": 5},
-    {"k": "K. 213", "year": 1775, "title": "Divertimento for Winds in F", "movements": 4},
-    {"k": "K. 240", "year": 1776, "title": "Divertimento for Winds in B♭", "movements": 4},
-    {"k": "K. 270", "year": 1777, "title": "Divertimento for Winds in B♭", "movements": 4},
-    {"k": "K. 289", "year": 1777, "title": "Divertimento for Winds in E♭", "movements": 4},
-    {"k": "K. 361", "year": 1784, "title": "Gran Partita for Winds in B♭", "movements": 7, "highlight": true},
-    {"k": "K. 375", "year": 1781, "title": "Serenade for Winds in E♭", "movements": 5},
-    {"k": "K. 388", "year": 1782, "title": "Serenade for Winds in C minor", "movements": 4},
     {"k": "K. 410", "year": 1783, "title": "Adagio for Winds in F"}
   ],
   "lieder": [
@@ -270,7 +257,6 @@
   ],
   "marches": [
     {"k": "K. 62", "year": 1769, "key": "D"},
-    {"k": "K. 100", "year": 1769, "key": "D"},
     {"k": "K. 189", "year": 1773, "key": "D"},
     {"k": "K. 214", "year": 1775, "key": "C"},
     {"k": "K. 215", "year": 1775, "key": "D"},
@@ -285,9 +271,6 @@
   ],
   "sacred_works": [
     {"k": "K. 33", "year": 1766, "title": "Kyrie in F"},
-    {"k": "K. 49", "year": 1768, "title": "Missa brevis in G"},
-    {"k": "K. 65", "year": 1769, "title": "Missa brevis in D minor"},
-    {"k": "K. 66", "year": 1769, "title": "Missa in C (Dominicus)"},
     {"k": "K. 89", "year": 1772, "title": "Kyrie in G minor"},
     {"k": "K. 90", "year": 1772, "title": "Kyrie in D minor"},
     {"k": "K. 108", "year": 1771, "title": "Regina Coeli in C"},
@@ -295,23 +278,16 @@
     {"k": "K. 117", "year": 1769, "title": "Benedictus sit Deus"},
     {"k": "K. 125", "year": 1772, "title": "Litaniae de venerabili"},
     {"k": "K. 127", "year": 1772, "title": "Regina Coeli in B♭"},
-    {"k": "K. 139", "year": 1772, "title": "Missa solemnis in C minor"},
     {"k": "K. 141", "year": 1772, "title": "Te Deum in C"},
     {"k": "K. 142", "year": 1773, "title": "Tantum ergo in B♭"},
     {"k": "K. 143", "year": 1773, "title": "Ergo interest (lost)"},
     {"k": "K. 146", "year": 1779, "title": "Kommet her, ihr frechen Sünder"},
     {"k": "K. 165", "year": 1773, "title": "Exsultate, jubilate", "highlight": true},
-    {"k": "K. 192", "year": 1774, "title": "Missa brevis in F"},
     {"k": "K. 193", "year": 1774, "title": "Dixit Dominus and Magnificat"},
-    {"k": "K. 194", "year": 1774, "title": "Missa brevis in D"},
     {"k": "K. 195", "year": 1774, "title": "Litaniae Lauretanae"},
-    {"k": "K. 220", "year": 1775, "title": "Missa brevis in C (Sparrow)"},
     {"k": "K. 221", "year": 1775, "title": "Kyrie in C"},
     {"k": "K. 222", "year": 1775, "title": "Offertorium: Misericordias Domini"},
     {"k": "K. 243", "year": 1776, "title": "Litaniae de venerabili"},
-    {"k": "K. 257", "year": 1776, "title": "Missa in C (Credo)"},
-    {"k": "K. 258", "year": 1776, "title": "Missa brevis in C (Spaur)"},
-    {"k": "K. 259", "year": 1776, "title": "Missa brevis in C (Organ Solo)"},
     {"k": "K. 260", "year": 1776, "title": "Offertorium: Venite populi"},
     {"k": "K. 273", "year": 1777, "title": "Sancta Maria, mater Dei"},
     {"k": "K. 275", "year": 1777, "title": "Missa brevis in B♭"},
@@ -328,7 +304,6 @@
     {"k": "K. 42", "year": 1767, "title": "Cantata: Grabmusik"},
     {"k": "K. 63", "year": 1769, "title": "Cassation in G"},
     {"k": "K. 99", "year": 1769, "title": "Cassation in B♭"},
-    {"k": "K. 167", "year": 1773, "title": "Mass in C"},
     {"k": "K. 471", "year": 1785, "title": "Die Maurerfreude (Masonic Cantata)"},
     {"k": "K. 477", "year": 1785, "title": "Maurerische Trauermusik", "highlight": true},
     {"k": "K. 608", "year": 1791, "title": "Fantasia in F minor for Mechanical Organ"},
