@@ -224,10 +224,6 @@ completeWorks.other_chamber.forEach((oc: any) => {
     catalogNumber: oc.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: oc.year,
     title: oc.title,
     titleEn: oc.title,
@@ -248,8 +244,6 @@ additionalWorks.horn_concertos.forEach((hc: any) => {
     catalogNumber: hc.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: hc.year,
     title: `호른 협주곡 제${hc.no}번 ${hc.key}장조`,
     titleEn: `Horn Concerto No. ${hc.no} in ${hc.key}`,
@@ -268,8 +262,6 @@ additionalWorks.violin_sonatas.forEach((vs: any) => {
 
   seedData.push({
     catalogNumber: vs.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: vs.year,
@@ -309,8 +301,6 @@ additionalWorks.minuets.forEach((min: any) => {
     catalogNumber: min.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: min.year,
     title: `미뉴에트 모음곡 (${min.count}곡)`,
     titleEn: `${min.count} Minuets`,
@@ -329,8 +319,6 @@ additionalWorks.german_dances.forEach((gd: any) => {
 
   seedData.push({
     catalogNumber: gd.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: gd.year,
@@ -353,8 +341,6 @@ additionalWorks.contradances.forEach((cd: any) => {
     catalogNumber: cd.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: cd.year,
     title: `콘트라댄스 (${cd.count}곡)`,
     titleEn: `${cd.count} Contradances`,
@@ -373,10 +359,6 @@ additionalWorks.concert_arias.forEach((aria: any) => {
 
   seedData.push({
     catalogNumber: aria.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: aria.year,
@@ -399,8 +381,6 @@ additionalWorks.church_sonatas.forEach((cs: any) => {
     catalogNumber: cs.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: cs.year,
     title: `교회 소나타 ${cs.key}장조`,
     titleEn: `Church Sonata in ${cs.key}`,
@@ -419,10 +399,6 @@ additionalWorks.other_concertos.forEach((oc: any) => {
 
   seedData.push({
     catalogNumber: oc.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: oc.year,
@@ -445,8 +421,6 @@ additionalWorks.variations.forEach((vari: any) => {
     catalogNumber: vari.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: vari.year,
     title: vari.title,
     titleEn: vari.title,
@@ -465,10 +439,6 @@ additionalWorks.string_quintets.forEach((sq: any) => {
 
   seedData.push({
     catalogNumber: sq.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: sq.year,
@@ -510,8 +480,6 @@ additionalWorks.piano_trios.forEach((pt: any) => {
     catalogNumber: pt.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: pt.year,
     title: `피아노 트리오 ${pt.key}장조`,
     titleEn: `Piano Trio in ${pt.key}`,
@@ -530,8 +498,6 @@ additionalWorks.flute_quartets.forEach((fq: any) => {
 
   seedData.push({
     catalogNumber: fq.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: fq.year,
@@ -554,8 +520,6 @@ additionalWorks.wind_music.forEach((wm: any) => {
     catalogNumber: wm.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: wm.year,
     title: wm.title,
     titleEn: wm.title,
@@ -574,8 +538,6 @@ additionalWorks.lieder.forEach((lied: any) => {
 
   seedData.push({
     catalogNumber: lied.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: lied.year,
@@ -598,8 +560,6 @@ additionalWorks.canons.forEach((canon: any) => {
     catalogNumber: canon.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: canon.year,
     title: `카논: ${canon.title}`,
     titleEn: `Canon: ${canon.title}`,
@@ -618,8 +578,6 @@ additionalWorks.marches.forEach((march: any) => {
 
   seedData.push({
     catalogNumber: march.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: march.year,
@@ -642,8 +600,6 @@ additionalWorks.sacred_works.forEach((sw: any) => {
     catalogNumber: sw.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: sw.year,
     title: sw.title,
     titleEn: sw.title,
@@ -662,8 +618,6 @@ additionalWorks.miscellaneous.forEach((misc: any) => {
 
   seedData.push({
     catalogNumber: misc.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: misc.year,
@@ -686,8 +640,6 @@ additionalWorks.early_works.forEach((work: any) => {
     catalogNumber: work.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: work.year,
     title: work.title,
     titleEn: work.title,
@@ -706,8 +658,6 @@ additionalWorks.flute_concertos.forEach((fc: any) => {
 
   seedData.push({
     catalogNumber: fc.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: fc.year,
@@ -730,8 +680,6 @@ additionalWorks.piano_rondos.forEach((rondo: any) => {
     catalogNumber: rondo.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: rondo.year,
     title: rondo.title,
     titleEn: rondo.title,
@@ -750,8 +698,6 @@ additionalWorks.piano_fantasias.forEach((fantasia: any) => {
 
   seedData.push({
     catalogNumber: fantasia.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: fantasia.year,
@@ -774,8 +720,6 @@ additionalWorks.vocal_ensembles.forEach((vocal: any) => {
     catalogNumber: vocal.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: vocal.year,
     title: vocal.title,
     titleEn: vocal.title,
@@ -794,8 +738,6 @@ additionalWorks.dances_landler.forEach((dance: any) => {
 
   seedData.push({
     catalogNumber: dance.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: dance.year,
@@ -818,8 +760,6 @@ additionalWorks.keyboard_works.forEach((kw: any) => {
     catalogNumber: kw.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: kw.year,
     title: kw.title,
     titleEn: kw.title,
@@ -838,8 +778,6 @@ additionalWorks.string_duos.forEach((duo: any) => {
 
   seedData.push({
     catalogNumber: duo.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: duo.year,
@@ -862,8 +800,6 @@ additionalWorks.bassoon_works.forEach((bassoon: any) => {
     catalogNumber: bassoon.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: bassoon.year,
     title: bassoon.title,
     titleEn: bassoon.title,
@@ -882,10 +818,6 @@ additionalWorks.early_symphonies.forEach((sym: any) => {
 
   seedData.push({
     catalogNumber: sym.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: sym.year,
@@ -908,8 +840,6 @@ additionalWorks.additional_sacred.forEach((sacred: any) => {
     catalogNumber: sacred.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     year: sacred.year,
     title: sacred.title,
     titleEn: sacred.title,
@@ -928,10 +858,6 @@ additionalWorks.additional_opera_arias.forEach((aria: any) => {
 
   seedData.push({
     catalogNumber: aria.k,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
-    catalogNumberNumeric: parsed.numeric,
-    catalogNumberSuffix: parsed.suffix,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: aria.year,

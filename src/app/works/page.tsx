@@ -16,7 +16,7 @@ export default function WorksPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
   const [selectedInstrument, setSelectedInstrument] = useState<string>('all');
-  const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title'>('year-desc');
+  const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title' | 'catalog-asc' | 'catalog-desc'>('year-desc');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [allWorks, setAllWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,6 +104,22 @@ export default function WorksPage() {
           return b.year - a.year;
         case 'title':
           return a.title.localeCompare(b.title);
+        case 'catalog-asc': {
+          const numA = (a as any).catalogNumberNumeric ?? 9999;
+          const numB = (b as any).catalogNumberNumeric ?? 9999;
+          if (numA !== numB) return numA - numB;
+          const suffixA = (a as any).catalogNumberSuffix || '';
+          const suffixB = (b as any).catalogNumberSuffix || '';
+          return suffixA.localeCompare(suffixB);
+        }
+        case 'catalog-desc': {
+          const numA = (a as any).catalogNumberNumeric ?? 0;
+          const numB = (b as any).catalogNumberNumeric ?? 0;
+          if (numA !== numB) return numB - numA;
+          const suffixA = (a as any).catalogNumberSuffix || '';
+          const suffixB = (b as any).catalogNumberSuffix || '';
+          return suffixB.localeCompare(suffixA);
+        }
         default:
           return 0;
       }
@@ -194,7 +210,7 @@ export default function WorksPage() {
             </div>
 
             {/* Sort Order */}
-            <div className="w-full lg:w-40">
+            <div className="w-full lg:w-48">
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as any)}
@@ -202,6 +218,8 @@ export default function WorksPage() {
               >
                 <option value="year-desc">최신순</option>
                 <option value="year-asc">오래된순</option>
+                <option value="catalog-asc">작품번호순 (오름차순)</option>
+                <option value="catalog-desc">작품번호순 (내림차순)</option>
                 <option value="title">제목순</option>
               </select>
             </div>

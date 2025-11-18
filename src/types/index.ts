@@ -29,7 +29,9 @@ export interface Work {
   title: string;
   titleEn?: string; // English title
   description: string;
-  catalogNumber?: string; // K. number
+  catalogNumber?: string; // K. number (e.g., "K. 525", "K. 297b")
+  catalogNumberNumeric?: number; // Numeric part of K. number for sorting (e.g., 525, 297)
+  catalogNumberSuffix?: string; // Suffix part of K. number (e.g., "", "b")
   genre?: string;
   youtubeUrl?: string;
   sheetMusicUrl?: string;

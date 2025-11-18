@@ -53,8 +53,17 @@ export async function GET(request: NextRequest) {
     }
 
     // Build orderBy clause
-    const orderBy: any = {}
-    orderBy[sort] = order
+    let orderBy: any
+
+    // Special handling for catalog number sorting
+    if (sort === 'catalogNumber') {
+      orderBy = [
+        { catalogNumberNumeric: order },
+        { catalogNumberSuffix: order },
+      ]
+    } else {
+      orderBy = { [sort]: order }
+    }
 
     // Execute query
     const [works, total] = await Promise.all([
@@ -66,6 +75,8 @@ export async function GET(request: NextRequest) {
         select: {
           id: true,
           catalogNumber: true,
+          catalogNumberNumeric: true,
+          catalogNumberSuffix: true,
           year: true,
           month: true,
           day: true,
