@@ -35,13 +35,18 @@ interface MovementData {
   highlights?: string
 }
 
-interface SeedLifeEvent {
+interface SeedChronicle {
+  type: 'life' | 'work'
   year: number
   month?: number | null
   day?: number | null
-  title: string
-  description: string
+  // For type='life'
+  title?: string
+  description?: string
   location?: string | null
+  // For type='work'
+  catalogNumber?: string
+  // Common
   highlight?: boolean
   image?: string | null
 }
@@ -59,19 +64,19 @@ async function main() {
     fs.readFileSync(movementsDataPath, 'utf-8')
   )
 
-  // Read life events data
-  const lifeEventsDataPath = path.join(__dirname, 'life-events-data.json')
-  const lifeEventsData: SeedLifeEvent[] = JSON.parse(fs.readFileSync(lifeEventsDataPath, 'utf-8'))
+  // Read chronicle data
+  const chronicleDataPath = path.join(__dirname, 'chronicle-data.json')
+  const chronicleData: SeedChronicle[] = JSON.parse(fs.readFileSync(chronicleDataPath, 'utf-8'))
 
   console.log(`📚 Found ${seedData.length} works to seed`)
   console.log(`🎼 Found ${Object.keys(movementsData).length} works with movement data`)
-  console.log(`📖 Found ${lifeEventsData.length} life events to seed`)
+  console.log(`📖 Found ${chronicleData.length} chronicle items to seed`)
 
   // Clear existing data
   console.log('🗑️  Clearing existing data...')
+  await prisma.chronicle.deleteMany({})
   await prisma.movement.deleteMany({})
   await prisma.work.deleteMany({})
-  await prisma.lifeEvent.deleteMany({})
 
   // Seed works
   let successCount = 0
@@ -135,43 +140,72 @@ async function main() {
     }
   }
 
-  // Seed life events
-  console.log('\n📖 Seeding life events...')
-  let lifeEventSuccessCount = 0
-  let lifeEventErrorCount = 0
+  // Seed chronicles
+  console.log('\n📖 Seeding chronicles...')
+  let chronicleSuccessCount = 0
+  let chronicleErrorCount = 0
 
-  for (const eventData of lifeEventsData) {
+  for (const chronicleItem of chronicleData) {
     try {
-      await prisma.lifeEvent.create({
-        data: {
-          year: eventData.year,
-          month: eventData.month || undefined,
-          day: eventData.day || undefined,
-          title: eventData.title,
-          description: eventData.description,
-          location: eventData.location || undefined,
-          highlight: eventData.highlight || false,
-          image: eventData.image || undefined,
-        },
-      })
+      if (chronicleItem.type === 'life') {
+        // 생애 사건 - title, description, location 사용
+        await prisma.chronicle.create({
+          data: {
+            type: 'life',
+            year: chronicleItem.year,
+            month: chronicleItem.month || undefined,
+            day: chronicleItem.day || undefined,
+            title: chronicleItem.title!,
+            description: chronicleItem.description || undefined,
+            location: chronicleItem.location || undefined,
+            highlight: chronicleItem.highlight || false,
+            image: chronicleItem.image || undefined,
+          },
+        })
 
-      console.log(`✅ Created life event: ${eventData.year} - ${eventData.title}`)
-      lifeEventSuccessCount++
+        console.log(`✅ Created chronicle (life): ${chronicleItem.year} - ${chronicleItem.title}`)
+        chronicleSuccessCount++
+      } else if (chronicleItem.type === 'work') {
+        // 작품 작곡 - catalogNumber로 Work 찾아서 연결
+        const work = await prisma.work.findUnique({
+          where: { catalogNumber: chronicleItem.catalogNumber }
+        })
+
+        if (work) {
+          await prisma.chronicle.create({
+            data: {
+              type: 'work',
+              year: chronicleItem.year,
+              month: chronicleItem.month || undefined,
+              day: chronicleItem.day || undefined,
+              workId: work.id,
+              highlight: chronicleItem.highlight || false,
+              image: chronicleItem.image || undefined,
+            },
+          })
+
+          console.log(`✅ Created chronicle (work): ${chronicleItem.year} - ${work.title} (${chronicleItem.catalogNumber})`)
+          chronicleSuccessCount++
+        } else {
+          console.log(`⚠️  Work not found for catalog number: ${chronicleItem.catalogNumber}`)
+          chronicleErrorCount++
+        }
+      }
     } catch (error) {
-      lifeEventErrorCount++
-      console.error(`❌ Failed to create life event ${eventData.year} - ${eventData.title}:`, error)
+      chronicleErrorCount++
+      console.error(`❌ Failed to create chronicle item:`, error)
     }
   }
 
   console.log('\n🎉 Seeding completed!')
   console.log(`✅ Successfully created: ${successCount} works`)
   console.log(`🎼 Successfully created: ${movementsCreated} movements`)
-  console.log(`📖 Successfully created: ${lifeEventSuccessCount} life events`)
+  console.log(`📖 Successfully created: ${chronicleSuccessCount} chronicle items`)
   if (errorCount > 0) {
     console.log(`❌ Failed: ${errorCount} works`)
   }
-  if (lifeEventErrorCount > 0) {
-    console.log(`❌ Failed: ${lifeEventErrorCount} life events`)
+  if (chronicleErrorCount > 0) {
+    console.log(`❌ Failed: ${chronicleErrorCount} chronicle items`)
   }
 
   console.log('\n✨ All done!')

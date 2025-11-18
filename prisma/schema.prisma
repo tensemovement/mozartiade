@@ -45,6 +45,7 @@ model Work {
 
   // Relations
   movements              Movement[]
+  chronicles             Chronicle[] // 이 작품을 참조하는 연대기 항목들
 
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
@@ -78,20 +79,37 @@ model Movement {
   @@index([order])
 }
 
-model LifeEvent {
-  id          String   @id @default(cuid())
+// 모차르트 연대기 - 생애 사건과 작품을 모두 포함하는 타임라인
+model Chronicle {
+  id          String        @id @default(cuid())
+  type        ChronicleType // 'life' (생애 사건) 또는 'work' (작품 작곡)
   year        Int
   month       Int?
   day         Int?
-  title       String
-  description String   @db.Text
+
+  // 생애 사건 정보 (type='life'일 때만 사용)
+  title       String?
+  description String?       @db.Text
   location    String?
-  highlight   Boolean  @default(false)
+
+  // 작품 참조 (type='work'일 때만 사용)
+  workId      String?
+  work        Work?         @relation(fields: [workId], references: [id], onDelete: Cascade)
+
+  // 공통 필드
+  highlight   Boolean       @default(false)
   image       String?
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
   @@index([year])
+  @@index([type])
   @@index([year, month, day])
+  @@index([workId])
+}
+
+enum ChronicleType {
+  life // 생애 사건
+  work // 작품 작곡
 }
