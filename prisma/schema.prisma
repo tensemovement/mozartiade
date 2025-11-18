@@ -17,3 +17,63 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Work {
+  id                     String   @id @default(cuid())
+  catalogNumber          String?  @unique // K. number (e.g., "K.525", "K.297b")
+  catalogNumberNumeric   Int?     // Numeric part of K. number (e.g., 525, 297)
+  catalogNumberSuffix    String?  // Suffix part of K. number (e.g., "", "a", "b")
+  year                   Int
+  month                  Int?
+  day                    Int?
+  compositionOrder       Int?     // Order within the year (1, 2, 3, ...) for precise chronological sorting
+  title                  String
+  titleEn                String?
+  description            String   @db.Text
+  genre                  String?
+  youtubeUrl             String?
+  sheetMusicUrl          String?
+  compositionDetails     String?  @db.Text
+  highlight              Boolean  @default(false)
+  image                  String?
+  voteCount              Int      @default(0)
+
+  // Detail page fields
+  detailImage            String?
+  behindStory            String?  @db.Text
+  usageExamples          String[] // Array of usage examples
+
+  // Relations
+  movements              Movement[]
+
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@index([catalogNumber])
+  @@index([catalogNumberNumeric, catalogNumberSuffix])
+  @@index([genre])
+  @@index([year])
+  @@index([year, compositionOrder])
+}
+
+model Movement {
+  id          String   @id @default(cuid())
+  workId      String
+  order       Int      // Order in the work
+  title       String
+  titleEn     String?
+  character   String?  // Character name
+  description String   @db.Text
+  youtubeUrl  String?
+  duration    String?  // e.g., "4:30"
+  highlights  String?  @db.Text
+
+  // Relations
+  work        Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([workId])
+  @@index([order])
+}

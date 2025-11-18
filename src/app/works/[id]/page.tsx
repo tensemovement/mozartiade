@@ -1,14 +1,13 @@
 'use client';
 
 import { notFound } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { worksData } from '@/data/works';
-import { Aria } from '@/types';
-import { selectedMovementState, selectedItemState } from '@/store/atoms';
+import { Work, Movement } from '@/types';
+import { selectedMovementState } from '@/store/atoms';
 import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote } from 'react-icons/md';
 
 interface PageProps {
@@ -18,10 +17,50 @@ interface PageProps {
 }
 
 export default function WorkDetailPage({ params }: PageProps) {
-  const work = worksData.find((w) => w.id === params.id);
+  const [work, setWork] = useState<Work | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedMovement, setSelectedMovement] = useRecoilState(selectedMovementState);
 
-  if (!work) {
+  // Fetch work from API
+  useEffect(() => {
+    async function fetchWork() {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/works/${params.id}`);
+        const result = await response.json();
+
+        if (result.success) {
+          setWork(result.data);
+        } else {
+          setError(result.error || 'Failed to fetch work');
+        }
+      } catch (err) {
+        setError('Failed to fetch work');
+        console.error('Error fetching work:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchWork();
+  }, [params.id]);
+
+  if (isLoading) {
+    return (
+      <>
+        <Navigation />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
+            <p className="text-gray-500 text-lg">작품 정보를 불러오는 중...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (error || !work) {
     notFound();
   }
 
@@ -167,8 +206,8 @@ export default function WorkDetailPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* 오른쪽 컬럼 - 아리아 목록 */}
-            {work.arias && work.arias.length > 0 && (
+            {/* 오른쪽 컬럼 - 악장 목록 */}
+            {work.movements && work.movements.length > 0 && (
               <div className="lg:col-span-1">
                 <div className="sticky top-24">
                   <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
@@ -176,7 +215,7 @@ export default function WorkDetailPage({ params }: PageProps) {
                       구성 악곡
                     </h2>
                     <div className="space-y-2 max-h-[600px] overflow-y-auto custom-scrollbar">
-                      {work.arias.map((movement) => (
+                      {work.movements.map((movement) => (
                         <button
                           key={movement.id}
                           onClick={() => setSelectedMovement(movement)}

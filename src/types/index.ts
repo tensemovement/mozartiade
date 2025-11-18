@@ -26,10 +26,13 @@ export interface Work {
   year: number;
   month?: number;
   day?: number;
+  compositionOrder?: number; // Order within the year for precise chronological sorting
   title: string;
   titleEn?: string; // English title
   description: string;
-  catalogNumber?: string; // K. number
+  catalogNumber?: string; // K. number (e.g., "K. 525", "K. 297b")
+  catalogNumberNumeric?: number; // Numeric part of K. number for sorting (e.g., 525, 297)
+  catalogNumberSuffix?: string; // Suffix part of K. number (e.g., "", "b")
   genre?: string;
   youtubeUrl?: string;
   sheetMusicUrl?: string;
@@ -42,13 +45,13 @@ export interface Work {
   detailImage?: string; // 상세 페이지 배경 이미지
   behindStory?: string; // 비하인드 스토리
   usageExamples?: string[]; // 활용 사례 (공연, 이벤트 등)
-  arias?: Aria[]; // 아리아/악장 목록
+  movements?: Movement[]; // 악장 목록
 }
 
 /**
- * Aria (아리아/악장) types
+ * Movement (악장) types
  */
-export interface Aria {
+export interface Movement {
   id: string;
   order: number; // 순서
   title: string;

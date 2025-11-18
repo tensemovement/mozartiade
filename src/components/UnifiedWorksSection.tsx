@@ -1,17 +1,41 @@
 'use client';
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import { worksData } from '@/data/works';
 import { useRecoilState } from 'recoil';
 import { selectedItemState } from '@/store/atoms';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatVoteCount } from '@/utils/format';
 import { MdFullscreen, MdFavorite, MdChevronRight } from 'react-icons/md';
+import { Work } from '@/types';
+import { useState, useEffect } from 'react';
 
 export default function UnifiedWorksSection() {
   const { ref, isVisible } = useScrollAnimation();
   const [, setSelectedItem] = useRecoilState(selectedItemState);
+  const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch featured works from API
+  useEffect(() => {
+    async function fetchFeaturedWorks() {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/works?highlight=true&limit=6&sort=voteCount&order=desc');
+        const result = await response.json();
+
+        if (result.success) {
+          setFeaturedWorks(result.data.works);
+        }
+      } catch (err) {
+        console.error('Error fetching featured works:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchFeaturedWorks();
+  }, []);
 
   const categories = [
     {
@@ -35,11 +59,6 @@ export default function UnifiedWorksSection() {
       count: 230,
     },
   ];
-
-  // Get featured works from worksData
-  const featuredWorks = worksData
-    .filter(work => work.highlight)
-    .slice(0, 6);
 
   return (
     <section className="py-24 bg-white">
@@ -105,8 +124,14 @@ export default function UnifiedWorksSection() {
           </div>
 
           {/* Featured Works Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {featuredWorks.map((work, index) => (
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+              <p className="text-gray-500">대표 작품을 불러오는 중...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              {featuredWorks.map((work, index) => (
               <div
                 key={work.id}
                 onClick={() => {
@@ -178,7 +203,8 @@ export default function UnifiedWorksSection() {
                 <div className="h-1 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </div>
             ))}
-          </div>
+            </div>
+          )}
 
           {/* CTA */}
           <div className="text-center">

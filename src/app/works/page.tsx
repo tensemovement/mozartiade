@@ -1,26 +1,50 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { worksData } from '@/data/works';
 import { selectedItemState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList } from 'react-icons/md';
+import { Work } from '@/types';
 
 export default function WorksPage() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
   const [selectedInstrument, setSelectedInstrument] = useState<string>('all');
-  const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title'>('year-desc');
+  const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title' | 'catalog-asc' | 'catalog-desc'>('year-desc');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [allWorks, setAllWorks] = useState<Work[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Use works data
-  const allWorks = useMemo(() => worksData, []);
+  // Fetch works from API
+  useEffect(() => {
+    async function fetchWorks() {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/works?limit=1000');
+        const result = await response.json();
+
+        if (result.success) {
+          setAllWorks(result.data.works);
+        } else {
+          setError(result.error || 'Failed to fetch works');
+        }
+      } catch (err) {
+        setError('Failed to fetch works');
+        console.error('Error fetching works:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchWorks();
+  }, []);
 
   // Extract unique genres and instruments
   const genres = useMemo(() => {
@@ -74,12 +98,52 @@ export default function WorksPage() {
     // Sort
     filtered.sort((a, b) => {
       switch (sortOrder) {
-        case 'year-asc':
-          return a.year - b.year;
-        case 'year-desc':
-          return b.year - a.year;
+        case 'year-asc': {
+          // Year ascending with compositionOrder for precise chronological sorting
+          const yearDiff = a.year - b.year;
+          if (yearDiff !== 0) return yearDiff;
+
+          const orderA = (a as any).compositionOrder ?? 9999;
+          const orderB = (b as any).compositionOrder ?? 9999;
+          if (orderA !== orderB) return orderA - orderB;
+
+          const monthDiff = (a.month || 99) - (b.month || 99);
+          if (monthDiff !== 0) return monthDiff;
+
+          return (a.day || 99) - (b.day || 99);
+        }
+        case 'year-desc': {
+          // Year descending with compositionOrder
+          const yearDiff = b.year - a.year;
+          if (yearDiff !== 0) return yearDiff;
+
+          const orderA = (a as any).compositionOrder ?? 0;
+          const orderB = (b as any).compositionOrder ?? 0;
+          if (orderA !== orderB) return orderB - orderA;
+
+          const monthDiff = (b.month || 0) - (a.month || 0);
+          if (monthDiff !== 0) return monthDiff;
+
+          return (b.day || 0) - (a.day || 0);
+        }
         case 'title':
           return a.title.localeCompare(b.title);
+        case 'catalog-asc': {
+          const numA = (a as any).catalogNumberNumeric ?? 9999;
+          const numB = (b as any).catalogNumberNumeric ?? 9999;
+          if (numA !== numB) return numA - numB;
+          const suffixA = (a as any).catalogNumberSuffix || '';
+          const suffixB = (b as any).catalogNumberSuffix || '';
+          return suffixA.localeCompare(suffixB);
+        }
+        case 'catalog-desc': {
+          const numA = (a as any).catalogNumberNumeric ?? 0;
+          const numB = (b as any).catalogNumberNumeric ?? 0;
+          if (numA !== numB) return numB - numA;
+          const suffixA = (a as any).catalogNumberSuffix || '';
+          const suffixB = (b as any).catalogNumberSuffix || '';
+          return suffixB.localeCompare(suffixA);
+        }
         default:
           return 0;
       }
@@ -170,7 +234,7 @@ export default function WorksPage() {
             </div>
 
             {/* Sort Order */}
-            <div className="w-full lg:w-40">
+            <div className="w-full lg:w-48">
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as any)}
@@ -178,6 +242,8 @@ export default function WorksPage() {
               >
                 <option value="year-desc">최신순</option>
                 <option value="year-asc">오래된순</option>
+                <option value="catalog-asc">작품번호순 (오름차순)</option>
+                <option value="catalog-desc">작품번호순 (내림차순)</option>
                 <option value="title">제목순</option>
               </select>
             </div>
@@ -219,7 +285,18 @@ export default function WorksPage() {
       {/* Works Grid/List Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          {filteredWorks.length === 0 ? (
+          {isLoading ? (
+            <div className="text-center py-20">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
+              <p className="text-gray-500 text-lg">작품 목록을 불러오는 중...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <MdSentimentDissatisfied className="h-16 w-16 mx-auto text-red-400 mb-4" />
+              <p className="text-red-500 text-lg mb-2">데이터를 불러올 수 없습니다</p>
+              <p className="text-gray-500 text-sm">{error}</p>
+            </div>
+          ) : filteredWorks.length === 0 ? (
             <div className="text-center py-20">
               <MdSentimentDissatisfied className="h-16 w-16 mx-auto text-gray-400 mb-4" />
               <p className="text-gray-500 text-lg">검색 결과가 없습니다</p>
