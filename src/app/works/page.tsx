@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { worksData } from '@/data/works';
 import { selectedItemState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList } from 'react-icons/md';
+import { Work } from '@/types';
 
 export default function WorksPage() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
@@ -18,9 +18,33 @@ export default function WorksPage() {
   const [selectedInstrument, setSelectedInstrument] = useState<string>('all');
   const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title'>('year-desc');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [allWorks, setAllWorks] = useState<Work[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Use works data
-  const allWorks = useMemo(() => worksData, []);
+  // Fetch works from API
+  useEffect(() => {
+    async function fetchWorks() {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/works?limit=1000');
+        const result = await response.json();
+
+        if (result.success) {
+          setAllWorks(result.data.works);
+        } else {
+          setError(result.error || 'Failed to fetch works');
+        }
+      } catch (err) {
+        setError('Failed to fetch works');
+        console.error('Error fetching works:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchWorks();
+  }, []);
 
   // Extract unique genres and instruments
   const genres = useMemo(() => {
@@ -219,7 +243,18 @@ export default function WorksPage() {
       {/* Works Grid/List Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          {filteredWorks.length === 0 ? (
+          {isLoading ? (
+            <div className="text-center py-20">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
+              <p className="text-gray-500 text-lg">작품 목록을 불러오는 중...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <MdSentimentDissatisfied className="h-16 w-16 mx-auto text-red-400 mb-4" />
+              <p className="text-red-500 text-lg mb-2">데이터를 불러올 수 없습니다</p>
+              <p className="text-gray-500 text-sm">{error}</p>
+            </div>
+          ) : filteredWorks.length === 0 ? (
             <div className="text-center py-20">
               <MdSentimentDissatisfied className="h-16 w-16 mx-auto text-gray-400 mb-4" />
               <p className="text-gray-500 text-lg">검색 결과가 없습니다</p>
