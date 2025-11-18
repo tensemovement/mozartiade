@@ -74,11 +74,23 @@ completeWorks.symphonies.forEach((sym: any) => {
   const nickname = sym.nickname ? ` "${sym.nickname}"` : ''
   const parsed = parseCatalogNumber(sym.k)
 
+  // Known composition dates for major symphonies
+  let month, day;
+  if (sym.k === 'K. 550') { // Symphony No. 40
+    month = 7; day = 25;
+  } else if (sym.k === 'K. 551') { // Symphony No. 41 "Jupiter"
+    month = 8; day = 10;
+  } else if (sym.k === 'K. 543') { // Symphony No. 39
+    month = 6; day = 26;
+  }
+
   seedData.push({
     catalogNumber: sym.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: sym.year,
+    month,
+    day,
     title: `교향곡 제${sym.no}번 ${sym.key}장조${nickname}`,
     titleEn: `Symphony No. ${sym.no} in ${sym.key} major${nickname}`,
     description: `${sym.movements}악장으로 구성된 ${sym.year}년 작곡된 교향곡`,
@@ -94,9 +106,27 @@ completeWorks.symphonies.forEach((sym: any) => {
 completeWorks.piano_concertos.forEach((pc: any) => {
   const nickname = pc.nickname ? ` "${pc.nickname}"` : ''
   const special = pc.special ? ` (${pc.special})` : ''
+  const parsed = parseCatalogNumber(pc.k)
+
+  // Known composition dates for major piano concertos
+  let month, day;
+  if (pc.k === 'K. 467') { // Piano Concerto No. 21
+    month = 3; day = 9;
+  } else if (pc.k === 'K. 466') { // Piano Concerto No. 20
+    month = 2; day = 10;
+  } else if (pc.k === 'K. 491') { // Piano Concerto No. 24
+    month = 3; day = 24;
+  } else if (pc.k === 'K. 488') { // Piano Concerto No. 23
+    month = 3; day = 2;
+  }
+
   seedData.push({
     catalogNumber: pc.k,
+    catalogNumberNumeric: parsed.numeric,
+    catalogNumberSuffix: parsed.suffix,
     year: pc.year,
+    month,
+    day,
     title: `피아노 협주곡 제${pc.no}번 ${pc.key}장조${nickname}${special}`,
     titleEn: `Piano Concerto No. ${pc.no} in ${pc.key} major${nickname}${special}`,
     description: `${pc.movements}악장으로 구성된 피아노 협주곡`,
@@ -112,11 +142,26 @@ completeWorks.piano_concertos.forEach((pc: any) => {
 completeWorks.operas.forEach((opera: any) => {
   const incomplete = opera.incomplete ? ' (미완성)' : ''
   const parsed = parseCatalogNumber(opera.k)
+
+  // Known composition dates for major operas
+  let month, day;
+  if (opera.k === 'K. 492') { // Le nozze di Figaro
+    month = 4; day = 29;
+  } else if (opera.k === 'K. 527') { // Don Giovanni
+    month = 10; day = 28;
+  } else if (opera.k === 'K. 620') { // Die Zauberflöte
+    month = 7;
+  } else if (opera.k === 'K. 621') { // La clemenza di Tito
+    month = 9;
+  }
+
   seedData.push({
     catalogNumber: opera.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: opera.year,
+    month,
+    day,
     title: opera.title,
     titleEn: opera.title,
     description: `${opera.genre}${incomplete}`,
@@ -183,9 +228,21 @@ completeWorks.string_quartets.forEach((sq: any) => {
 // Process Serenades
 completeWorks.serenades.forEach((ser: any) => {
   const nickname = ser.nickname ? ` "${ser.nickname}"` : ''
+  const parsed = parseCatalogNumber(ser.k)
+
+  // Known composition dates for major serenades
+  let month, day;
+  if (ser.k === 'K. 525') { // Eine kleine Nachtmusik
+    month = 8; day = 10;
+  }
+
   seedData.push({
     catalogNumber: ser.k,
+    catalogNumberNumeric: parsed.numeric,
+    catalogNumberSuffix: parsed.suffix,
     year: ser.year,
+    month,
+    day,
     title: `세레나데 제${ser.no}번 ${ser.key}장조${nickname}`,
     titleEn: `Serenade No. ${ser.no} in ${ser.key} major${nickname}`,
     description: `${ser.movements}악장으로 구성된 세레나데`,
@@ -201,11 +258,20 @@ completeWorks.serenades.forEach((ser: any) => {
 completeWorks.religious_music.forEach((rm: any) => {
   const incomplete = rm.incomplete ? ' (미완성)' : ''
   const parsed = parseCatalogNumber(rm.k)
+
+  // Known composition dates for major religious works
+  let month, day;
+  if (rm.k === 'K. 626') { // Requiem
+    month = 12; // Started in summer, worked on until death in December
+  }
+
   seedData.push({
     catalogNumber: rm.k,
     catalogNumberNumeric: parsed.numeric,
     catalogNumberSuffix: parsed.suffix,
     year: rm.year,
+    month,
+    day,
     title: rm.title,
     titleEn: rm.title,
     description: `${rm.genre}${incomplete}`,
@@ -887,6 +953,8 @@ seedData.sort((a, b) => {
  * Groups works by year and assigns order within each year based on:
  * 1. Month/day if available (chronological)
  * 2. Catalog number if no date (as proxy for composition order)
+ *
+ * Note: Only assigns compositionOrder, does NOT modify month/day fields
  */
 function assignCompositionOrder(works: SeedWork[]) {
   // Group works by year
@@ -919,7 +987,7 @@ function assignCompositionOrder(works: SeedWork[]) {
       if (hasDateA && !hasDateB) return -1
       if (!hasDateA && hasDateB) return 1
 
-      // Neither has date - sort by catalog number
+      // Neither has date - sort by catalog number (arbitrary order based on K number)
       const numA = a.catalogNumberNumeric || 9999
       const numB = b.catalogNumberNumeric || 9999
       if (numA !== numB) return numA - numB
@@ -929,7 +997,8 @@ function assignCompositionOrder(works: SeedWork[]) {
       return suffixA.localeCompare(suffixB)
     })
 
-    // Assign order 1, 2, 3, ...
+    // Assign compositionOrder: 1, 2, 3, ...
+    // This is the only modification - we do NOT change month/day
     yearWorks.forEach((work, index) => {
       work.compositionOrder = index + 1
     })
