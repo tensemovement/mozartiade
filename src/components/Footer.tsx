@@ -26,6 +26,7 @@ export default function Footer() {
     ],
     support: [
       { label: '고객센터', href: '/support' },
+      { label: 'FAQ', href: '/faq' },
       { label: '이용약관', href: '/terms' },
       { label: '개인정보처리방침', href: '/privacy' },
       { label: '문의하기', href: '/contact' },
