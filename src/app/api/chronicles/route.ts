@@ -39,7 +39,7 @@ export async function GET(request: Request) {
     });
 
     // Transform to ChronologyItem format for compatibility
-    const chronologyItems = chronicles.map(chronicle => {
+    const chronologyItems = chronicles.map((chronicle: any) => {
       if (chronicle.type === 'life') {
         return {
           id: chronicle.id,

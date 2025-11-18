@@ -32,6 +32,7 @@ export default function Navigation() {
     { label: '영상', href: '/video' },
     { label: '공연', href: '/concert' },
     { label: '퀴즈', href: '/quiz' },
+    { label: 'FAQ', href: '/faq' },
     { label: '굿즈', href: '/goods' },
   ];
 
