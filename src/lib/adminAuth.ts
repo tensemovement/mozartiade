@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { verifyToken, extractTokenFromHeader } from './auth';
+import { verifyToken, extractTokenFromHeader } from './auth/admin';
 import { AdminRole } from '@/types';
 
 export interface AuthenticatedRequest extends NextRequest {
