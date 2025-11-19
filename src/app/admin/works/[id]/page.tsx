@@ -8,6 +8,23 @@ import ImageUpload from '@/components/admin/ImageUpload';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { MdArrowBack, MdAdd, MdDelete, MdExpandMore, MdExpandLess, MdUnfoldMore, MdUnfoldLess, MdDragIndicator } from 'react-icons/md';
 import Link from 'next/link';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface MovementForm {
   id?: string;
@@ -27,6 +44,278 @@ interface RelatedLinkForm {
   url: string;
   description: string;
   order: number;
+}
+
+// Sortable Link Item Component
+function SortableRelatedLink({
+  link,
+  index,
+  isCollapsed,
+  onToggleCollapse,
+  onRemove,
+  onUpdate,
+}: {
+  link: RelatedLinkForm;
+  index: number;
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
+  onRemove: () => void;
+  onUpdate: (field: keyof RelatedLinkForm, value: any) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: `link-${link.order}` });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes}>
+      <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md transition-all">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <div {...listeners} className="cursor-grab active:cursor-grabbing">
+              <MdDragIndicator className="w-5 h-5 text-slate-400 flex-shrink-0" />
+            </div>
+            <div className="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+              {link.order}
+            </div>
+            <h3 className="font-bold text-gray-900 text-base truncate">
+              {link.title || `링크 #${link.order}`}
+            </h3>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              className="p-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
+              title={isCollapsed ? "펼치기" : "접기"}
+            >
+              {isCollapsed ? <MdExpandMore className="w-5 h-5" /> : <MdExpandLess className="w-5 h-5" />}
+            </button>
+            <button
+              type="button"
+              onClick={onRemove}
+              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+            >
+              <MdDelete className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {!isCollapsed && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                제목 <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={link.title}
+                onChange={(e) => onUpdate('title', e.target.value)}
+                placeholder="예: 모차르트 공식 웹사이트"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                required
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                URL <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="url"
+                value={link.url}
+                onChange={(e) => onUpdate('url', e.target.value)}
+                placeholder="https://example.com"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                required
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                설명
+              </label>
+              <input
+                type="text"
+                value={link.description}
+                onChange={(e) => onUpdate('description', e.target.value)}
+                placeholder="링크에 대한 간단한 설명"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Sortable Movement Item Component
+function SortableMovement({
+  movement,
+  index,
+  isCollapsed,
+  onToggleCollapse,
+  onRemove,
+  onUpdate,
+}: {
+  movement: MovementForm;
+  index: number;
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
+  onRemove: () => void;
+  onUpdate: (field: keyof MovementForm, value: any) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: `movement-${movement.order}` });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes}>
+      <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md transition-all">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <div {...listeners} className="cursor-grab active:cursor-grabbing">
+              <MdDragIndicator className="w-5 h-5 text-slate-400 flex-shrink-0" />
+            </div>
+            <div className="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+              {movement.order}
+            </div>
+            <h3 className="font-bold text-gray-900 text-base truncate">
+              {movement.title || `악장 #${movement.order}`}
+            </h3>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              className="p-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
+              title={isCollapsed ? "펼치기" : "접기"}
+            >
+              {isCollapsed ? <MdExpandMore className="w-5 h-5" /> : <MdExpandLess className="w-5 h-5" />}
+            </button>
+            <button
+              type="button"
+              onClick={onRemove}
+              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+            >
+              <MdDelete className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {!isCollapsed && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                재생시간
+              </label>
+              <input
+                type="text"
+                value={movement.duration}
+                onChange={(e) => onUpdate('duration', e.target.value)}
+                placeholder="04:30"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                제목 (한글)
+              </label>
+              <input
+                type="text"
+                value={movement.title}
+                onChange={(e) => onUpdate('title', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                제목 (영문)
+              </label>
+              <input
+                type="text"
+                value={movement.titleEn}
+                onChange={(e) => onUpdate('titleEn', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                등장인물/캐릭터
+              </label>
+              <input
+                type="text"
+                value={movement.character}
+                onChange={(e) => onUpdate('character', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                YouTube URL
+              </label>
+              <input
+                type="url"
+                value={movement.youtubeUrl}
+                onChange={(e) => onUpdate('youtubeUrl', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                설명
+              </label>
+              <textarea
+                value={movement.description}
+                onChange={(e) => onUpdate('description', e.target.value)}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                하이라이트
+              </label>
+              <textarea
+                value={movement.highlights}
+                onChange={(e) => onUpdate('highlights', e.target.value)}
+                rows={2}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default function EditWorkPage() {
@@ -73,13 +362,13 @@ export default function EditWorkPage() {
   const [collapsedLinks, setCollapsedLinks] = useState<Set<number>>(new Set());
   const [collapsedMovements, setCollapsedMovements] = useState<Set<number>>(new Set());
 
-  // Drag and drop state
-  const [draggedLinkIndex, setDraggedLinkIndex] = useState<number | null>(null);
-  const [draggedMovementIndex, setDraggedMovementIndex] = useState<number | null>(null);
-  const [dragOverLinkIndex, setDragOverLinkIndex] = useState<number | null>(null);
-  const [dragOverMovementIndex, setDragOverMovementIndex] = useState<number | null>(null);
-  const [linkDropPosition, setLinkDropPosition] = useState<'top' | 'bottom'>('bottom');
-  const [movementDropPosition, setMovementDropPosition] = useState<'top' | 'bottom'>('bottom');
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     fetchWork();
@@ -317,146 +606,42 @@ export default function EditWorkPage() {
   const expandAllMovements = () => setCollapsedMovements(new Set());
   const collapseAllMovements = () => setCollapsedMovements(new Set(movements.map((_, i) => i)));
 
-  // Drag and drop handlers for related links
-  const handleLinkDragStart = (e: React.DragEvent, index: number) => {
-    e.stopPropagation();
-    setDraggedLinkIndex(index);
-  };
+  // Drag and drop handler for related links
+  const handleLinkDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
 
-  const handleLinkDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (draggedLinkIndex !== null && draggedLinkIndex !== index) {
-      // Calculate drop position based on mouse position within the element
-      const rect = e.currentTarget.getBoundingClientRect();
-      const mouseY = e.clientY;
-      const elementMiddle = rect.top + rect.height / 2;
+    if (over && active.id !== over.id) {
+      const oldIndex = relatedLinks.findIndex((link) => `link-${link.order}` === active.id);
+      const newIndex = relatedLinks.findIndex((link) => `link-${link.order}` === over.id);
 
-      setDragOverLinkIndex(index);
-      setLinkDropPosition(mouseY < elementMiddle ? 'top' : 'bottom');
+      const newLinks = arrayMove(relatedLinks, oldIndex, newIndex);
+
+      // Update order numbers
+      newLinks.forEach((link, idx) => {
+        link.order = idx + 1;
+      });
+
+      setRelatedLinks(newLinks);
     }
   };
 
-  const handleLinkDragEnd = () => {
-    setDraggedLinkIndex(null);
-    setDragOverLinkIndex(null);
-  };
+  // Drag and drop handler for movements
+  const handleMovementDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
 
-  const handleLinkDrop = (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (over && active.id !== over.id) {
+      const oldIndex = movements.findIndex((movement) => `movement-${movement.order}` === active.id);
+      const newIndex = movements.findIndex((movement) => `movement-${movement.order}` === over.id);
 
-    if (draggedLinkIndex === null) {
-      return;
+      const newMovements = arrayMove(movements, oldIndex, newIndex);
+
+      // Update order numbers
+      newMovements.forEach((movement, idx) => {
+        movement.order = idx + 1;
+      });
+
+      setMovements(newMovements);
     }
-
-    const newLinks = [...relatedLinks];
-    const [draggedItem] = newLinks.splice(draggedLinkIndex, 1);
-
-    // Calculate actual drop position
-    let actualDropIndex = dropIndex;
-
-    if (linkDropPosition === 'bottom') {
-      // Insert after the target item
-      if (draggedLinkIndex < dropIndex) {
-        // Dragging down: index already adjusted by removal
-        actualDropIndex = dropIndex;
-      } else {
-        // Dragging up: need to add 1 to place after
-        actualDropIndex = dropIndex + 1;
-      }
-    } else {
-      // Insert before the target item (top)
-      if (draggedLinkIndex < dropIndex) {
-        // Dragging down: need to subtract 1 due to removal
-        actualDropIndex = dropIndex - 1;
-      } else {
-        // Dragging up: index is correct
-        actualDropIndex = dropIndex;
-      }
-    }
-
-    newLinks.splice(actualDropIndex, 0, draggedItem);
-
-    // Update order numbers
-    newLinks.forEach((link, idx) => {
-      link.order = idx + 1;
-    });
-
-    setRelatedLinks(newLinks);
-    setDraggedLinkIndex(null);
-    setDragOverLinkIndex(null);
-  };
-
-  // Drag and drop handlers for movements
-  const handleMovementDragStart = (e: React.DragEvent, index: number) => {
-    e.stopPropagation();
-    setDraggedMovementIndex(index);
-  };
-
-  const handleMovementDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (draggedMovementIndex !== null && draggedMovementIndex !== index) {
-      // Calculate drop position based on mouse position within the element
-      const rect = e.currentTarget.getBoundingClientRect();
-      const mouseY = e.clientY;
-      const elementMiddle = rect.top + rect.height / 2;
-
-      setDragOverMovementIndex(index);
-      setMovementDropPosition(mouseY < elementMiddle ? 'top' : 'bottom');
-    }
-  };
-
-  const handleMovementDragEnd = () => {
-    setDraggedMovementIndex(null);
-    setDragOverMovementIndex(null);
-  };
-
-  const handleMovementDrop = (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (draggedMovementIndex === null) {
-      return;
-    }
-
-    const newMovements = [...movements];
-    const [draggedItem] = newMovements.splice(draggedMovementIndex, 1);
-
-    // Calculate actual drop position
-    let actualDropIndex = dropIndex;
-
-    if (movementDropPosition === 'bottom') {
-      // Insert after the target item
-      if (draggedMovementIndex < dropIndex) {
-        // Dragging down: index already adjusted by removal
-        actualDropIndex = dropIndex;
-      } else {
-        // Dragging up: need to add 1 to place after
-        actualDropIndex = dropIndex + 1;
-      }
-    } else {
-      // Insert before the target item (top)
-      if (draggedMovementIndex < dropIndex) {
-        // Dragging down: need to subtract 1 due to removal
-        actualDropIndex = dropIndex - 1;
-      } else {
-        // Dragging up: index is correct
-        actualDropIndex = dropIndex;
-      }
-    }
-
-    newMovements.splice(actualDropIndex, 0, draggedItem);
-
-    // Update order numbers
-    newMovements.forEach((movement, idx) => {
-      movement.order = idx + 1;
-    });
-
-    setMovements(newMovements);
-    setDraggedMovementIndex(null);
-    setDragOverMovementIndex(null);
   };
 
   if (isLoading) {
@@ -917,122 +1102,30 @@ export default function EditWorkPage() {
                       관련 링크를 추가해주세요
                     </p>
                   ) : (
-                    <div className="space-y-4">
-                      {relatedLinks.map((link, index) => {
-                        const isCollapsed = collapsedLinks.has(index);
-                        const isDragging = draggedLinkIndex === index;
-                        const isDropTarget = dragOverLinkIndex === index && draggedLinkIndex !== index;
-
-                        return (
-                        <div key={link.id || index}>
-                          {/* Placeholder before item */}
-                          {isDropTarget && linkDropPosition === 'top' && (
-                            <div className="h-20 mb-4 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center transition-all animate-in fade-in duration-150">
-                              <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
-                            </div>
-                          )}
-
-                          <div
-                            draggable
-                            onDragStart={(e) => handleLinkDragStart(e, index)}
-                            onDragOver={(e) => handleLinkDragOver(e, index)}
-                            onDragEnd={handleLinkDragEnd}
-                            onDrop={(e) => handleLinkDrop(e, index)}
-                            className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move border-2 border-slate-200
-                              ${isDragging ? 'opacity-50' : 'hover:shadow-md'}
-                            `}
-                          >
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                              <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing flex-shrink-0" />
-                              <div className="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                {link.order}
-                              </div>
-                              <h3 className="font-bold text-gray-900 text-base truncate">
-                                {link.title || `링크 #${link.order}`}
-                              </h3>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <button
-                                type="button"
-                                onClick={() => toggleLinkCollapse(index)}
-                                className="p-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
-                                title={isCollapsed ? "펼치기" : "접기"}
-                              >
-                                {isCollapsed ? <MdExpandMore className="w-5 h-5" /> : <MdExpandLess className="w-5 h-5" />}
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => removeRelatedLink(index)}
-                                className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
-                              >
-                                <MdDelete className="w-5 h-5" />
-                              </button>
-                            </div>
-                          </div>
-
-                        {!isCollapsed && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              제목 <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              value={link.title}
-                              onChange={(e) =>
-                                updateRelatedLink(index, 'title', e.target.value)
-                              }
-                              placeholder="예: 모차르트 공식 웹사이트"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                              required
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={handleLinkDragEnd}
+                    >
+                      <SortableContext
+                        items={relatedLinks.map((link) => `link-${link.order}`)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <div className="space-y-4">
+                          {relatedLinks.map((link, index) => (
+                            <SortableRelatedLink
+                              key={`link-${link.order}`}
+                              link={link}
+                              index={index}
+                              isCollapsed={collapsedLinks.has(index)}
+                              onToggleCollapse={() => toggleLinkCollapse(index)}
+                              onRemove={() => removeRelatedLink(index)}
+                              onUpdate={(field, value) => updateRelatedLink(index, field, value)}
                             />
-                          </div>
-
-                          <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              URL <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                              type="url"
-                              value={link.url}
-                              onChange={(e) =>
-                                updateRelatedLink(index, 'url', e.target.value)
-                              }
-                              placeholder="https://example.com"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                              required
-                            />
-                          </div>
-
-                          <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              설명
-                            </label>
-                            <input
-                              type="text"
-                              value={link.description}
-                              onChange={(e) =>
-                                updateRelatedLink(index, 'description', e.target.value)
-                              }
-                              placeholder="링크에 대한 간단한 설명"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
+                          ))}
                         </div>
-                        )}
-                          </div>
-
-                          {/* Placeholder after item */}
-                          {isDropTarget && linkDropPosition === 'bottom' && (
-                            <div className="h-20 mt-4 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center transition-all animate-in fade-in duration-150">
-                              <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
+                      </SortableContext>
+                    </DndContext>
                   )}
                 </div>
               </div>
@@ -1082,174 +1175,30 @@ export default function EditWorkPage() {
                       악장을 추가해주세요
                     </p>
                   ) : (
-                    <div className="space-y-6">
-                      {movements.map((movement, index) => {
-                        const isCollapsed = collapsedMovements.has(index);
-                        const isDragging = draggedMovementIndex === index;
-                        const isDropTarget = dragOverMovementIndex === index && draggedMovementIndex !== index;
-
-                        return (
-                        <div key={movement.id || index}>
-                          {/* Placeholder before item */}
-                          {isDropTarget && movementDropPosition === 'top' && (
-                            <div className="h-20 mb-6 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center transition-all animate-in fade-in duration-150">
-                              <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
-                            </div>
-                          )}
-
-                          <div
-                            draggable
-                            onDragStart={(e) => handleMovementDragStart(e, index)}
-                            onDragOver={(e) => handleMovementDragOver(e, index)}
-                            onDragEnd={handleMovementDragEnd}
-                            onDrop={(e) => handleMovementDrop(e, index)}
-                            className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move border-2 border-slate-200
-                              ${isDragging ? 'opacity-50' : 'hover:shadow-md'}
-                            `}
-                          >
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                              <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing flex-shrink-0" />
-                              <div className="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
-                                {movement.order}
-                              </div>
-                              <h3 className="font-bold text-gray-900 text-base truncate">
-                                {movement.title || `악장 #${movement.order}`}
-                              </h3>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <button
-                                type="button"
-                                onClick={() => toggleMovementCollapse(index)}
-                                className="p-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
-                                title={isCollapsed ? "펼치기" : "접기"}
-                              >
-                                {isCollapsed ? <MdExpandMore className="w-5 h-5" /> : <MdExpandLess className="w-5 h-5" />}
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => removeMovement(index)}
-                                className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
-                              >
-                                <MdDelete className="w-5 h-5" />
-                              </button>
-                            </div>
-                          </div>
-
-                        {!isCollapsed && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              재생시간
-                            </label>
-                            <input
-                              type="text"
-                              value={movement.duration}
-                              onChange={(e) =>
-                                updateMovement(index, 'duration', e.target.value)
-                              }
-                              placeholder="04:30"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={handleMovementDragEnd}
+                    >
+                      <SortableContext
+                        items={movements.map((movement) => `movement-${movement.order}`)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <div className="space-y-6">
+                          {movements.map((movement, index) => (
+                            <SortableMovement
+                              key={`movement-${movement.order}`}
+                              movement={movement}
+                              index={index}
+                              isCollapsed={collapsedMovements.has(index)}
+                              onToggleCollapse={() => toggleMovementCollapse(index)}
+                              onRemove={() => removeMovement(index)}
+                              onUpdate={(field, value) => updateMovement(index, field, value)}
                             />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              제목 (한글)
-                            </label>
-                            <input
-                              type="text"
-                              value={movement.title}
-                              onChange={(e) =>
-                                updateMovement(index, 'title', e.target.value)
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              제목 (영문)
-                            </label>
-                            <input
-                              type="text"
-                              value={movement.titleEn}
-                              onChange={(e) =>
-                                updateMovement(index, 'titleEn', e.target.value)
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              등장인물/캐릭터
-                            </label>
-                            <input
-                              type="text"
-                              value={movement.character}
-                              onChange={(e) =>
-                                updateMovement(index, 'character', e.target.value)
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              YouTube URL
-                            </label>
-                            <input
-                              type="url"
-                              value={movement.youtubeUrl}
-                              onChange={(e) =>
-                                updateMovement(index, 'youtubeUrl', e.target.value)
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              설명
-                            </label>
-                            <textarea
-                              value={movement.description}
-                              onChange={(e) =>
-                                updateMovement(index, 'description', e.target.value)
-                              }
-                              rows={3}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              하이라이트
-                            </label>
-                            <textarea
-                              value={movement.highlights}
-                              onChange={(e) =>
-                                updateMovement(index, 'highlights', e.target.value)
-                              }
-                              rows={2}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-                          </div>
-                        )}
-                          </div>
-
-                          {/* Placeholder after item */}
-                          {isDropTarget && movementDropPosition === 'bottom' && (
-                            <div className="h-20 mt-6 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center transition-all animate-in fade-in duration-150">
-                              <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
-                            </div>
-                          )}
+                          ))}
                         </div>
-                        );
-                      })}
-                    </div>
+                      </SortableContext>
+                    </DndContext>
                   )}
                 </div>
               </div>
