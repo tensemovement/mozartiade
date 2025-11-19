@@ -347,8 +347,6 @@ export default function EditWorkPage() {
     e.stopPropagation();
 
     if (draggedLinkIndex === null) {
-      setDraggedLinkIndex(null);
-      setDragOverLinkIndex(null);
       return;
     }
 
@@ -357,10 +355,25 @@ export default function EditWorkPage() {
 
     // Calculate actual drop position
     let actualDropIndex = dropIndex;
+
     if (linkDropPosition === 'bottom') {
-      actualDropIndex = draggedLinkIndex < dropIndex ? dropIndex : dropIndex + 1;
+      // Insert after the target item
+      if (draggedLinkIndex < dropIndex) {
+        // Dragging down: index already adjusted by removal
+        actualDropIndex = dropIndex;
+      } else {
+        // Dragging up: need to add 1 to place after
+        actualDropIndex = dropIndex + 1;
+      }
     } else {
-      actualDropIndex = draggedLinkIndex < dropIndex ? dropIndex - 1 : dropIndex;
+      // Insert before the target item (top)
+      if (draggedLinkIndex < dropIndex) {
+        // Dragging down: need to subtract 1 due to removal
+        actualDropIndex = dropIndex - 1;
+      } else {
+        // Dragging up: index is correct
+        actualDropIndex = dropIndex;
+      }
     }
 
     newLinks.splice(actualDropIndex, 0, draggedItem);
@@ -405,8 +418,6 @@ export default function EditWorkPage() {
     e.stopPropagation();
 
     if (draggedMovementIndex === null) {
-      setDraggedMovementIndex(null);
-      setDragOverMovementIndex(null);
       return;
     }
 
@@ -415,10 +426,25 @@ export default function EditWorkPage() {
 
     // Calculate actual drop position
     let actualDropIndex = dropIndex;
+
     if (movementDropPosition === 'bottom') {
-      actualDropIndex = draggedMovementIndex < dropIndex ? dropIndex : dropIndex + 1;
+      // Insert after the target item
+      if (draggedMovementIndex < dropIndex) {
+        // Dragging down: index already adjusted by removal
+        actualDropIndex = dropIndex;
+      } else {
+        // Dragging up: need to add 1 to place after
+        actualDropIndex = dropIndex + 1;
+      }
     } else {
-      actualDropIndex = draggedMovementIndex < dropIndex ? dropIndex - 1 : dropIndex;
+      // Insert before the target item (top)
+      if (draggedMovementIndex < dropIndex) {
+        // Dragging down: need to subtract 1 due to removal
+        actualDropIndex = dropIndex - 1;
+      } else {
+        // Dragging up: index is correct
+        actualDropIndex = dropIndex;
+      }
     }
 
     newMovements.splice(actualDropIndex, 0, draggedItem);
@@ -895,7 +921,7 @@ export default function EditWorkPage() {
                       {relatedLinks.map((link, index) => {
                         const isCollapsed = collapsedLinks.has(index);
                         const isDragging = draggedLinkIndex === index;
-                        const isDropTarget = dragOverLinkIndex === index;
+                        const isDropTarget = dragOverLinkIndex === index && draggedLinkIndex !== index;
 
                         return (
                         <div key={link.id || index}>
@@ -1060,7 +1086,7 @@ export default function EditWorkPage() {
                       {movements.map((movement, index) => {
                         const isCollapsed = collapsedMovements.has(index);
                         const isDragging = draggedMovementIndex === index;
-                        const isDropTarget = dragOverMovementIndex === index;
+                        const isDropTarget = dragOverMovementIndex === index && draggedMovementIndex !== index;
 
                         return (
                         <div key={movement.id || index}>
