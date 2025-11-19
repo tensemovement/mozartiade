@@ -1,5 +1,5 @@
 import Navigation from '@/components/Navigation';
-// import HeroSection from '@/components/HeroSection';
+import HeroSection from '@/components/HeroSection';
 import UnifiedWorksSection from '@/components/UnifiedWorksSection';
 import TimelineSection from '@/components/TimelineSection';
 // import UpdatesSection from '@/components/UpdatesSection';
@@ -12,7 +12,7 @@ export default function Home() {
     <>
       <Navigation />
       <main className="overflow-x-hidden">
-        {/* <HeroSection /> */}
+        <HeroSection />
         <UnifiedWorksSection />
         <TimelineSection />
         {/* <UpdatesSection /> */}
