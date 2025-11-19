@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { selectedItemState, selectedMovementState } from '@/store/atoms';
 import Image from 'next/image';
-import { MdFullscreen, MdClose, MdLocationOn, MdDescription, MdArticle, MdOpenInNew, MdOndemandVideo } from 'react-icons/md';
+import Link from 'next/link';
+import { MdFullscreen, MdClose, MdLocationOn, MdDescription, MdArticle, MdOpenInNew, MdOndemandVideo, MdFavorite, MdMusicNote } from 'react-icons/md';
 
 export default function WorkPanel() {
   const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
@@ -78,17 +79,14 @@ export default function WorkPanel() {
         }`}>
           {/* Action buttons */}
           <div className="absolute top-6 right-6 flex gap-2">
-            {/* Fullscreen button */}
-            <button
-              onClick={() => {
-                // TODO: 상세페이지로 전환
-                console.log('Navigate to detail page:', selectedItem.id);
-              }}
+            {/* Detail page button */}
+            <Link
+              href={`/works/${selectedItem.id}`}
               className="p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full transition-all hover:scale-110 shadow-lg"
-              title="전체 화면으로 보기"
+              title="상세보기"
             >
               <MdFullscreen className="h-5 w-5" />
-            </button>
+            </Link>
             {/* Close button */}
             <button
               onClick={() => setSelectedItem(null)}
@@ -140,21 +138,99 @@ export default function WorkPanel() {
             {selectedItem.description}
           </p>
 
+          {/* 작품 기본 정보 */}
+          {selectedItem.type === 'work' && (
+            <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
+              <h3 className="font-serif text-base font-bold text-gray-900 mb-3">
+                기본 정보
+              </h3>
+              <div className="space-y-2">
+                {selectedItem.compositionLocation && (
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs font-semibold text-gray-500 uppercase min-w-[60px]">작곡 장소</span>
+                    <span className="text-sm text-gray-900">{selectedItem.compositionLocation}</span>
+                  </div>
+                )}
+                {selectedItem.voteCount !== undefined && (
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs font-semibold text-gray-500 uppercase min-w-[60px]">좋아요</span>
+                    <span className="text-sm text-gray-900 flex items-center gap-1">
+                      <MdFavorite className="text-accent h-4 w-4" />
+                      {selectedItem.voteCount.toLocaleString()}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* 카탈로그 번호 */}
+              {(selectedItem.catalogNumberFirstEd || selectedItem.catalogNumberNinthEd) && (
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">추가 카탈로그 번호</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {selectedItem.catalogNumberFirstEd && (
+                      <div className="bg-white p-2 rounded-lg border border-gray-200">
+                        <p className="text-xs text-gray-500 mb-0.5">1판 (1862)</p>
+                        <p className="text-sm font-bold text-gray-900">{selectedItem.catalogNumberFirstEd}</p>
+                      </div>
+                    )}
+                    {selectedItem.catalogNumberNinthEd && (
+                      <div className="bg-white p-2 rounded-lg border border-gray-200">
+                        <p className="text-xs text-gray-500 mb-0.5">9판 (2024)</p>
+                        <p className="text-sm font-bold text-gray-900">{selectedItem.catalogNumberNinthEd}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {selectedItem.compositionDetails && (
             <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-200">
               <h3 className="font-serif text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
                 <MdDescription className="h-4 w-4 text-secondary-600" />
                 작곡 배경
               </h3>
-              <p className="font-sans text-xs text-gray-700 leading-relaxed">
+              <p className="font-sans text-xs text-gray-700 leading-relaxed whitespace-pre-line">
                 {selectedItem.compositionDetails}
               </p>
             </div>
           )}
 
+          {/* 비하인드 스토리 */}
+          {selectedItem.behindStory && (
+            <div className="mb-6 p-4 bg-purple-50 rounded-xl border border-purple-200">
+              <h3 className="font-serif text-base font-bold text-gray-900 mb-2">
+                비하인드 스토리
+              </h3>
+              <p className="font-sans text-xs text-gray-700 leading-relaxed whitespace-pre-line">
+                {selectedItem.behindStory}
+              </p>
+            </div>
+          )}
+
+          {/* 활용 사례 */}
+          {selectedItem.usageExamples && selectedItem.usageExamples.length > 0 && (
+            <div className="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+              <h3 className="font-serif text-base font-bold text-gray-900 mb-3">
+                공연 & 활용 사례
+              </h3>
+              <div className="space-y-2">
+                {selectedItem.usageExamples.map((example: string, index: number) => (
+                  <div key={index} className="flex items-start gap-2">
+                    <div className="mt-0.5 w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-xs font-bold">{index + 1}</span>
+                    </div>
+                    <p className="font-sans text-xs text-gray-700 leading-relaxed">{example}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* YouTube and Sheet Music */}
           {selectedItem.type === 'work' && (
-            <div className="space-y-3">
+            <div className="space-y-3 mb-6">
               {selectedItem.youtubeUrl && (() => {
                 const embedUrl = getYoutubeEmbedUrl(selectedItem.youtubeUrl);
                 return embedUrl ? (
@@ -207,6 +283,41 @@ export default function WorkPanel() {
                   </div>
                 </a>
               )}
+            </div>
+          )}
+
+          {/* 악장 목록 */}
+          {selectedItem.movements && selectedItem.movements.length > 0 && (
+            <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-200">
+              <h3 className="font-serif text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <MdMusicNote className="h-4 w-4 text-amber-600" />
+                구성 악곡
+              </h3>
+              <div className="space-y-2">
+                {selectedItem.movements.map((movement: any) => (
+                  <div
+                    key={movement.id}
+                    className="p-3 bg-white rounded-lg border border-amber-200 hover:border-amber-400 transition-colors"
+                  >
+                    <div className="flex items-start gap-2">
+                      <div className="mt-0.5 w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-xs font-bold">{movement.order}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                          {movement.title}
+                        </h4>
+                        {movement.character && (
+                          <p className="font-sans text-xs text-gray-600 mb-0.5">{movement.character}</p>
+                        )}
+                        {movement.duration && (
+                          <p className="font-sans text-xs text-gray-500">{movement.duration}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
@@ -239,17 +350,14 @@ export default function WorkPanel() {
         }`}>
           {/* Action buttons */}
           <div className="absolute top-4 right-4 flex gap-2">
-            {/* Fullscreen button */}
-            <button
-              onClick={() => {
-                // TODO: 상세페이지로 전환
-                console.log('Navigate to detail page:', selectedItem.id);
-              }}
+            {/* Detail page button */}
+            <Link
+              href={`/works/${selectedItem.id}`}
               className="p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full transition-all hover:scale-110 shadow-lg"
-              title="전체 화면으로 보기"
+              title="상세보기"
             >
               <MdFullscreen className="h-5 w-5" />
-            </button>
+            </Link>
             {/* Close button */}
             <button
               onClick={() => setSelectedItem(null)}
@@ -302,21 +410,99 @@ export default function WorkPanel() {
             {selectedItem.description}
           </p>
 
+          {/* 작품 기본 정보 */}
+          {selectedItem.type === 'work' && (
+            <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
+              <h3 className="font-serif text-base font-bold text-gray-900 mb-3">
+                기본 정보
+              </h3>
+              <div className="space-y-2">
+                {selectedItem.compositionLocation && (
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs font-semibold text-gray-500 uppercase min-w-[60px]">작곡 장소</span>
+                    <span className="text-sm text-gray-900">{selectedItem.compositionLocation}</span>
+                  </div>
+                )}
+                {selectedItem.voteCount !== undefined && (
+                  <div className="flex items-start gap-2">
+                    <span className="text-xs font-semibold text-gray-500 uppercase min-w-[60px]">좋아요</span>
+                    <span className="text-sm text-gray-900 flex items-center gap-1">
+                      <MdFavorite className="text-accent h-4 w-4" />
+                      {selectedItem.voteCount.toLocaleString()}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* 카탈로그 번호 */}
+              {(selectedItem.catalogNumberFirstEd || selectedItem.catalogNumberNinthEd) && (
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">추가 카탈로그 번호</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {selectedItem.catalogNumberFirstEd && (
+                      <div className="bg-white p-2 rounded-lg border border-gray-200">
+                        <p className="text-xs text-gray-500 mb-0.5">1판 (1862)</p>
+                        <p className="text-sm font-bold text-gray-900">{selectedItem.catalogNumberFirstEd}</p>
+                      </div>
+                    )}
+                    {selectedItem.catalogNumberNinthEd && (
+                      <div className="bg-white p-2 rounded-lg border border-gray-200">
+                        <p className="text-xs text-gray-500 mb-0.5">9판 (2024)</p>
+                        <p className="text-sm font-bold text-gray-900">{selectedItem.catalogNumberNinthEd}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {selectedItem.compositionDetails && (
             <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-200">
               <h3 className="font-serif text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
                 <MdDescription className="h-4 w-4 text-secondary-600" />
                 작곡 배경
               </h3>
-              <p className="font-sans text-xs text-gray-700 leading-relaxed">
+              <p className="font-sans text-xs text-gray-700 leading-relaxed whitespace-pre-line">
                 {selectedItem.compositionDetails}
               </p>
             </div>
           )}
 
+          {/* 비하인드 스토리 */}
+          {selectedItem.behindStory && (
+            <div className="mb-6 p-4 bg-purple-50 rounded-xl border border-purple-200">
+              <h3 className="font-serif text-base font-bold text-gray-900 mb-2">
+                비하인드 스토리
+              </h3>
+              <p className="font-sans text-xs text-gray-700 leading-relaxed whitespace-pre-line">
+                {selectedItem.behindStory}
+              </p>
+            </div>
+          )}
+
+          {/* 활용 사례 */}
+          {selectedItem.usageExamples && selectedItem.usageExamples.length > 0 && (
+            <div className="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+              <h3 className="font-serif text-base font-bold text-gray-900 mb-3">
+                공연 & 활용 사례
+              </h3>
+              <div className="space-y-2">
+                {selectedItem.usageExamples.map((example: string, index: number) => (
+                  <div key={index} className="flex items-start gap-2">
+                    <div className="mt-0.5 w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-xs font-bold">{index + 1}</span>
+                    </div>
+                    <p className="font-sans text-xs text-gray-700 leading-relaxed">{example}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* YouTube and Sheet Music */}
           {selectedItem.type === 'work' && (
-            <div className="space-y-3">
+            <div className="space-y-3 mb-6">
               {selectedItem.youtubeUrl && (() => {
                 const embedUrl = getYoutubeEmbedUrl(selectedItem.youtubeUrl);
                 return embedUrl ? (
@@ -369,6 +555,41 @@ export default function WorkPanel() {
                   </div>
                 </a>
               )}
+            </div>
+          )}
+
+          {/* 악장 목록 */}
+          {selectedItem.movements && selectedItem.movements.length > 0 && (
+            <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-200">
+              <h3 className="font-serif text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <MdMusicNote className="h-4 w-4 text-amber-600" />
+                구성 악곡
+              </h3>
+              <div className="space-y-2">
+                {selectedItem.movements.map((movement: any) => (
+                  <div
+                    key={movement.id}
+                    className="p-3 bg-white rounded-lg border border-amber-200 hover:border-amber-400 transition-colors"
+                  >
+                    <div className="flex items-start gap-2">
+                      <div className="mt-0.5 w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-xs font-bold">{movement.order}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                          {movement.title}
+                        </h4>
+                        {movement.character && (
+                          <p className="font-sans text-xs text-gray-600 mb-0.5">{movement.character}</p>
+                        )}
+                        {movement.duration && (
+                          <p className="font-sans text-xs text-gray-500">{movement.duration}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

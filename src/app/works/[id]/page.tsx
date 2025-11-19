@@ -155,15 +155,88 @@ export default function WorkDetailPage({ params }: PageProps) {
       {/* 메인 컨텐츠 섹션 */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* 왼쪽 컬럼 - 상세 정보 */}
-            <div className="lg:col-span-3 space-y-8">
+            <div className="lg:col-span-2 space-y-8">
+              {/* 작품 기본 정보 카드 */}
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-md">
+                <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                  <MdMusicNote className="text-accent" />
+                  작품 기본 정보
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {/* 작곡 일자 */}
+                  <div>
+                    <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">작곡 일자</h3>
+                    <p className="text-gray-900 font-medium text-lg">{formatDate()}</p>
+                  </div>
+
+                  {/* 작곡 장소 */}
+                  {work.compositionLocation && (
+                    <div>
+                      <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">작곡 장소</h3>
+                      <p className="text-gray-900 font-medium text-lg">{work.compositionLocation}</p>
+                    </div>
+                  )}
+
+                  {/* 장르 */}
+                  {work.genre && (
+                    <div>
+                      <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">장르</h3>
+                      <p className="text-gray-900 font-medium text-lg">{work.genre}</p>
+                    </div>
+                  )}
+
+                  {/* 투표 수 */}
+                  {work.voteCount !== undefined && (
+                    <div>
+                      <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">좋아요</h3>
+                      <p className="text-gray-900 font-medium text-lg flex items-center gap-2">
+                        <MdFavorite className="text-accent" />
+                        {work.voteCount.toLocaleString()}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* 카탈로그 번호 섹션 */}
+                {(work.catalogNumber || work.catalogNumberFirstEd || work.catalogNumberNinthEd) && (
+                  <div className="mt-8 pt-8 border-t border-gray-200">
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-4">카탈로그 번호</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* 6판 (메인) */}
+                      {work.catalogNumber && (
+                        <div className="bg-accent/5 p-4 rounded-xl border border-accent/20">
+                          <h4 className="text-xs font-semibold text-gray-500 mb-1">6판 (쾨헬 목록)</h4>
+                          <p className="text-accent font-bold text-2xl">{work.catalogNumber}</p>
+                        </div>
+                      )}
+
+                      {/* 1판 */}
+                      {work.catalogNumberFirstEd && (
+                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                          <h4 className="text-xs font-semibold text-gray-500 mb-1">1판 (1862)</h4>
+                          <p className="text-gray-900 font-bold text-xl">{work.catalogNumberFirstEd}</p>
+                        </div>
+                      )}
+
+                      {/* 9판 */}
+                      {work.catalogNumberNinthEd && (
+                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                          <h4 className="text-xs font-semibold text-gray-500 mb-1">9판 (2024)</h4>
+                          <p className="text-gray-900 font-bold text-xl">{work.catalogNumberNinthEd}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* 작품 상세 */}
               {work.compositionDetails && (
                 <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-md">
-                  <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <MdMusicNote className="text-accent" />
-                    작품 정보
+                  <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">
+                    작품 설명
                   </h2>
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                     {work.compositionDetails}
@@ -206,88 +279,13 @@ export default function WorkDetailPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* 오른쪽 컬럼 - 작품 정보 패널 */}
+            {/* 오른쪽 컬럼 - 관련 링크 & 악장 목록 */}
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-6">
-                {/* 작품 기본 정보 */}
-                <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-                  <h2 className="font-serif text-lg font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                    작품 정보
-                  </h2>
-                  <div className="space-y-4">
-                    {/* 작곡 일자 */}
-                    <div>
-                      <h3 className="text-xs font-semibold text-gray-500 uppercase mb-1">작곡 일자</h3>
-                      <p className="text-gray-900 font-medium">{formatDate()}</p>
-                    </div>
-
-                    {/* 작곡 장소 */}
-                    {work.compositionLocation && (
-                      <div>
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase mb-1">작곡 장소</h3>
-                        <p className="text-gray-900 font-medium">{work.compositionLocation}</p>
-                      </div>
-                    )}
-
-                    {/* 장르 */}
-                    {work.genre && (
-                      <div>
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase mb-1">장르</h3>
-                        <p className="text-gray-900 font-medium">{work.genre}</p>
-                      </div>
-                    )}
-
-                    {/* 투표 수 */}
-                    {work.voteCount !== undefined && (
-                      <div>
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase mb-1">좋아요</h3>
-                        <p className="text-gray-900 font-medium flex items-center gap-2">
-                          <MdFavorite className="text-accent" />
-                          {work.voteCount.toLocaleString()}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* 카탈로그 정보 */}
-                {(work.catalogNumber || work.catalogNumberFirstEd || work.catalogNumberNinthEd) && (
-                  <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-                    <h2 className="font-serif text-lg font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                      카탈로그 번호
-                    </h2>
-                    <div className="space-y-3">
-                      {/* 6판 (메인) */}
-                      {work.catalogNumber && (
-                        <div>
-                          <h3 className="text-xs font-semibold text-gray-500 uppercase mb-1">6판 (쾨헬 목록)</h3>
-                          <p className="text-accent font-bold text-lg">{work.catalogNumber}</p>
-                        </div>
-                      )}
-
-                      {/* 1판 */}
-                      {work.catalogNumberFirstEd && (
-                        <div>
-                          <h3 className="text-xs font-semibold text-gray-500 uppercase mb-1">1판 (1862)</h3>
-                          <p className="text-gray-900 font-medium">{work.catalogNumberFirstEd}</p>
-                        </div>
-                      )}
-
-                      {/* 9판 */}
-                      {work.catalogNumberNinthEd && (
-                        <div>
-                          <h3 className="text-xs font-semibold text-gray-500 uppercase mb-1">9판 (2024)</h3>
-                          <p className="text-gray-900 font-medium">{work.catalogNumberNinthEd}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-
                 {/* 관련 링크 */}
                 {(work.youtubeUrl || work.sheetMusicUrl) && (
                   <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-                    <h2 className="font-serif text-lg font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
+                    <h2 className="font-serif text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                       관련 링크
                     </h2>
                     <div className="space-y-3">
@@ -296,10 +294,10 @@ export default function WorkDetailPage({ params }: PageProps) {
                           href={work.youtubeUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 p-3 bg-red-50 hover:bg-red-100 rounded-xl transition-all duration-300 border border-red-200 hover:border-red-300 group"
+                          className="flex items-center gap-3 p-4 bg-red-50 hover:bg-red-100 rounded-xl transition-all duration-300 border border-red-200 hover:border-red-300 group"
                         >
-                          <MdPlayArrow className="text-red-600 text-xl group-hover:scale-110 transition-transform" />
-                          <span className="text-red-600 font-semibold text-sm">YouTube 감상</span>
+                          <MdPlayArrow className="text-red-600 text-2xl group-hover:scale-110 transition-transform" />
+                          <span className="text-red-600 font-semibold">YouTube 감상</span>
                         </a>
                       )}
 
@@ -308,10 +306,10 @@ export default function WorkDetailPage({ params }: PageProps) {
                           href={work.sheetMusicUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 p-3 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all duration-300 border border-blue-200 hover:border-blue-300 group"
+                          className="flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all duration-300 border border-blue-200 hover:border-blue-300 group"
                         >
-                          <MdMusicNote className="text-blue-600 text-xl group-hover:scale-110 transition-transform" />
-                          <span className="text-blue-600 font-semibold text-sm">악보 보기</span>
+                          <MdMusicNote className="text-blue-600 text-2xl group-hover:scale-110 transition-transform" />
+                          <span className="text-blue-600 font-semibold">악보 보기</span>
                         </a>
                       )}
                     </div>
@@ -321,31 +319,31 @@ export default function WorkDetailPage({ params }: PageProps) {
                 {/* 악장 목록 */}
                 {work.movements && work.movements.length > 0 && (
                   <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-                    <h2 className="font-serif text-lg font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
+                    <h2 className="font-serif text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                       구성 악곡
                     </h2>
-                    <div className="space-y-2 max-h-[500px] overflow-y-auto custom-scrollbar">
+                    <div className="space-y-2 max-h-[600px] overflow-y-auto custom-scrollbar">
                       {work.movements.map((movement) => (
                         <button
                           key={movement.id}
                           onClick={() => setSelectedMovement(movement)}
-                          className="w-full text-left p-3 bg-gray-50 hover:bg-accent/10 rounded-xl transition-all duration-300 border border-gray-100 hover:border-accent/50 group"
+                          className="w-full text-left p-4 bg-gray-50 hover:bg-accent/10 rounded-xl transition-all duration-300 border border-gray-100 hover:border-accent/50 group"
                         >
-                          <div className="flex items-start gap-2">
-                            <div className="mt-0.5 w-7 h-7 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent group-hover:scale-110 transition-all">
-                              <span className="text-accent group-hover:text-white text-xs font-bold">
+                          <div className="flex items-start gap-3">
+                            <div className="mt-1 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent group-hover:scale-110 transition-all">
+                              <span className="text-accent group-hover:text-white text-sm font-bold">
                                 {movement.order}
                               </span>
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-gray-900 font-semibold text-xs mb-0.5 group-hover:text-accent transition-colors leading-tight">
+                              <h3 className="text-gray-900 font-semibold text-sm mb-1 group-hover:text-accent transition-colors">
                                 {movement.title}
                               </h3>
                               {movement.character && (
-                                <p className="text-gray-600 text-xs mb-0.5 leading-tight">{movement.character}</p>
+                                <p className="text-gray-600 text-xs mb-1">{movement.character}</p>
                               )}
                               {movement.duration && (
-                                <p className="text-gray-500 text-xs leading-tight">{movement.duration}</p>
+                                <p className="text-gray-500 text-xs">{movement.duration}</p>
                               )}
                             </div>
                           </div>
