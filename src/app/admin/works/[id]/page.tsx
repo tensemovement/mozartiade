@@ -314,17 +314,24 @@ export default function EditWorkPage() {
   const collapseAllMovements = () => setCollapsedMovements(new Set(movements.map((_, i) => i)));
 
   // Drag and drop handlers for related links
-  const handleLinkDragStart = (index: number) => {
+  const handleLinkDragStart = (e: React.DragEvent, index: number) => {
+    e.stopPropagation();
     setDraggedLinkIndex(index);
   };
 
   const handleLinkDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
+    e.stopPropagation();
   };
 
   const handleLinkDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
-    if (draggedLinkIndex === null || draggedLinkIndex === dropIndex) return;
+    e.stopPropagation();
+
+    if (draggedLinkIndex === null || draggedLinkIndex === dropIndex) {
+      setDraggedLinkIndex(null);
+      return;
+    }
 
     const newLinks = [...relatedLinks];
     const [draggedItem] = newLinks.splice(draggedLinkIndex, 1);
@@ -340,17 +347,24 @@ export default function EditWorkPage() {
   };
 
   // Drag and drop handlers for movements
-  const handleMovementDragStart = (index: number) => {
+  const handleMovementDragStart = (e: React.DragEvent, index: number) => {
+    e.stopPropagation();
     setDraggedMovementIndex(index);
   };
 
   const handleMovementDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
+    e.stopPropagation();
   };
 
   const handleMovementDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
-    if (draggedMovementIndex === null || draggedMovementIndex === dropIndex) return;
+    e.stopPropagation();
+
+    if (draggedMovementIndex === null || draggedMovementIndex === dropIndex) {
+      setDraggedMovementIndex(null);
+      return;
+    }
 
     const newMovements = [...movements];
     const [draggedItem] = newMovements.splice(draggedMovementIndex, 1);
@@ -830,7 +844,7 @@ export default function EditWorkPage() {
                         <div
                           key={link.id || index}
                           draggable
-                          onDragStart={() => handleLinkDragStart(index)}
+                          onDragStart={(e) => handleLinkDragStart(e, index)}
                           onDragOver={(e) => handleLinkDragOver(e, index)}
                           onDrop={(e) => handleLinkDrop(e, index)}
                           className={`p-5 bg-slate-50 border-2 border-slate-200 rounded-xl transition-all cursor-move ${
@@ -839,12 +853,12 @@ export default function EditWorkPage() {
                         >
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
-                              <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing" />
-                              <div className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                              <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing flex-shrink-0" />
+                              <div className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">
                                 {link.order}
                               </div>
-                              <h3 className="font-bold text-gray-900 text-lg">
-                                링크 #{link.order}
+                              <h3 className="font-bold text-gray-900 text-lg truncate">
+                                {link.title || `링크 #${link.order}`}
                               </h3>
                             </div>
                             <div className="flex items-center gap-2">
@@ -868,20 +882,6 @@ export default function EditWorkPage() {
 
                         {!isCollapsed && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              순서
-                            </label>
-                            <input
-                              type="number"
-                              value={link.order}
-                              onChange={(e) =>
-                                updateRelatedLink(index, 'order', parseInt(e.target.value))
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                               제목 <span className="text-red-500">*</span>
@@ -990,7 +990,7 @@ export default function EditWorkPage() {
                         <div
                           key={movement.id || index}
                           draggable
-                          onDragStart={() => handleMovementDragStart(index)}
+                          onDragStart={(e) => handleMovementDragStart(e, index)}
                           onDragOver={(e) => handleMovementDragOver(e, index)}
                           onDrop={(e) => handleMovementDrop(e, index)}
                           className={`p-5 bg-slate-50 border-2 border-slate-200 rounded-xl transition-all cursor-move ${
@@ -999,12 +999,12 @@ export default function EditWorkPage() {
                         >
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
-                              <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing" />
-                              <div className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                              <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing flex-shrink-0" />
+                              <div className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">
                                 {movement.order}
                               </div>
-                              <h3 className="font-bold text-gray-900 text-lg">
-                                악장 #{movement.order}
+                              <h3 className="font-bold text-gray-900 text-lg truncate">
+                                {movement.title || `악장 #${movement.order}`}
                               </h3>
                             </div>
                             <div className="flex items-center gap-2">
@@ -1028,20 +1028,6 @@ export default function EditWorkPage() {
 
                         {!isCollapsed && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              순서
-                            </label>
-                            <input
-                              type="number"
-                              value={movement.order}
-                              onChange={(e) =>
-                                updateMovement(index, 'order', parseInt(e.target.value))
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                               재생시간
