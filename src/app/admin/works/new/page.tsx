@@ -134,7 +134,7 @@ export default function NewWorkPage() {
       <div className="flex">
         <AdminSidebar />
 
-        <div className="flex-1 ml-64">
+        <div className="flex-1 ml-64 h-screen overflow-y-auto">
           <div className="p-8">
             {/* Header */}
             <div className="mb-8">
