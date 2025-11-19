@@ -42,37 +42,14 @@ export default function ChroniclesManagementPage() {
       const params = new URLSearchParams({
         page: pagination.page.toString(),
         ...(filters.type !== 'all' && { type: filters.type }),
+        ...(filters.yearFrom && { yearFrom: filters.yearFrom }),
+        ...(filters.yearTo && { yearTo: filters.yearTo }),
+        ...(filters.highlight && { highlight: filters.highlight }),
       });
 
       const data = await get<any>(`/api/admin/chronicles?${params.toString()}`);
 
-      // 클라이언트 사이드에서 필터링 및 정렬
-      let filteredChronicles = data.chronicles;
-
-      // 년도 필터링
-      if (filters.yearFrom) {
-        filteredChronicles = filteredChronicles.filter((c: Chronicle) => c.year >= parseInt(filters.yearFrom));
-      }
-      if (filters.yearTo) {
-        filteredChronicles = filteredChronicles.filter((c: Chronicle) => c.year <= parseInt(filters.yearTo));
-      }
-
-      // 하이라이트 필터링
-      if (filters.highlight) {
-        const highlightFilter = filters.highlight === 'true';
-        filteredChronicles = filteredChronicles.filter((c: Chronicle) => c.highlight === highlightFilter);
-      }
-
-      // 정렬
-      if (filters.sort === 'date') {
-        filteredChronicles.sort((a: Chronicle, b: Chronicle) => {
-          const dateA = a.year * 10000 + (a.month || 0) * 100 + (a.day || 0);
-          const dateB = b.year * 10000 + (b.month || 0) * 100 + (b.day || 0);
-          return filters.order === 'asc' ? dateA - dateB : dateB - dateA;
-        });
-      }
-
-      setChronicles(filteredChronicles);
+      setChronicles(data.chronicles);
       setPagination(data.pagination);
     } catch (error) {
       console.error('Failed to fetch chronicles:', error);

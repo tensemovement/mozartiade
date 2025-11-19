@@ -22,7 +22,9 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
     const type = searchParams.get('type') || '';
-    const year = searchParams.get('year') || '';
+    const yearFrom = searchParams.get('yearFrom') || '';
+    const yearTo = searchParams.get('yearTo') || '';
+    const highlight = searchParams.get('highlight') || '';
 
     const skip = (page - 1) * limit;
 
@@ -31,8 +33,14 @@ export async function GET(req: NextRequest) {
     if (type) {
       where.type = type;
     }
-    if (year) {
-      where.year = parseInt(year);
+    if (yearFrom) {
+      where.year = { ...where.year, gte: parseInt(yearFrom) };
+    }
+    if (yearTo) {
+      where.year = { ...where.year, lte: parseInt(yearTo) };
+    }
+    if (highlight) {
+      where.highlight = highlight === 'true';
     }
 
     // Get chronicles and total count
