@@ -23,6 +23,9 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const search = searchParams.get('search') || '';
     const genre = searchParams.get('genre') || '';
+    const yearFrom = searchParams.get('yearFrom') || '';
+    const yearTo = searchParams.get('yearTo') || '';
+    const highlight = searchParams.get('highlight') || '';
 
     const skip = (page - 1) * limit;
 
@@ -37,6 +40,15 @@ export async function GET(req: NextRequest) {
     }
     if (genre) {
       where.genre = genre;
+    }
+    if (yearFrom) {
+      where.year = { ...where.year, gte: parseInt(yearFrom) };
+    }
+    if (yearTo) {
+      where.year = { ...where.year, lte: parseInt(yearTo) };
+    }
+    if (highlight) {
+      where.highlight = highlight === 'true';
     }
 
     // Get works and total count

@@ -61,6 +61,8 @@ export default function WorksManagementPage() {
         page: pagination.page.toString(),
         ...(filters.search && { search: filters.search }),
         ...(filters.genre && { genre: filters.genre }),
+        ...(filters.yearFrom && { yearFrom: filters.yearFrom }),
+        ...(filters.yearTo && { yearTo: filters.yearTo }),
         ...(filters.highlight && { highlight: filters.highlight }),
         sort: filters.sort,
         order: filters.order,
@@ -68,16 +70,7 @@ export default function WorksManagementPage() {
 
       const data = await get<any>(`/api/admin/works?${params.toString()}`);
 
-      // 클라이언트 사이드에서 년도 필터링
-      let filteredWorks = data.works;
-      if (filters.yearFrom) {
-        filteredWorks = filteredWorks.filter((w: Work) => w.year >= parseInt(filters.yearFrom));
-      }
-      if (filters.yearTo) {
-        filteredWorks = filteredWorks.filter((w: Work) => w.year <= parseInt(filters.yearTo));
-      }
-
-      setWorks(filteredWorks);
+      setWorks(data.works);
       setPagination(data.pagination);
     } catch (error) {
       console.error('Failed to fetch works:', error);
