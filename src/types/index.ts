@@ -10,6 +10,44 @@ export interface User {
   updatedAt: Date;
 }
 
+/**
+ * Admin types
+ */
+export type AdminRole = 'SUPER_ADMIN' | 'ADMIN' | 'EDITOR';
+
+export interface Admin {
+  id: string;
+  email: string;
+  name: string;
+  role: AdminRole;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AdminLoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface AdminLoginResponse {
+  admin: Omit<Admin, 'password'>;
+  token: string;
+}
+
+export interface AdminCreateRequest {
+  email: string;
+  password: string;
+  name: string;
+  role: AdminRole;
+}
+
+export interface AdminUpdateRequest {
+  email?: string;
+  password?: string;
+  name?: string;
+  role?: AdminRole;
+}
+
 export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;

@@ -60,6 +60,18 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Admin {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String    // Hashed password
+  name      String
+  role      AdminRole @default(ADMIN)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([email])
+}
+
 model Work {
   id                     String   @id @default(cuid())
   catalogNumber          String?  @unique // K. number (e.g., "K.525", "K.297b")
@@ -154,4 +166,10 @@ model Chronicle {
 enum ChronicleType {
   life // 생애 사건
   work // 작품 작곡
+}
+
+enum AdminRole {
+  SUPER_ADMIN // 모든 권한
+  ADMIN       // 관리자 관리 제외한 모든 권한
+  EDITOR      // 컨텐츠 편집 권한만
 }
