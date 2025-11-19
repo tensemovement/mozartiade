@@ -32,6 +32,7 @@ export default function Navigation() {
     { label: '영상', href: '/video' },
     { label: '공연', href: '/concert' },
     { label: '퀴즈', href: '/quiz' },
+    { label: 'FAQ', href: '/faq' },
     { label: '굿즈', href: '/goods' },
   ];
 
@@ -101,13 +102,16 @@ export default function Navigation() {
             }`}>
               <MdSearch className="h-5 w-5" />
             </button>
-            <button className={`px-5 py-2 rounded-lg font-sans text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
-              isScrolled
-                ? 'bg-primary-800 text-white hover:bg-primary-900'
-                : 'bg-white text-primary-900 hover:bg-cream'
-            }`}>
+            <Link
+              href="/auth"
+              className={`px-5 py-2 rounded-lg font-sans text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
+                isScrolled
+                  ? 'bg-primary-800 text-white hover:bg-primary-900'
+                  : 'bg-white text-primary-900 hover:bg-cream'
+              }`}
+            >
               시작하기
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -139,9 +143,13 @@ export default function Navigation() {
                   {item.label}
                 </Link>
               ))}
-              <button className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors">
+              <Link
+                href="/auth"
+                className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors block text-center"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 시작하기
-              </button>
+              </Link>
             </div>
           </div>
         )}

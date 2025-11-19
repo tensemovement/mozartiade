@@ -22,7 +22,7 @@ export async function GET() {
       },
     })
 
-    const genreList = genres.map((g) => g.genre).filter((g): g is string => g !== null)
+    const genreList = genres.map((g: any) => g.genre).filter((g: any): g is string => g !== null)
 
     return NextResponse.json({
       success: true,
