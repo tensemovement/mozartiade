@@ -305,12 +305,16 @@ export default function EditWorkPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-12">
               {/* Basic Information */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">기본 정보</h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-slate-900 to-slate-700 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    📝 기본 정보
+                  </h2>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       카탈로그 번호 (6th Edition) *
@@ -570,14 +574,19 @@ export default function EditWorkPage() {
                       </span>
                     </label>
                   </div>
+                  </div>
                 </div>
               </div>
 
               {/* Images */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">이미지</h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    🖼️ 이미지
+                  </h2>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <ImageUpload
                     label="목록 이미지"
                     value={formData.image}
@@ -588,14 +597,19 @@ export default function EditWorkPage() {
                     value={formData.detailImage}
                     onChange={(url) => setFormData({ ...formData, detailImage: url })}
                   />
+                  </div>
                 </div>
               </div>
 
               {/* Detail Information */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">상세 정보</h2>
-
-                <div className="space-y-6">
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-900 to-blue-700 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    📄 상세 정보
+                  </h2>
+                </div>
+                <div className="p-6">
+                  <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       작곡 세부사항
@@ -661,43 +675,51 @@ export default function EditWorkPage() {
                     </div>
                   </div>
                 </div>
+                </div>
               </div>
 
               {/* Related Links */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-gray-900">관련 링크</h2>
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-green-900 to-green-700 px-6 py-4 flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    🔗 관련 링크
+                  </h2>
                   <button
                     type="button"
                     onClick={addRelatedLink}
-                    className="flex items-center space-x-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition"
+                    className="flex items-center space-x-2 px-4 py-2 bg-white text-green-900 rounded-lg hover:bg-green-50 transition font-semibold"
                   >
                     <MdAdd className="w-5 h-5" />
                     <span>링크 추가</span>
                   </button>
                 </div>
-
-                {relatedLinks.length === 0 ? (
-                  <p className="text-sm text-gray-500 text-center py-8">
-                    관련 링크를 추가해주세요
-                  </p>
-                ) : (
-                  <div className="space-y-4">
-                    {relatedLinks.map((link, index) => (
-                      <div
-                        key={link.id || index}
-                        className="p-4 border border-gray-200 rounded-lg"
-                      >
-                        <div className="flex items-center justify-between mb-4">
-                          <h3 className="font-medium text-gray-900">
-                            링크 {link.order}
-                          </h3>
-                          <button
-                            type="button"
-                            onClick={() => removeRelatedLink(index)}
-                            className="text-red-600 hover:text-red-900"
-                          >
-                            <MdDelete className="w-5 h-5" />
+                <div className="p-6">
+                  {relatedLinks.length === 0 ? (
+                    <p className="text-sm text-gray-500 text-center py-8 bg-gray-50 rounded-lg">
+                      관련 링크를 추가해주세요
+                    </p>
+                  ) : (
+                    <div className="space-y-4">
+                      {relatedLinks.map((link, index) => (
+                        <div
+                          key={link.id || index}
+                          className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl hover:shadow-md transition-all"
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                                {link.order}
+                              </div>
+                              <h3 className="font-bold text-gray-900 text-lg">
+                                링크 #{link.order}
+                              </h3>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeRelatedLink(index)}
+                              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+                            >
+                              <MdDelete className="w-5 h-5" />
                           </button>
                         </div>
 
@@ -766,44 +788,52 @@ export default function EditWorkPage() {
                       </div>
                     ))}
                   </div>
-                )}
+                  )}
+                </div>
               </div>
 
               {/* Movements */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-gray-900">악장</h2>
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-amber-900 to-orange-700 px-6 py-4 flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    🎵 악장
+                  </h2>
                   <button
                     type="button"
                     onClick={addMovement}
-                    className="flex items-center space-x-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition"
+                    className="flex items-center space-x-2 px-4 py-2 bg-white text-amber-900 rounded-lg hover:bg-amber-50 transition font-semibold"
                   >
                     <MdAdd className="w-5 h-5" />
                     <span>악장 추가</span>
                   </button>
                 </div>
-
-                {movements.length === 0 ? (
-                  <p className="text-sm text-gray-500 text-center py-8">
-                    악장을 추가해주세요
-                  </p>
-                ) : (
-                  <div className="space-y-6">
-                    {movements.map((movement, index) => (
-                      <div
-                        key={movement.id || index}
-                        className="p-4 border border-gray-200 rounded-lg"
-                      >
-                        <div className="flex items-center justify-between mb-4">
-                          <h3 className="font-medium text-gray-900">
-                            악장 {movement.order}
-                          </h3>
-                          <button
-                            type="button"
-                            onClick={() => removeMovement(index)}
-                            className="text-red-600 hover:text-red-900"
-                          >
-                            <MdDelete className="w-5 h-5" />
+                <div className="p-6">
+                  {movements.length === 0 ? (
+                    <p className="text-sm text-gray-500 text-center py-8 bg-gray-50 rounded-lg">
+                      악장을 추가해주세요
+                    </p>
+                  ) : (
+                    <div className="space-y-6">
+                      {movements.map((movement, index) => (
+                        <div
+                          key={movement.id || index}
+                          className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-xl hover:shadow-md transition-all"
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                                {movement.order}
+                              </div>
+                              <h3 className="font-bold text-gray-900 text-lg">
+                                악장 #{movement.order}
+                              </h3>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeMovement(index)}
+                              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+                            >
+                              <MdDelete className="w-5 h-5" />
                           </button>
                         </div>
 
@@ -920,11 +950,12 @@ export default function EditWorkPage() {
                               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                             />
                           </div>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Submit Buttons */}
