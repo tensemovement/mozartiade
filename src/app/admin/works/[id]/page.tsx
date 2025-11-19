@@ -877,24 +877,25 @@ export default function EditWorkPage() {
                         const dropPosition = draggedLinkIndex !== null && draggedLinkIndex < index ? 'bottom' : 'top';
 
                         return (
-                        <div
-                          key={link.id || index}
-                          draggable
-                          onDragStart={(e) => handleLinkDragStart(e, index)}
-                          onDragOver={(e) => handleLinkDragOver(e, index)}
-                          onDragLeave={handleLinkDragLeave}
-                          onDragEnd={handleLinkDragEnd}
-                          onDrop={(e) => handleLinkDrop(e, index)}
-                          className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move relative
-                            ${isDragging ? 'opacity-50' : 'hover:shadow-md'}
-                            ${isDropTarget && dropPosition === 'top'
-                              ? 'border-t-4 border-t-blue-500 border-x-2 border-b-2 border-x-slate-200 border-b-slate-200'
-                              : isDropTarget && dropPosition === 'bottom'
-                              ? 'border-b-4 border-b-blue-500 border-x-2 border-t-2 border-x-slate-200 border-t-slate-200'
-                              : 'border-2 border-slate-200'
-                            }
-                          `}
-                        >
+                        <div key={link.id || index}>
+                          {/* Placeholder before item */}
+                          {isDropTarget && dropPosition === 'top' && (
+                            <div className="h-20 mb-4 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center">
+                              <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
+                            </div>
+                          )}
+
+                          <div
+                            draggable
+                            onDragStart={(e) => handleLinkDragStart(e, index)}
+                            onDragOver={(e) => handleLinkDragOver(e, index)}
+                            onDragLeave={handleLinkDragLeave}
+                            onDragEnd={handleLinkDragEnd}
+                            onDrop={(e) => handleLinkDrop(e, index)}
+                            className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move border-2 border-slate-200
+                              ${isDragging ? 'opacity-50' : 'hover:shadow-md'}
+                            `}
+                          >
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
                               <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing flex-shrink-0" />
@@ -974,7 +975,15 @@ export default function EditWorkPage() {
                           </div>
                         </div>
                         )}
-                      </div>
+                          </div>
+
+                          {/* Placeholder after item */}
+                          {isDropTarget && dropPosition === 'bottom' && (
+                            <div className="h-20 mt-4 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center">
+                              <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
+                            </div>
+                          )}
+                        </div>
                       );
                     })}
                   </div>
@@ -1035,24 +1044,25 @@ export default function EditWorkPage() {
                         const dropPosition = draggedMovementIndex !== null && draggedMovementIndex < index ? 'bottom' : 'top';
 
                         return (
-                        <div
-                          key={movement.id || index}
-                          draggable
-                          onDragStart={(e) => handleMovementDragStart(e, index)}
-                          onDragOver={(e) => handleMovementDragOver(e, index)}
-                          onDragLeave={handleMovementDragLeave}
-                          onDragEnd={handleMovementDragEnd}
-                          onDrop={(e) => handleMovementDrop(e, index)}
-                          className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move relative
-                            ${isDragging ? 'opacity-50' : 'hover:shadow-md'}
-                            ${isDropTarget && dropPosition === 'top'
-                              ? 'border-t-4 border-t-blue-500 border-x-2 border-b-2 border-x-slate-200 border-b-slate-200'
-                              : isDropTarget && dropPosition === 'bottom'
-                              ? 'border-b-4 border-b-blue-500 border-x-2 border-t-2 border-x-slate-200 border-t-slate-200'
-                              : 'border-2 border-slate-200'
-                            }
-                          `}
-                        >
+                        <div key={movement.id || index}>
+                          {/* Placeholder before item */}
+                          {isDropTarget && dropPosition === 'top' && (
+                            <div className="h-20 mb-6 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center">
+                              <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
+                            </div>
+                          )}
+
+                          <div
+                            draggable
+                            onDragStart={(e) => handleMovementDragStart(e, index)}
+                            onDragOver={(e) => handleMovementDragOver(e, index)}
+                            onDragLeave={handleMovementDragLeave}
+                            onDragEnd={handleMovementDragEnd}
+                            onDrop={(e) => handleMovementDrop(e, index)}
+                            className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move border-2 border-slate-200
+                              ${isDragging ? 'opacity-50' : 'hover:shadow-md'}
+                            `}
+                          >
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
                               <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing flex-shrink-0" />
@@ -1184,6 +1194,14 @@ export default function EditWorkPage() {
                           </div>
                           </div>
                         )}
+                          </div>
+
+                          {/* Placeholder after item */}
+                          {isDropTarget && dropPosition === 'bottom' && (
+                            <div className="h-20 mt-6 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center">
+                              <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
+                            </div>
+                          )}
                         </div>
                         );
                       })}
