@@ -29,6 +29,11 @@ export async function GET(
             order: 'asc',
           },
         },
+        relatedLinks: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
       },
     });
 
@@ -136,6 +141,11 @@ export async function PUT(
       },
       include: {
         movements: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
+        relatedLinks: {
           orderBy: {
             order: 'asc',
           },

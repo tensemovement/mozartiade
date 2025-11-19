@@ -21,6 +21,14 @@ interface MovementForm {
   highlights: string;
 }
 
+interface RelatedLinkForm {
+  id?: string;
+  title: string;
+  url: string;
+  description: string;
+  order: number;
+}
+
 export default function EditWorkPage() {
   const router = useRouter();
   const params = useParams();
@@ -57,6 +65,9 @@ export default function EditWorkPage() {
 
   const [movements, setMovements] = useState<MovementForm[]>([]);
   const [deletedMovementIds, setDeletedMovementIds] = useState<string[]>([]);
+
+  const [relatedLinks, setRelatedLinks] = useState<RelatedLinkForm[]>([]);
+  const [deletedRelatedLinkIds, setDeletedRelatedLinkIds] = useState<string[]>([]);
 
   useEffect(() => {
     fetchWork();
@@ -105,6 +116,16 @@ export default function EditWorkPage() {
           highlights: m.highlights || '',
         })));
       }
+
+      if (work.relatedLinks && work.relatedLinks.length > 0) {
+        setRelatedLinks(work.relatedLinks.map((link: any) => ({
+          id: link.id,
+          title: link.title,
+          url: link.url,
+          description: link.description || '',
+          order: link.order,
+        })));
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : '작품 정보를 불러오는데 실패했습니다.');
     } finally {
@@ -143,6 +164,22 @@ export default function EditWorkPage() {
         } else {
           // Create new movement
           await post(`/api/admin/works/${workId}/movements`, movement);
+        }
+      }
+
+      // Delete removed related links
+      for (const linkId of deletedRelatedLinkIds) {
+        await del(`/api/admin/related-links/${linkId}`);
+      }
+
+      // Update or create related links
+      for (const link of relatedLinks) {
+        if (link.id) {
+          // Update existing link
+          await put(`/api/admin/related-links/${link.id}`, link);
+        } else {
+          // Create new link
+          await post(`/api/admin/works/${workId}/related-links`, link);
         }
       }
 
@@ -200,6 +237,32 @@ export default function EditWorkPage() {
     const updated = [...formData.usageExamples];
     updated[index] = value;
     setFormData({ ...formData, usageExamples: updated });
+  };
+
+  const addRelatedLink = () => {
+    setRelatedLinks([
+      ...relatedLinks,
+      {
+        title: '',
+        url: '',
+        description: '',
+        order: relatedLinks.length + 1,
+      },
+    ]);
+  };
+
+  const removeRelatedLink = (index: number) => {
+    const link = relatedLinks[index];
+    if (link.id) {
+      setDeletedRelatedLinkIds([...deletedRelatedLinkIds, link.id]);
+    }
+    setRelatedLinks(relatedLinks.filter((_, i) => i !== index));
+  };
+
+  const updateRelatedLink = (index: number, field: keyof RelatedLinkForm, value: any) => {
+    const updated = [...relatedLinks];
+    updated[index] = { ...updated[index], [field]: value };
+    setRelatedLinks(updated);
   };
 
   if (isLoading) {
@@ -598,6 +661,112 @@ export default function EditWorkPage() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Related Links */}
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-bold text-gray-900">관련 링크</h2>
+                  <button
+                    type="button"
+                    onClick={addRelatedLink}
+                    className="flex items-center space-x-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition"
+                  >
+                    <MdAdd className="w-5 h-5" />
+                    <span>링크 추가</span>
+                  </button>
+                </div>
+
+                {relatedLinks.length === 0 ? (
+                  <p className="text-sm text-gray-500 text-center py-8">
+                    관련 링크를 추가해주세요
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    {relatedLinks.map((link, index) => (
+                      <div
+                        key={link.id || index}
+                        className="p-4 border border-gray-200 rounded-lg"
+                      >
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="font-medium text-gray-900">
+                            링크 {link.order}
+                          </h3>
+                          <button
+                            type="button"
+                            onClick={() => removeRelatedLink(index)}
+                            className="text-red-600 hover:text-red-900"
+                          >
+                            <MdDelete className="w-5 h-5" />
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              순서
+                            </label>
+                            <input
+                              type="number"
+                              value={link.order}
+                              onChange={(e) =>
+                                updateRelatedLink(index, 'order', parseInt(e.target.value))
+                              }
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              제목 <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              value={link.title}
+                              onChange={(e) =>
+                                updateRelatedLink(index, 'title', e.target.value)
+                              }
+                              placeholder="예: 모차르트 공식 웹사이트"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                              required
+                            />
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              URL <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="url"
+                              value={link.url}
+                              onChange={(e) =>
+                                updateRelatedLink(index, 'url', e.target.value)
+                              }
+                              placeholder="https://example.com"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                              required
+                            />
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              설명
+                            </label>
+                            <input
+                              type="text"
+                              value={link.description}
+                              onChange={(e) =>
+                                updateRelatedLink(index, 'description', e.target.value)
+                              }
+                              placeholder="링크에 대한 간단한 설명"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Movements */}
