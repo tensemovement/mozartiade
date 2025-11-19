@@ -90,7 +90,7 @@ export default function NewChroniclePage() {
             <form onSubmit={handleSubmit} className="space-y-12">
               {/* Type Selection */}
               <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
-                <div className="bg-gray-900 px-6 py-4">
+                <div className="bg-slate-900 px-6 py-4">
                   <h2 className="text-xl font-bold text-white">
                     유형
                   </h2>
@@ -130,7 +130,7 @@ export default function NewChroniclePage() {
 
               {/* Basic Information */}
               <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
-                <div className="bg-gray-900 px-6 py-4">
+                <div className="bg-slate-900 px-6 py-4">
                   <h2 className="text-xl font-bold text-white">
                     기본 정보
                   </h2>
@@ -282,7 +282,7 @@ export default function NewChroniclePage() {
 
               {/* Image */}
               <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
-                <div className="bg-gray-900 px-6 py-4">
+                <div className="bg-slate-900 px-6 py-4">
                   <h2 className="text-xl font-bold text-white">
                     이미지
                   </h2>
