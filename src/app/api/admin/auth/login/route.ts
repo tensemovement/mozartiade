@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { comparePassword, generateToken } from '@/lib/auth';
+import { comparePassword, generateToken } from '@/lib/auth/admin';
 import { AdminLoginRequest, ApiResponse, AdminLoginResponse } from '@/types';
 
 export async function POST(req: NextRequest) {

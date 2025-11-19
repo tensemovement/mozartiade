@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminAuth, hasMinimumRole } from '@/lib/adminAuth';
-import { hashPassword } from '@/lib/auth';
+import { hashPassword } from '@/lib/auth/admin';
 import { ApiResponse, Admin, AdminCreateRequest } from '@/types';
 
 // GET - List all admins
