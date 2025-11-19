@@ -6,8 +6,10 @@ import Image from 'next/image';
 import { useRecoilState } from 'recoil';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { Work, Movement } from '@/types';
-import { selectedMovementState } from '@/store/atoms';
+import WorkPanel from '@/components/WorkPanel';
+import MovementPanel from '@/components/MovementPanel';
+import { Work, Movement, RelatedLink } from '@/types';
+import { selectedMovementState, selectedItemState } from '@/store/atoms';
 import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote, MdArticle, MdOpenInNew } from 'react-icons/md';
 
 interface PageProps {
@@ -21,6 +23,7 @@ export default function WorkDetailPage({ params }: PageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedMovement, setSelectedMovement] = useRecoilState(selectedMovementState);
+  const [, setSelectedItem] = useRecoilState(selectedItemState);
 
   // Fetch work from API
   useEffect(() => {
@@ -284,40 +287,44 @@ export default function WorkDetailPage({ params }: PageProps) {
               <div className="sticky top-24 space-y-6">
                 {/* 악보 다운로드 */}
                 {work.sheetMusicUrl && (
-                  <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-                    <h2 className="font-serif text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                      악보 다운로드
-                    </h2>
-                    <a
-                      href={work.sheetMusicUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block p-3 bg-accent-50 rounded-lg border border-accent-200 hover:border-accent-400 transition-all group"
-                    >
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                          <MdArticle className="h-4 w-4 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
-                            악보 다운로드
-                          </h4>
-                          <p className="font-sans text-xs text-gray-600">
-                            IMSLP에서 무료 악보 열람하기
-                          </p>
-                        </div>
-                        <MdOpenInNew className="h-4 w-4 text-accent-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                  <a
+                    href={work.sheetMusicUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-3 bg-accent-50 rounded-lg border border-accent-200 hover:border-accent-400 transition-all group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                        <MdArticle className="h-4 w-4 text-white" />
                       </div>
-                    </a>
-                  </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                          악보 다운로드
+                        </h4>
+                        <p className="font-sans text-xs text-gray-600">
+                          IMSLP에서 무료 악보 열람하기
+                        </p>
+                      </div>
+                      <MdOpenInNew className="h-4 w-4 text-accent-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                    </div>
+                  </a>
                 )}
 
                 {/* 음악 감상 */}
                 {work.movements && work.movements.length > 0 && (
                   <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
-                    <h2 className="font-serif text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                      음악 감상
-                    </h2>
+                    <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
+                      <h2 className="font-serif text-xl font-bold text-gray-900">
+                        음악 감상
+                      </h2>
+                      <button
+                        onClick={() => setSelectedItem({ ...work, type: 'work' })}
+                        className="px-3 py-1.5 bg-accent hover:bg-accent/90 text-white text-xs font-semibold rounded-lg transition-all hover:scale-105 flex items-center gap-1"
+                      >
+                        <MdPlayArrow className="h-4 w-4" />
+                        전체 듣기
+                      </button>
+                    </div>
                     <div className="space-y-2 max-h-[600px] overflow-y-auto custom-scrollbar">
                       {work.movements.map((movement) => (
                         <button
@@ -350,33 +357,38 @@ export default function WorkDetailPage({ params }: PageProps) {
                 )}
 
                 {/* 관련 링크 */}
-                {work.youtubeUrl && (
+                {work.relatedLinks && work.relatedLinks.length > 0 && (
                   <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
                     <h2 className="font-serif text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
                       관련 링크
                     </h2>
                     <div className="space-y-3">
-                      <a
-                        href={work.youtubeUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block p-3 bg-red-50 rounded-lg border border-red-200 hover:border-red-400 transition-all group"
-                      >
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                            <MdPlayArrow className="h-4 w-4 text-white" />
+                      {work.relatedLinks.map((link, index) => (
+                        <a
+                          key={index}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-3 bg-blue-50 rounded-lg border border-blue-200 hover:border-blue-400 transition-all group"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                              <MdOpenInNew className="h-4 w-4 text-white" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                                {link.title}
+                              </h4>
+                              {link.description && (
+                                <p className="font-sans text-xs text-gray-600">
+                                  {link.description}
+                                </p>
+                              )}
+                            </div>
+                            <MdOpenInNew className="h-4 w-4 text-blue-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
-                              YouTube 감상
-                            </h4>
-                            <p className="font-sans text-xs text-gray-600">
-                              전체 연주 영상 보기
-                            </p>
-                          </div>
-                          <MdOpenInNew className="h-4 w-4 text-red-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-                        </div>
-                      </a>
+                        </a>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -387,6 +399,9 @@ export default function WorkDetailPage({ params }: PageProps) {
       </section>
 
       <Footer />
+
+      <WorkPanel />
+      <MovementPanel />
 
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {

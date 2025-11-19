@@ -87,6 +87,16 @@ export interface Work {
   behindStory?: string; // 비하인드 스토리
   usageExamples?: string[]; // 활용 사례 (공연, 이벤트 등)
   movements?: Movement[]; // 악장 목록
+  relatedLinks?: RelatedLink[]; // 관련 링크
+}
+
+/**
+ * Related Link (관련 링크) types
+ */
+export interface RelatedLink {
+  title: string;
+  url: string;
+  description?: string;
 }
 
 /**
