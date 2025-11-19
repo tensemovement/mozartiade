@@ -6,9 +6,12 @@ const prisma = new PrismaClient()
 
 interface SeedWork {
   catalogNumber?: string
+  catalogNumberFirstEd?: string
+  catalogNumberNinthEd?: string
   year: number
   month?: number
   day?: number
+  compositionLocation?: string
   title: string
   titleEn?: string
   description: string
@@ -88,9 +91,12 @@ async function main() {
       const work = await prisma.work.create({
         data: {
           catalogNumber: workData.catalogNumber,
+          catalogNumberFirstEd: workData.catalogNumberFirstEd,
+          catalogNumberNinthEd: workData.catalogNumberNinthEd,
           year: workData.year,
           month: workData.month,
           day: workData.day,
+          compositionLocation: workData.compositionLocation,
           title: workData.title,
           titleEn: workData.titleEn,
           description: workData.description,

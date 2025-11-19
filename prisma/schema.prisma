@@ -74,13 +74,16 @@ model Admin {
 
 model Work {
   id                     String   @id @default(cuid())
-  catalogNumber          String?  @unique // K. number (e.g., "K.525", "K.297b")
+  catalogNumber          String?  @unique // K. number 6th edition (e.g., "K.525", "K.297b") - default display version
   catalogNumberNumeric   Int?     // Numeric part of K. number (e.g., 525, 297)
   catalogNumberSuffix    String?  // Suffix part of K. number (e.g., "", "a", "b")
+  catalogNumberFirstEd   String?  // K. number original first edition (1862)
+  catalogNumberNinthEd   String?  // K. number 9th edition (2024)
   year                   Int
   month                  Int?
   day                    Int?
   compositionOrder       Int?     // Order within the year (1, 2, 3, ...) for precise chronological sorting
+  compositionLocation    String?  // Location where the work was composed (e.g., "Vienna", "Salzburg")
   title                  String
   titleEn                String?
   description            String   @db.Text

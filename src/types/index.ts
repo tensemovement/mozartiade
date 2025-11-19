@@ -65,12 +65,15 @@ export interface Work {
   month?: number;
   day?: number;
   compositionOrder?: number; // Order within the year for precise chronological sorting
+  compositionLocation?: string; // Location where the work was composed
   title: string;
   titleEn?: string; // English title
   description: string;
-  catalogNumber?: string; // K. number (e.g., "K. 525", "K. 297b")
+  catalogNumber?: string; // K. number 6th edition (e.g., "K. 525", "K. 297b") - default display version
   catalogNumberNumeric?: number; // Numeric part of K. number for sorting (e.g., 525, 297)
   catalogNumberSuffix?: string; // Suffix part of K. number (e.g., "", "b")
+  catalogNumberFirstEd?: string; // K. number original first edition (1862)
+  catalogNumberNinthEd?: string; // K. number 9th edition (2024)
   genre?: string;
   youtubeUrl?: string;
   sheetMusicUrl?: string;

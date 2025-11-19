@@ -34,10 +34,13 @@ export default function EditWorkPage() {
     catalogNumber: '',
     catalogNumberNumeric: '',
     catalogNumberSuffix: '',
+    catalogNumberFirstEd: '',
+    catalogNumberNinthEd: '',
     year: new Date().getFullYear(),
     month: '',
     day: '',
     compositionOrder: '',
+    compositionLocation: '',
     title: '',
     titleEn: '',
     description: '',
@@ -68,10 +71,13 @@ export default function EditWorkPage() {
         catalogNumber: work.catalogNumber || '',
         catalogNumberNumeric: work.catalogNumberNumeric?.toString() || '',
         catalogNumberSuffix: work.catalogNumberSuffix || '',
+        catalogNumberFirstEd: work.catalogNumberFirstEd || '',
+        catalogNumberNinthEd: work.catalogNumberNinthEd || '',
         year: work.year,
         month: work.month?.toString() || '',
         day: work.day?.toString() || '',
         compositionOrder: work.compositionOrder?.toString() || '',
+        compositionLocation: work.compositionLocation || '',
         title: work.title,
         titleEn: work.titleEn || '',
         description: work.description,
@@ -244,7 +250,7 @@ export default function EditWorkPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      카탈로그 번호 *
+                      카탈로그 번호 (6th Edition) *
                     </label>
                     <input
                       type="text"
@@ -255,6 +261,7 @@ export default function EditWorkPage() {
                       placeholder="K.525"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                     />
+                    <p className="mt-1 text-xs text-gray-500">사용자 화면에 표시되는 기본 버전</p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
@@ -286,6 +293,38 @@ export default function EditWorkPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                       />
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      카탈로그 번호 (First Edition 1862)
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.catalogNumberFirstEd}
+                      onChange={(e) =>
+                        setFormData({ ...formData, catalogNumberFirstEd: e.target.value })
+                      }
+                      placeholder="K.525"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">원본 초판 (1862년)</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      카탈로그 번호 (9th Edition 2024)
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.catalogNumberNinthEd}
+                      onChange={(e) =>
+                        setFormData({ ...formData, catalogNumberNinthEd: e.target.value })
+                      }
+                      placeholder="K.525"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">최신 9판 (2024년)</p>
                   </div>
 
                   <div>
@@ -377,6 +416,22 @@ export default function EditWorkPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                       />
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      작곡 장소
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.compositionLocation}
+                      onChange={(e) =>
+                        setFormData({ ...formData, compositionLocation: e.target.value })
+                      }
+                      placeholder="Vienna, Salzburg, Prague..."
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">작품이 작곡된 도시/장소</p>
                   </div>
 
                   <div>
