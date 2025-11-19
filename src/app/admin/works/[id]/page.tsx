@@ -308,9 +308,9 @@ export default function EditWorkPage() {
             <form onSubmit={handleSubmit} className="space-y-12">
               {/* Basic Information */}
               <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-slate-900 to-slate-700 px-6 py-4">
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    📝 기본 정보
+                <div className="bg-gray-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">
+                    기본 정보
                   </h2>
                 </div>
                 <div className="p-6">
@@ -580,9 +580,9 @@ export default function EditWorkPage() {
 
               {/* Images */}
               <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-purple-900 to-purple-700 px-6 py-4">
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    🖼️ 이미지
+                <div className="bg-gray-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">
+                    이미지
                   </h2>
                 </div>
                 <div className="p-6">
@@ -603,9 +603,9 @@ export default function EditWorkPage() {
 
               {/* Detail Information */}
               <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-900 to-blue-700 px-6 py-4">
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    📄 상세 정보
+                <div className="bg-gray-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">
+                    상세 정보
                   </h2>
                 </div>
                 <div className="p-6">
@@ -680,14 +680,14 @@ export default function EditWorkPage() {
 
               {/* Related Links */}
               <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-green-900 to-green-700 px-6 py-4 flex items-center justify-between">
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    🔗 관련 링크
+                <div className="bg-gray-900 px-6 py-4 flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-white">
+                    관련 링크
                   </h2>
                   <button
                     type="button"
                     onClick={addRelatedLink}
-                    className="flex items-center space-x-2 px-4 py-2 bg-white text-green-900 rounded-lg hover:bg-green-50 transition font-semibold"
+                    className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-900 rounded-lg hover:bg-gray-50 transition font-semibold"
                   >
                     <MdAdd className="w-5 h-5" />
                     <span>링크 추가</span>
@@ -703,11 +703,11 @@ export default function EditWorkPage() {
                       {relatedLinks.map((link, index) => (
                         <div
                           key={link.id || index}
-                          className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl hover:shadow-md transition-all"
+                          className="p-5 bg-gray-50 border-2 border-gray-200 rounded-xl hover:shadow-md transition-all"
                         >
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                              <div className="w-10 h-10 bg-gray-700 text-white rounded-full flex items-center justify-center font-bold text-lg">
                                 {link.order}
                               </div>
                               <h3 className="font-bold text-gray-900 text-lg">
@@ -794,14 +794,14 @@ export default function EditWorkPage() {
 
               {/* Movements */}
               <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-amber-900 to-orange-700 px-6 py-4 flex items-center justify-between">
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    🎵 악장
+                <div className="bg-gray-900 px-6 py-4 flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-white">
+                    악장
                   </h2>
                   <button
                     type="button"
                     onClick={addMovement}
-                    className="flex items-center space-x-2 px-4 py-2 bg-white text-amber-900 rounded-lg hover:bg-amber-50 transition font-semibold"
+                    className="flex items-center space-x-2 px-4 py-2 bg-white text-gray-900 rounded-lg hover:bg-gray-50 transition font-semibold"
                   >
                     <MdAdd className="w-5 h-5" />
                     <span>악장 추가</span>
@@ -817,11 +817,11 @@ export default function EditWorkPage() {
                       {movements.map((movement, index) => (
                         <div
                           key={movement.id || index}
-                          className="p-5 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-xl hover:shadow-md transition-all"
+                          className="p-5 bg-gray-50 border-2 border-gray-200 rounded-xl hover:shadow-md transition-all"
                         >
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                              <div className="w-10 h-10 bg-gray-700 text-white rounded-full flex items-center justify-center font-bold text-lg">
                                 {movement.order}
                               </div>
                               <h3 className="font-bold text-gray-900 text-lg">
