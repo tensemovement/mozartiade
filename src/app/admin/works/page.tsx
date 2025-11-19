@@ -6,6 +6,7 @@ import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import ConfirmModal from '@/components/admin/ConfirmModal';
 import EmptyState from '@/components/admin/EmptyState';
+import Pagination from '@/components/admin/Pagination';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { Work } from '@/types';
 import { MdAdd, MdEdit, MdDelete, MdSearch, MdMusicNote, MdFilterList, MdClose } from 'react-icons/md';
@@ -442,23 +443,11 @@ export default function WorksManagementPage() {
 
                   {/* Pagination */}
                   {pagination.totalPages > 1 && (
-                    <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-                      <div className="flex justify-center space-x-2">
-                        {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
-                          <button
-                            key={page}
-                            onClick={() => setPagination({ ...pagination, page })}
-                            className={`px-4 py-2 rounded-lg transition ${
-                              pagination.page === page
-                                ? 'bg-slate-900 text-white'
-                                : 'bg-white border border-gray-300 hover:bg-gray-50'
-                            }`}
-                          >
-                            {page}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                    <Pagination
+                      currentPage={pagination.page}
+                      totalPages={pagination.totalPages}
+                      onPageChange={(page) => setPagination({ ...pagination, page })}
+                    />
                   )}
                 </>
               )}
