@@ -279,72 +279,44 @@ export default function WorkDetailPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* 오른쪽 컬럼 - 관련 링크 & 악장 목록 */}
+            {/* 오른쪽 컬럼 - 악보, 음악감상, 관련 링크 */}
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-6">
-                {/* 관련 링크 */}
-                {(work.youtubeUrl || work.sheetMusicUrl) && (
+                {/* 악보 다운로드 */}
+                {work.sheetMusicUrl && (
                   <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
                     <h2 className="font-serif text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                      관련 링크
+                      악보 다운로드
                     </h2>
-                    <div className="space-y-3">
-                      {work.youtubeUrl && (
-                        <a
-                          href={work.youtubeUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block p-3 bg-red-50 rounded-lg border border-red-200 hover:border-red-400 transition-all group"
-                        >
-                          <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                              <MdPlayArrow className="h-4 w-4 text-white" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
-                                YouTube 감상
-                              </h4>
-                              <p className="font-sans text-xs text-gray-600">
-                                전체 연주 영상 보기
-                              </p>
-                            </div>
-                            <MdOpenInNew className="h-4 w-4 text-red-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-                          </div>
-                        </a>
-                      )}
-
-                      {work.sheetMusicUrl && (
-                        <a
-                          href={work.sheetMusicUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block p-3 bg-accent-50 rounded-lg border border-accent-200 hover:border-accent-400 transition-all group"
-                        >
-                          <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                              <MdArticle className="h-4 w-4 text-white" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
-                                악보 다운로드
-                              </h4>
-                              <p className="font-sans text-xs text-gray-600">
-                                IMSLP에서 무료 악보 열람하기
-                              </p>
-                            </div>
-                            <MdOpenInNew className="h-4 w-4 text-accent-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-                          </div>
-                        </a>
-                      )}
-                    </div>
+                    <a
+                      href={work.sheetMusicUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block p-3 bg-accent-50 rounded-lg border border-accent-200 hover:border-accent-400 transition-all group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                          <MdArticle className="h-4 w-4 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                            악보 다운로드
+                          </h4>
+                          <p className="font-sans text-xs text-gray-600">
+                            IMSLP에서 무료 악보 열람하기
+                          </p>
+                        </div>
+                        <MdOpenInNew className="h-4 w-4 text-accent-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                      </div>
+                    </a>
                   </div>
                 )}
 
-                {/* 악장 목록 */}
+                {/* 음악 감상 */}
                 {work.movements && work.movements.length > 0 && (
                   <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
                     <h2 className="font-serif text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
-                      구성 악곡
+                      음악 감상
                     </h2>
                     <div className="space-y-2 max-h-[600px] overflow-y-auto custom-scrollbar">
                       {work.movements.map((movement) => (
@@ -373,6 +345,38 @@ export default function WorkDetailPage({ params }: PageProps) {
                           </div>
                         </button>
                       ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 관련 링크 */}
+                {work.youtubeUrl && (
+                  <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
+                    <h2 className="font-serif text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-200">
+                      관련 링크
+                    </h2>
+                    <div className="space-y-3">
+                      <a
+                        href={work.youtubeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block p-3 bg-red-50 rounded-lg border border-red-200 hover:border-red-400 transition-all group"
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                            <MdPlayArrow className="h-4 w-4 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                              YouTube 감상
+                            </h4>
+                            <p className="font-sans text-xs text-gray-600">
+                              전체 연주 영상 보기
+                            </p>
+                          </div>
+                          <MdOpenInNew className="h-4 w-4 text-red-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                        </div>
+                      </a>
                     </div>
                   </div>
                 )}
