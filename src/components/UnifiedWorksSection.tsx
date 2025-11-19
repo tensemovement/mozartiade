@@ -6,7 +6,7 @@ import { selectedItemState } from '@/store/atoms';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatVoteCount } from '@/utils/format';
-import { MdFullscreen, MdFavorite, MdChevronRight } from 'react-icons/md';
+import { MdFullscreen, MdFavorite, MdChevronRight, MdMusicNote } from 'react-icons/md';
 import { Work } from '@/types';
 import { useState, useEffect } from 'react';
 
@@ -180,6 +180,12 @@ export default function UnifiedWorksSection() {
                     <div className="absolute bottom-4 left-4 px-3 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
                       <MdFavorite className="h-3 w-3" />
                       {formatVoteCount(work.voteCount)}
+                    </div>
+                  )}
+                  {/* Music indicator badge */}
+                  {work.youtubeUrl && (
+                    <div className="absolute bottom-4 right-4 px-3 py-1 bg-purple-100/90 backdrop-blur-sm text-purple-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1" title="음악 감상 가능">
+                      <MdMusicNote className="h-3 w-3" />
                     </div>
                   )}
                 </div>
