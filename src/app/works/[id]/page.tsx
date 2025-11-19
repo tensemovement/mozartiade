@@ -8,7 +8,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Work, Movement } from '@/types';
 import { selectedMovementState } from '@/store/atoms';
-import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote } from 'react-icons/md';
+import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote, MdArticle, MdOpenInNew } from 'react-icons/md';
 
 interface PageProps {
   params: {
@@ -294,10 +294,22 @@ export default function WorkDetailPage({ params }: PageProps) {
                           href={work.youtubeUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 p-4 bg-red-50 hover:bg-red-100 rounded-xl transition-all duration-300 border border-red-200 hover:border-red-300 group"
+                          className="block p-3 bg-red-50 rounded-lg border border-red-200 hover:border-red-400 transition-all group"
                         >
-                          <MdPlayArrow className="text-red-600 text-2xl group-hover:scale-110 transition-transform" />
-                          <span className="text-red-600 font-semibold">YouTube 감상</span>
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                              <MdPlayArrow className="h-4 w-4 text-white" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                                YouTube 감상
+                              </h4>
+                              <p className="font-sans text-xs text-gray-600">
+                                전체 연주 영상 보기
+                              </p>
+                            </div>
+                            <MdOpenInNew className="h-4 w-4 text-red-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                          </div>
                         </a>
                       )}
 
@@ -306,10 +318,22 @@ export default function WorkDetailPage({ params }: PageProps) {
                           href={work.sheetMusicUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all duration-300 border border-blue-200 hover:border-blue-300 group"
+                          className="block p-3 bg-accent-50 rounded-lg border border-accent-200 hover:border-accent-400 transition-all group"
                         >
-                          <MdMusicNote className="text-blue-600 text-2xl group-hover:scale-110 transition-transform" />
-                          <span className="text-blue-600 font-semibold">악보 보기</span>
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                              <MdArticle className="h-4 w-4 text-white" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                                악보 다운로드
+                              </h4>
+                              <p className="font-sans text-xs text-gray-600">
+                                IMSLP에서 무료 악보 열람하기
+                              </p>
+                            </div>
+                            <MdOpenInNew className="h-4 w-4 text-accent-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                          </div>
                         </a>
                       )}
                     </div>
