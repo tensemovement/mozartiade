@@ -6,7 +6,7 @@ import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { useAdminApi } from '@/hooks/useAdminApi';
-import { MdArrowBack, MdAdd, MdDelete } from 'react-icons/md';
+import { MdArrowBack, MdAdd, MdDelete, MdExpandMore, MdExpandLess, MdUnfoldMore, MdUnfoldLess, MdDragIndicator } from 'react-icons/md';
 import Link from 'next/link';
 
 interface MovementForm {
@@ -69,9 +69,30 @@ export default function EditWorkPage() {
   const [relatedLinks, setRelatedLinks] = useState<RelatedLinkForm[]>([]);
   const [deletedRelatedLinkIds, setDeletedRelatedLinkIds] = useState<string[]>([]);
 
+  // Collapse/expand states
+  const [collapsedLinks, setCollapsedLinks] = useState<Set<number>>(new Set());
+  const [collapsedMovements, setCollapsedMovements] = useState<Set<number>>(new Set());
+
+  // Drag and drop state
+  const [draggedLinkIndex, setDraggedLinkIndex] = useState<number | null>(null);
+  const [draggedMovementIndex, setDraggedMovementIndex] = useState<number | null>(null);
+
   useEffect(() => {
     fetchWork();
   }, [workId]);
+
+  // Set all items collapsed by default when data is loaded
+  useEffect(() => {
+    if (relatedLinks.length > 0) {
+      setCollapsedLinks(new Set(relatedLinks.map((_, i) => i)));
+    }
+  }, [relatedLinks.length]);
+
+  useEffect(() => {
+    if (movements.length > 0) {
+      setCollapsedMovements(new Set(movements.map((_, i) => i)));
+    }
+  }, [movements.length]);
 
   const fetchWork = async () => {
     setIsLoading(true);
@@ -263,6 +284,85 @@ export default function EditWorkPage() {
     const updated = [...relatedLinks];
     updated[index] = { ...updated[index], [field]: value };
     setRelatedLinks(updated);
+  };
+
+  // Collapse/expand handlers
+  const toggleLinkCollapse = (index: number) => {
+    const newCollapsed = new Set(collapsedLinks);
+    if (newCollapsed.has(index)) {
+      newCollapsed.delete(index);
+    } else {
+      newCollapsed.add(index);
+    }
+    setCollapsedLinks(newCollapsed);
+  };
+
+  const toggleMovementCollapse = (index: number) => {
+    const newCollapsed = new Set(collapsedMovements);
+    if (newCollapsed.has(index)) {
+      newCollapsed.delete(index);
+    } else {
+      newCollapsed.add(index);
+    }
+    setCollapsedMovements(newCollapsed);
+  };
+
+  const expandAllLinks = () => setCollapsedLinks(new Set());
+  const collapseAllLinks = () => setCollapsedLinks(new Set(relatedLinks.map((_, i) => i)));
+
+  const expandAllMovements = () => setCollapsedMovements(new Set());
+  const collapseAllMovements = () => setCollapsedMovements(new Set(movements.map((_, i) => i)));
+
+  // Drag and drop handlers for related links
+  const handleLinkDragStart = (index: number) => {
+    setDraggedLinkIndex(index);
+  };
+
+  const handleLinkDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+  };
+
+  const handleLinkDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (draggedLinkIndex === null || draggedLinkIndex === dropIndex) return;
+
+    const newLinks = [...relatedLinks];
+    const [draggedItem] = newLinks.splice(draggedLinkIndex, 1);
+    newLinks.splice(dropIndex, 0, draggedItem);
+
+    // Update order numbers
+    newLinks.forEach((link, idx) => {
+      link.order = idx + 1;
+    });
+
+    setRelatedLinks(newLinks);
+    setDraggedLinkIndex(null);
+  };
+
+  // Drag and drop handlers for movements
+  const handleMovementDragStart = (index: number) => {
+    setDraggedMovementIndex(index);
+  };
+
+  const handleMovementDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+  };
+
+  const handleMovementDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (draggedMovementIndex === null || draggedMovementIndex === dropIndex) return;
+
+    const newMovements = [...movements];
+    const [draggedItem] = newMovements.splice(draggedMovementIndex, 1);
+    newMovements.splice(dropIndex, 0, draggedItem);
+
+    // Update order numbers
+    newMovements.forEach((movement, idx) => {
+      movement.order = idx + 1;
+    });
+
+    setMovements(newMovements);
+    setDraggedMovementIndex(null);
   };
 
   if (isLoading) {
@@ -684,14 +784,38 @@ export default function EditWorkPage() {
                   <h2 className="text-xl font-bold text-white">
                     관련 링크
                   </h2>
-                  <button
-                    type="button"
-                    onClick={addRelatedLink}
-                    className="flex items-center space-x-2 px-4 py-2 bg-white text-slate-900 rounded-lg hover:bg-slate-50 transition font-semibold"
-                  >
-                    <MdAdd className="w-5 h-5" />
-                    <span>링크 추가</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {relatedLinks.length > 0 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={expandAllLinks}
+                          className="flex items-center space-x-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-sm"
+                          title="전체 펼치기"
+                        >
+                          <MdUnfoldMore className="w-4 h-4" />
+                          <span>전체 펼치기</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={collapseAllLinks}
+                          className="flex items-center space-x-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-sm"
+                          title="전체 닫기"
+                        >
+                          <MdUnfoldLess className="w-4 h-4" />
+                          <span>전체 닫기</span>
+                        </button>
+                      </>
+                    )}
+                    <button
+                      type="button"
+                      onClick={addRelatedLink}
+                      className="flex items-center space-x-2 px-4 py-2 bg-white text-slate-900 rounded-lg hover:bg-slate-50 transition font-semibold"
+                    >
+                      <MdAdd className="w-5 h-5" />
+                      <span>링크 추가</span>
+                    </button>
+                  </div>
                 </div>
                 <div className="p-6">
                   {relatedLinks.length === 0 ? (
@@ -700,13 +824,22 @@ export default function EditWorkPage() {
                     </p>
                   ) : (
                     <div className="space-y-4">
-                      {relatedLinks.map((link, index) => (
+                      {relatedLinks.map((link, index) => {
+                        const isCollapsed = collapsedLinks.has(index);
+                        return (
                         <div
                           key={link.id || index}
-                          className="p-5 bg-slate-50 border-2 border-slate-200 rounded-xl hover:shadow-md transition-all"
+                          draggable
+                          onDragStart={() => handleLinkDragStart(index)}
+                          onDragOver={(e) => handleLinkDragOver(e, index)}
+                          onDrop={(e) => handleLinkDrop(e, index)}
+                          className={`p-5 bg-slate-50 border-2 border-slate-200 rounded-xl transition-all cursor-move ${
+                            draggedLinkIndex === index ? 'opacity-50' : 'hover:shadow-md'
+                          }`}
                         >
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
+                              <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing" />
                               <div className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-lg">
                                 {link.order}
                               </div>
@@ -714,15 +847,26 @@ export default function EditWorkPage() {
                                 링크 #{link.order}
                               </h3>
                             </div>
-                            <button
-                              type="button"
-                              onClick={() => removeRelatedLink(index)}
-                              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
-                            >
-                              <MdDelete className="w-5 h-5" />
-                          </button>
-                        </div>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => toggleLinkCollapse(index)}
+                                className="p-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
+                                title={isCollapsed ? "펼치기" : "접기"}
+                              >
+                                {isCollapsed ? <MdExpandMore className="w-5 h-5" /> : <MdExpandLess className="w-5 h-5" />}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => removeRelatedLink(index)}
+                                className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+                              >
+                                <MdDelete className="w-5 h-5" />
+                              </button>
+                            </div>
+                          </div>
 
+                        {!isCollapsed && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -785,8 +929,10 @@ export default function EditWorkPage() {
                             />
                           </div>
                         </div>
+                        )}
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                   )}
                 </div>
@@ -798,14 +944,38 @@ export default function EditWorkPage() {
                   <h2 className="text-xl font-bold text-white">
                     악장
                   </h2>
-                  <button
-                    type="button"
-                    onClick={addMovement}
-                    className="flex items-center space-x-2 px-4 py-2 bg-white text-slate-900 rounded-lg hover:bg-slate-50 transition font-semibold"
-                  >
-                    <MdAdd className="w-5 h-5" />
-                    <span>악장 추가</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {movements.length > 0 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={expandAllMovements}
+                          className="flex items-center space-x-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-sm"
+                          title="전체 펼치기"
+                        >
+                          <MdUnfoldMore className="w-4 h-4" />
+                          <span>전체 펼치기</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={collapseAllMovements}
+                          className="flex items-center space-x-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-sm"
+                          title="전체 닫기"
+                        >
+                          <MdUnfoldLess className="w-4 h-4" />
+                          <span>전체 닫기</span>
+                        </button>
+                      </>
+                    )}
+                    <button
+                      type="button"
+                      onClick={addMovement}
+                      className="flex items-center space-x-2 px-4 py-2 bg-white text-slate-900 rounded-lg hover:bg-slate-50 transition font-semibold"
+                    >
+                      <MdAdd className="w-5 h-5" />
+                      <span>악장 추가</span>
+                    </button>
+                  </div>
                 </div>
                 <div className="p-6">
                   {movements.length === 0 ? (
@@ -814,13 +984,22 @@ export default function EditWorkPage() {
                     </p>
                   ) : (
                     <div className="space-y-6">
-                      {movements.map((movement, index) => (
+                      {movements.map((movement, index) => {
+                        const isCollapsed = collapsedMovements.has(index);
+                        return (
                         <div
                           key={movement.id || index}
-                          className="p-5 bg-slate-50 border-2 border-slate-200 rounded-xl hover:shadow-md transition-all"
+                          draggable
+                          onDragStart={() => handleMovementDragStart(index)}
+                          onDragOver={(e) => handleMovementDragOver(e, index)}
+                          onDrop={(e) => handleMovementDrop(e, index)}
+                          className={`p-5 bg-slate-50 border-2 border-slate-200 rounded-xl transition-all cursor-move ${
+                            draggedMovementIndex === index ? 'opacity-50' : 'hover:shadow-md'
+                          }`}
                         >
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
+                              <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing" />
                               <div className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-lg">
                                 {movement.order}
                               </div>
@@ -828,15 +1007,26 @@ export default function EditWorkPage() {
                                 악장 #{movement.order}
                               </h3>
                             </div>
-                            <button
-                              type="button"
-                              onClick={() => removeMovement(index)}
-                              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
-                            >
-                              <MdDelete className="w-5 h-5" />
-                          </button>
-                        </div>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => toggleMovementCollapse(index)}
+                                className="p-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
+                                title={isCollapsed ? "펼치기" : "접기"}
+                              >
+                                {isCollapsed ? <MdExpandMore className="w-5 h-5" /> : <MdExpandLess className="w-5 h-5" />}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => removeMovement(index)}
+                                className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+                              >
+                                <MdDelete className="w-5 h-5" />
+                              </button>
+                            </div>
+                          </div>
 
+                        {!isCollapsed && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -951,8 +1141,10 @@ export default function EditWorkPage() {
                             />
                           </div>
                           </div>
+                        )}
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>

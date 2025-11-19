@@ -154,10 +154,13 @@ export default function NewWorkPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-12">
               {/* Basic Information */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">기본 정보</h2>
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">기본 정보</h2>
+                </div>
+                <div className="p-6">
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -371,13 +374,16 @@ export default function NewWorkPage() {
                     </label>
                   </div>
                 </div>
+                </div>
               </div>
 
               {/* Images */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">이미지</h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">이미지</h2>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <ImageUpload
                     label="목록 이미지"
                     value={formData.image}
@@ -389,13 +395,16 @@ export default function NewWorkPage() {
                     onChange={(url) => setFormData({ ...formData, detailImage: url })}
                   />
                 </div>
+                </div>
               </div>
 
               {/* Detail Information */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">상세 정보</h2>
-
-                <div className="space-y-6">
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">상세 정보</h2>
+                </div>
+                <div className="p-6">
+                  <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       작곡 세부사항
@@ -461,24 +470,26 @@ export default function NewWorkPage() {
                     </div>
                   </div>
                 </div>
+                </div>
               </div>
 
               {/* Movements */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-gray-900">악장</h2>
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4 flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-white">악장</h2>
                   <button
                     type="button"
                     onClick={addMovement}
-                    className="flex items-center space-x-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition"
+                    className="flex items-center space-x-2 px-4 py-2 bg-white text-slate-900 rounded-lg hover:bg-slate-50 transition font-semibold"
                   >
                     <MdAdd className="w-5 h-5" />
                     <span>악장 추가</span>
                   </button>
                 </div>
+                <div className="p-6">
 
                 {movements.length === 0 ? (
-                  <p className="text-sm text-gray-500 text-center py-8">
+                  <p className="text-sm text-gray-500 text-center py-8 bg-slate-50 rounded-lg">
                     악장을 추가해주세요
                   </p>
                 ) : (
@@ -486,7 +497,7 @@ export default function NewWorkPage() {
                     {movements.map((movement, index) => (
                       <div
                         key={index}
-                        className="p-4 border border-gray-200 rounded-lg"
+                        className="p-5 bg-slate-50 border-2 border-slate-200 rounded-xl hover:shadow-md transition-all"
                       >
                         <div className="flex items-center justify-between mb-4">
                           <h3 className="font-medium text-gray-900">
@@ -619,6 +630,7 @@ export default function NewWorkPage() {
                     ))}
                   </div>
                 )}
+                </div>
               </div>
 
               {/* Submit Buttons */}
