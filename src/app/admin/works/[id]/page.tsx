@@ -78,6 +78,8 @@ export default function EditWorkPage() {
   const [draggedMovementIndex, setDraggedMovementIndex] = useState<number | null>(null);
   const [dragOverLinkIndex, setDragOverLinkIndex] = useState<number | null>(null);
   const [dragOverMovementIndex, setDragOverMovementIndex] = useState<number | null>(null);
+  const [linkDropPosition, setLinkDropPosition] = useState<'top' | 'bottom'>('bottom');
+  const [movementDropPosition, setMovementDropPosition] = useState<'top' | 'bottom'>('bottom');
 
   useEffect(() => {
     fetchWork();
@@ -325,13 +327,14 @@ export default function EditWorkPage() {
     e.preventDefault();
     e.stopPropagation();
     if (draggedLinkIndex !== null && draggedLinkIndex !== index) {
-      setDragOverLinkIndex(index);
-    }
-  };
+      // Calculate drop position based on mouse position within the element
+      const rect = e.currentTarget.getBoundingClientRect();
+      const mouseY = e.clientY;
+      const elementMiddle = rect.top + rect.height / 2;
 
-  const handleLinkDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOverLinkIndex(null);
+      setDragOverLinkIndex(index);
+      setLinkDropPosition(mouseY < elementMiddle ? 'top' : 'bottom');
+    }
   };
 
   const handleLinkDragEnd = () => {
@@ -343,7 +346,7 @@ export default function EditWorkPage() {
     e.preventDefault();
     e.stopPropagation();
 
-    if (draggedLinkIndex === null || draggedLinkIndex === dropIndex) {
+    if (draggedLinkIndex === null) {
       setDraggedLinkIndex(null);
       setDragOverLinkIndex(null);
       return;
@@ -351,7 +354,16 @@ export default function EditWorkPage() {
 
     const newLinks = [...relatedLinks];
     const [draggedItem] = newLinks.splice(draggedLinkIndex, 1);
-    newLinks.splice(dropIndex, 0, draggedItem);
+
+    // Calculate actual drop position
+    let actualDropIndex = dropIndex;
+    if (linkDropPosition === 'bottom') {
+      actualDropIndex = draggedLinkIndex < dropIndex ? dropIndex : dropIndex + 1;
+    } else {
+      actualDropIndex = draggedLinkIndex < dropIndex ? dropIndex - 1 : dropIndex;
+    }
+
+    newLinks.splice(actualDropIndex, 0, draggedItem);
 
     // Update order numbers
     newLinks.forEach((link, idx) => {
@@ -373,13 +385,14 @@ export default function EditWorkPage() {
     e.preventDefault();
     e.stopPropagation();
     if (draggedMovementIndex !== null && draggedMovementIndex !== index) {
-      setDragOverMovementIndex(index);
-    }
-  };
+      // Calculate drop position based on mouse position within the element
+      const rect = e.currentTarget.getBoundingClientRect();
+      const mouseY = e.clientY;
+      const elementMiddle = rect.top + rect.height / 2;
 
-  const handleMovementDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOverMovementIndex(null);
+      setDragOverMovementIndex(index);
+      setMovementDropPosition(mouseY < elementMiddle ? 'top' : 'bottom');
+    }
   };
 
   const handleMovementDragEnd = () => {
@@ -391,7 +404,7 @@ export default function EditWorkPage() {
     e.preventDefault();
     e.stopPropagation();
 
-    if (draggedMovementIndex === null || draggedMovementIndex === dropIndex) {
+    if (draggedMovementIndex === null) {
       setDraggedMovementIndex(null);
       setDragOverMovementIndex(null);
       return;
@@ -399,7 +412,16 @@ export default function EditWorkPage() {
 
     const newMovements = [...movements];
     const [draggedItem] = newMovements.splice(draggedMovementIndex, 1);
-    newMovements.splice(dropIndex, 0, draggedItem);
+
+    // Calculate actual drop position
+    let actualDropIndex = dropIndex;
+    if (movementDropPosition === 'bottom') {
+      actualDropIndex = draggedMovementIndex < dropIndex ? dropIndex : dropIndex + 1;
+    } else {
+      actualDropIndex = draggedMovementIndex < dropIndex ? dropIndex - 1 : dropIndex;
+    }
+
+    newMovements.splice(actualDropIndex, 0, draggedItem);
 
     // Update order numbers
     newMovements.forEach((movement, idx) => {
@@ -874,13 +896,12 @@ export default function EditWorkPage() {
                         const isCollapsed = collapsedLinks.has(index);
                         const isDragging = draggedLinkIndex === index;
                         const isDropTarget = dragOverLinkIndex === index;
-                        const dropPosition = draggedLinkIndex !== null && draggedLinkIndex < index ? 'bottom' : 'top';
 
                         return (
                         <div key={link.id || index}>
                           {/* Placeholder before item */}
-                          {isDropTarget && dropPosition === 'top' && (
-                            <div className="h-20 mb-4 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center">
+                          {isDropTarget && linkDropPosition === 'top' && (
+                            <div className="h-20 mb-4 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center transition-all animate-in fade-in duration-150">
                               <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
                             </div>
                           )}
@@ -889,7 +910,6 @@ export default function EditWorkPage() {
                             draggable
                             onDragStart={(e) => handleLinkDragStart(e, index)}
                             onDragOver={(e) => handleLinkDragOver(e, index)}
-                            onDragLeave={handleLinkDragLeave}
                             onDragEnd={handleLinkDragEnd}
                             onDrop={(e) => handleLinkDrop(e, index)}
                             className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move border-2 border-slate-200
@@ -978,8 +998,8 @@ export default function EditWorkPage() {
                           </div>
 
                           {/* Placeholder after item */}
-                          {isDropTarget && dropPosition === 'bottom' && (
-                            <div className="h-20 mt-4 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center">
+                          {isDropTarget && linkDropPosition === 'bottom' && (
+                            <div className="h-20 mt-4 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center transition-all animate-in fade-in duration-150">
                               <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
                             </div>
                           )}
@@ -1041,13 +1061,12 @@ export default function EditWorkPage() {
                         const isCollapsed = collapsedMovements.has(index);
                         const isDragging = draggedMovementIndex === index;
                         const isDropTarget = dragOverMovementIndex === index;
-                        const dropPosition = draggedMovementIndex !== null && draggedMovementIndex < index ? 'bottom' : 'top';
 
                         return (
                         <div key={movement.id || index}>
                           {/* Placeholder before item */}
-                          {isDropTarget && dropPosition === 'top' && (
-                            <div className="h-20 mb-6 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center">
+                          {isDropTarget && movementDropPosition === 'top' && (
+                            <div className="h-20 mb-6 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center transition-all animate-in fade-in duration-150">
                               <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
                             </div>
                           )}
@@ -1056,7 +1075,6 @@ export default function EditWorkPage() {
                             draggable
                             onDragStart={(e) => handleMovementDragStart(e, index)}
                             onDragOver={(e) => handleMovementDragOver(e, index)}
-                            onDragLeave={handleMovementDragLeave}
                             onDragEnd={handleMovementDragEnd}
                             onDrop={(e) => handleMovementDrop(e, index)}
                             className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move border-2 border-slate-200
@@ -1197,8 +1215,8 @@ export default function EditWorkPage() {
                           </div>
 
                           {/* Placeholder after item */}
-                          {isDropTarget && dropPosition === 'bottom' && (
-                            <div className="h-20 mt-6 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center">
+                          {isDropTarget && movementDropPosition === 'bottom' && (
+                            <div className="h-20 mt-6 border-2 border-dashed border-blue-500 bg-blue-50 rounded-xl flex items-center justify-center transition-all animate-in fade-in duration-150">
                               <span className="text-sm text-blue-600 font-medium">여기에 놓기</span>
                             </div>
                           )}
