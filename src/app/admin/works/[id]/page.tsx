@@ -76,6 +76,8 @@ export default function EditWorkPage() {
   // Drag and drop state
   const [draggedLinkIndex, setDraggedLinkIndex] = useState<number | null>(null);
   const [draggedMovementIndex, setDraggedMovementIndex] = useState<number | null>(null);
+  const [dragOverLinkIndex, setDragOverLinkIndex] = useState<number | null>(null);
+  const [dragOverMovementIndex, setDragOverMovementIndex] = useState<number | null>(null);
 
   useEffect(() => {
     fetchWork();
@@ -322,6 +324,19 @@ export default function EditWorkPage() {
   const handleLinkDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
     e.stopPropagation();
+    if (draggedLinkIndex !== null && draggedLinkIndex !== index) {
+      setDragOverLinkIndex(index);
+    }
+  };
+
+  const handleLinkDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOverLinkIndex(null);
+  };
+
+  const handleLinkDragEnd = () => {
+    setDraggedLinkIndex(null);
+    setDragOverLinkIndex(null);
   };
 
   const handleLinkDrop = (e: React.DragEvent, dropIndex: number) => {
@@ -330,6 +345,7 @@ export default function EditWorkPage() {
 
     if (draggedLinkIndex === null || draggedLinkIndex === dropIndex) {
       setDraggedLinkIndex(null);
+      setDragOverLinkIndex(null);
       return;
     }
 
@@ -344,6 +360,7 @@ export default function EditWorkPage() {
 
     setRelatedLinks(newLinks);
     setDraggedLinkIndex(null);
+    setDragOverLinkIndex(null);
   };
 
   // Drag and drop handlers for movements
@@ -355,6 +372,19 @@ export default function EditWorkPage() {
   const handleMovementDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
     e.stopPropagation();
+    if (draggedMovementIndex !== null && draggedMovementIndex !== index) {
+      setDragOverMovementIndex(index);
+    }
+  };
+
+  const handleMovementDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOverMovementIndex(null);
+  };
+
+  const handleMovementDragEnd = () => {
+    setDraggedMovementIndex(null);
+    setDragOverMovementIndex(null);
   };
 
   const handleMovementDrop = (e: React.DragEvent, dropIndex: number) => {
@@ -363,6 +393,7 @@ export default function EditWorkPage() {
 
     if (draggedMovementIndex === null || draggedMovementIndex === dropIndex) {
       setDraggedMovementIndex(null);
+      setDragOverMovementIndex(null);
       return;
     }
 
@@ -377,6 +408,7 @@ export default function EditWorkPage() {
 
     setMovements(newMovements);
     setDraggedMovementIndex(null);
+    setDragOverMovementIndex(null);
   };
 
   if (isLoading) {
@@ -840,24 +872,36 @@ export default function EditWorkPage() {
                     <div className="space-y-4">
                       {relatedLinks.map((link, index) => {
                         const isCollapsed = collapsedLinks.has(index);
+                        const isDragging = draggedLinkIndex === index;
+                        const isDropTarget = dragOverLinkIndex === index;
+                        const dropPosition = draggedLinkIndex !== null && draggedLinkIndex < index ? 'bottom' : 'top';
+
                         return (
                         <div
                           key={link.id || index}
                           draggable
                           onDragStart={(e) => handleLinkDragStart(e, index)}
                           onDragOver={(e) => handleLinkDragOver(e, index)}
+                          onDragLeave={handleLinkDragLeave}
+                          onDragEnd={handleLinkDragEnd}
                           onDrop={(e) => handleLinkDrop(e, index)}
-                          className={`p-5 bg-slate-50 border-2 border-slate-200 rounded-xl transition-all cursor-move ${
-                            draggedLinkIndex === index ? 'opacity-50' : 'hover:shadow-md'
-                          }`}
+                          className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move relative
+                            ${isDragging ? 'opacity-50' : 'hover:shadow-md'}
+                            ${isDropTarget && dropPosition === 'top'
+                              ? 'border-t-4 border-t-blue-500 border-x-2 border-b-2 border-x-slate-200 border-b-slate-200'
+                              : isDropTarget && dropPosition === 'bottom'
+                              ? 'border-b-4 border-b-blue-500 border-x-2 border-t-2 border-x-slate-200 border-t-slate-200'
+                              : 'border-2 border-slate-200'
+                            }
+                          `}
                         >
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
                               <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing flex-shrink-0" />
-                              <div className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">
+                              <div className="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
                                 {link.order}
                               </div>
-                              <h3 className="font-bold text-gray-900 text-lg truncate">
+                              <h3 className="font-bold text-gray-900 text-base truncate">
                                 {link.title || `링크 #${link.order}`}
                               </h3>
                             </div>
@@ -986,24 +1030,36 @@ export default function EditWorkPage() {
                     <div className="space-y-6">
                       {movements.map((movement, index) => {
                         const isCollapsed = collapsedMovements.has(index);
+                        const isDragging = draggedMovementIndex === index;
+                        const isDropTarget = dragOverMovementIndex === index;
+                        const dropPosition = draggedMovementIndex !== null && draggedMovementIndex < index ? 'bottom' : 'top';
+
                         return (
                         <div
                           key={movement.id || index}
                           draggable
                           onDragStart={(e) => handleMovementDragStart(e, index)}
                           onDragOver={(e) => handleMovementDragOver(e, index)}
+                          onDragLeave={handleMovementDragLeave}
+                          onDragEnd={handleMovementDragEnd}
                           onDrop={(e) => handleMovementDrop(e, index)}
-                          className={`p-5 bg-slate-50 border-2 border-slate-200 rounded-xl transition-all cursor-move ${
-                            draggedMovementIndex === index ? 'opacity-50' : 'hover:shadow-md'
-                          }`}
+                          className={`p-3 bg-slate-50 rounded-xl transition-all cursor-move relative
+                            ${isDragging ? 'opacity-50' : 'hover:shadow-md'}
+                            ${isDropTarget && dropPosition === 'top'
+                              ? 'border-t-4 border-t-blue-500 border-x-2 border-b-2 border-x-slate-200 border-b-slate-200'
+                              : isDropTarget && dropPosition === 'bottom'
+                              ? 'border-b-4 border-b-blue-500 border-x-2 border-t-2 border-x-slate-200 border-t-slate-200'
+                              : 'border-2 border-slate-200'
+                            }
+                          `}
                         >
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
                               <MdDragIndicator className="w-5 h-5 text-slate-400 cursor-grab active:cursor-grabbing flex-shrink-0" />
-                              <div className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">
+                              <div className="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
                                 {movement.order}
                               </div>
-                              <h3 className="font-bold text-gray-900 text-lg truncate">
+                              <h3 className="font-bold text-gray-900 text-base truncate">
                                 {movement.title || `악장 #${movement.order}`}
                               </h3>
                             </div>
