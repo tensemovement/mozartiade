@@ -102,6 +102,7 @@ model Work {
 
   // Relations
   movements              Movement[]
+  relatedLinks           RelatedLink[]
   chronicles             Chronicle[] // 이 작품을 참조하는 연대기 항목들
 
   createdAt              DateTime @default(now())
@@ -125,6 +126,24 @@ model Movement {
   youtubeUrl  String?
   duration    String?  // e.g., "4:30"
   highlights  String?  @db.Text
+
+  // Relations
+  work        Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([workId])
+  @@index([order])
+}
+
+model RelatedLink {
+  id          String   @id @default(cuid())
+  workId      String
+  title       String
+  url         String
+  description String?
+  order       Int      @default(0) // Display order
 
   // Relations
   work        Work     @relation(fields: [workId], references: [id], onDelete: Cascade)

@@ -87,10 +87,15 @@ export default function NewChroniclePage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-12">
               {/* Type Selection */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">유형</h2>
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">
+                    유형
+                  </h2>
+                </div>
+                <div className="p-6">
 
                 <div className="flex space-x-4">
                   <label className="flex items-center space-x-2 cursor-pointer">
@@ -120,11 +125,17 @@ export default function NewChroniclePage() {
                     <span className="text-sm font-medium text-gray-700">작품 작곡</span>
                   </label>
                 </div>
+                </div>
               </div>
 
               {/* Basic Information */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">기본 정보</h2>
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">
+                    기본 정보
+                  </h2>
+                </div>
+                <div className="p-6">
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="grid grid-cols-3 gap-4">
@@ -266,17 +277,23 @@ export default function NewChroniclePage() {
                     </label>
                   </div>
                 </div>
+                </div>
               </div>
 
               {/* Image */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">이미지</h2>
-
-                <ImageUpload
-                  label="일대기 이미지"
-                  value={formData.image}
-                  onChange={(url) => setFormData({ ...formData, image: url })}
-                />
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">
+                    이미지
+                  </h2>
+                </div>
+                <div className="p-6">
+                  <ImageUpload
+                    label="일대기 이미지"
+                    value={formData.image}
+                    onChange={(url) => setFormData({ ...formData, image: url })}
+                  />
+                </div>
               </div>
 
               {/* Submit Buttons */}

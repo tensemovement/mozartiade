@@ -20,6 +20,11 @@ export async function GET(
             order: 'asc',
           },
         },
+        relatedLinks: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
       },
     })
 

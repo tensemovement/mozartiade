@@ -6,8 +6,25 @@ import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { useAdminApi } from '@/hooks/useAdminApi';
-import { MdArrowBack, MdAdd, MdDelete } from 'react-icons/md';
+import { MdArrowBack, MdAdd, MdDelete, MdExpandMore, MdExpandLess, MdUnfoldMore, MdUnfoldLess, MdDragIndicator } from 'react-icons/md';
 import Link from 'next/link';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface MovementForm {
   id?: string;
@@ -19,6 +36,296 @@ interface MovementForm {
   youtubeUrl: string;
   duration: string;
   highlights: string;
+}
+
+interface RelatedLinkForm {
+  id?: string;
+  title: string;
+  url: string;
+  description: string;
+  order: number;
+}
+
+// Sortable Link Item Component
+function SortableRelatedLink({
+  link,
+  index,
+  isCollapsed,
+  onToggleCollapse,
+  onRemove,
+  onUpdate,
+  sortableId,
+}: {
+  link: RelatedLinkForm;
+  index: number;
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
+  onRemove: () => void;
+  onUpdate: (field: keyof RelatedLinkForm, value: any) => void;
+  sortableId: string;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: sortableId,
+    animateLayoutChanges: () => false,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition: transition ?? undefined,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} className="flex items-center">
+      <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md w-full">
+        <div className={`flex items-center justify-between ${!isCollapsed ? 'mb-3' : ''}`}>
+          <div className="flex items-center gap-2">
+            <div {...listeners} className="cursor-grab active:cursor-grabbing">
+              <MdDragIndicator className="w-5 h-5 text-slate-400 flex-shrink-0" />
+            </div>
+            <div className="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+              {link.order}
+            </div>
+            <h3 className="font-bold text-gray-900 text-base truncate">
+              {link.title || `링크 #${link.order}`}
+            </h3>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              className="p-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
+              title={isCollapsed ? "펼치기" : "접기"}
+            >
+              {isCollapsed ? <MdExpandMore className="w-5 h-5" /> : <MdExpandLess className="w-5 h-5" />}
+            </button>
+            <button
+              type="button"
+              onClick={onRemove}
+              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+            >
+              <MdDelete className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {!isCollapsed && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                제목 <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={link.title}
+                onChange={(e) => onUpdate('title', e.target.value)}
+                placeholder="예: 모차르트 공식 웹사이트"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                required
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                URL <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="url"
+                value={link.url}
+                onChange={(e) => onUpdate('url', e.target.value)}
+                placeholder="https://example.com"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                required
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                설명
+              </label>
+              <input
+                type="text"
+                value={link.description}
+                onChange={(e) => onUpdate('description', e.target.value)}
+                placeholder="링크에 대한 간단한 설명"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Sortable Movement Item Component
+function SortableMovement({
+  movement,
+  index,
+  isCollapsed,
+  onToggleCollapse,
+  onRemove,
+  onUpdate,
+  sortableId,
+}: {
+  movement: MovementForm;
+  index: number;
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
+  onRemove: () => void;
+  onUpdate: (field: keyof MovementForm, value: any) => void;
+  sortableId: string;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: sortableId,
+    animateLayoutChanges: () => false,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition: transition ?? undefined,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} className="flex items-center">
+      <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md w-full">
+        <div className={`flex items-center justify-between ${!isCollapsed ? 'mb-3' : ''}`}>
+          <div className="flex items-center gap-2">
+            <div {...listeners} className="cursor-grab active:cursor-grabbing">
+              <MdDragIndicator className="w-5 h-5 text-slate-400 flex-shrink-0" />
+            </div>
+            <div className="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+              {movement.order}
+            </div>
+            <h3 className="font-bold text-gray-900 text-base truncate">
+              {movement.title || `악장 #${movement.order}`}
+            </h3>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              className="p-2 text-slate-600 hover:bg-slate-200 rounded-lg transition"
+              title={isCollapsed ? "펼치기" : "접기"}
+            >
+              {isCollapsed ? <MdExpandMore className="w-5 h-5" /> : <MdExpandLess className="w-5 h-5" />}
+            </button>
+            <button
+              type="button"
+              onClick={onRemove}
+              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+            >
+              <MdDelete className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {!isCollapsed && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                재생시간
+              </label>
+              <input
+                type="text"
+                value={movement.duration}
+                onChange={(e) => onUpdate('duration', e.target.value)}
+                placeholder="04:30"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                제목 (한글)
+              </label>
+              <input
+                type="text"
+                value={movement.title}
+                onChange={(e) => onUpdate('title', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                제목 (영문)
+              </label>
+              <input
+                type="text"
+                value={movement.titleEn}
+                onChange={(e) => onUpdate('titleEn', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                등장인물/캐릭터
+              </label>
+              <input
+                type="text"
+                value={movement.character}
+                onChange={(e) => onUpdate('character', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                YouTube URL
+              </label>
+              <input
+                type="url"
+                value={movement.youtubeUrl}
+                onChange={(e) => onUpdate('youtubeUrl', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                설명
+              </label>
+              <textarea
+                value={movement.description}
+                onChange={(e) => onUpdate('description', e.target.value)}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                하이라이트
+              </label>
+              <textarea
+                value={movement.highlights}
+                onChange={(e) => onUpdate('highlights', e.target.value)}
+                rows={2}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default function EditWorkPage() {
@@ -58,9 +365,37 @@ export default function EditWorkPage() {
   const [movements, setMovements] = useState<MovementForm[]>([]);
   const [deletedMovementIds, setDeletedMovementIds] = useState<string[]>([]);
 
+  const [relatedLinks, setRelatedLinks] = useState<RelatedLinkForm[]>([]);
+  const [deletedRelatedLinkIds, setDeletedRelatedLinkIds] = useState<string[]>([]);
+
+  // Collapse/expand states
+  const [collapsedLinks, setCollapsedLinks] = useState<Set<number>>(new Set());
+  const [collapsedMovements, setCollapsedMovements] = useState<Set<number>>(new Set());
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   useEffect(() => {
     fetchWork();
   }, [workId]);
+
+  // Set all items collapsed by default when data is loaded
+  useEffect(() => {
+    if (relatedLinks.length > 0) {
+      setCollapsedLinks(new Set(relatedLinks.map((_, i) => i)));
+    }
+  }, [relatedLinks.length]);
+
+  useEffect(() => {
+    if (movements.length > 0) {
+      setCollapsedMovements(new Set(movements.map((_, i) => i)));
+    }
+  }, [movements.length]);
 
   const fetchWork = async () => {
     setIsLoading(true);
@@ -105,6 +440,16 @@ export default function EditWorkPage() {
           highlights: m.highlights || '',
         })));
       }
+
+      if (work.relatedLinks && work.relatedLinks.length > 0) {
+        setRelatedLinks(work.relatedLinks.map((link: any) => ({
+          id: link.id,
+          title: link.title,
+          url: link.url,
+          description: link.description || '',
+          order: link.order,
+        })));
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : '작품 정보를 불러오는데 실패했습니다.');
     } finally {
@@ -143,6 +488,22 @@ export default function EditWorkPage() {
         } else {
           // Create new movement
           await post(`/api/admin/works/${workId}/movements`, movement);
+        }
+      }
+
+      // Delete removed related links
+      for (const linkId of deletedRelatedLinkIds) {
+        await del(`/api/admin/related-links/${linkId}`);
+      }
+
+      // Update or create related links
+      for (const link of relatedLinks) {
+        if (link.id) {
+          // Update existing link
+          await put(`/api/admin/related-links/${link.id}`, link);
+        } else {
+          // Create new link
+          await post(`/api/admin/works/${workId}/related-links`, link);
         }
       }
 
@@ -202,6 +563,97 @@ export default function EditWorkPage() {
     setFormData({ ...formData, usageExamples: updated });
   };
 
+  const addRelatedLink = () => {
+    setRelatedLinks([
+      ...relatedLinks,
+      {
+        title: '',
+        url: '',
+        description: '',
+        order: relatedLinks.length + 1,
+      },
+    ]);
+  };
+
+  const removeRelatedLink = (index: number) => {
+    const link = relatedLinks[index];
+    if (link.id) {
+      setDeletedRelatedLinkIds([...deletedRelatedLinkIds, link.id]);
+    }
+    setRelatedLinks(relatedLinks.filter((_, i) => i !== index));
+  };
+
+  const updateRelatedLink = (index: number, field: keyof RelatedLinkForm, value: any) => {
+    const updated = [...relatedLinks];
+    updated[index] = { ...updated[index], [field]: value };
+    setRelatedLinks(updated);
+  };
+
+  // Collapse/expand handlers
+  const toggleLinkCollapse = (index: number) => {
+    const newCollapsed = new Set(collapsedLinks);
+    if (newCollapsed.has(index)) {
+      newCollapsed.delete(index);
+    } else {
+      newCollapsed.add(index);
+    }
+    setCollapsedLinks(newCollapsed);
+  };
+
+  const toggleMovementCollapse = (index: number) => {
+    const newCollapsed = new Set(collapsedMovements);
+    if (newCollapsed.has(index)) {
+      newCollapsed.delete(index);
+    } else {
+      newCollapsed.add(index);
+    }
+    setCollapsedMovements(newCollapsed);
+  };
+
+  const expandAllLinks = () => setCollapsedLinks(new Set());
+  const collapseAllLinks = () => setCollapsedLinks(new Set(relatedLinks.map((_, i) => i)));
+
+  const expandAllMovements = () => setCollapsedMovements(new Set());
+  const collapseAllMovements = () => setCollapsedMovements(new Set(movements.map((_, i) => i)));
+
+  // Drag and drop handler for related links
+  const handleLinkDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = relatedLinks.findIndex((_, idx) => `link-${idx}` === active.id);
+      const newIndex = relatedLinks.findIndex((_, idx) => `link-${idx}` === over.id);
+
+      const newLinks = arrayMove(relatedLinks, oldIndex, newIndex);
+
+      // Update order numbers
+      newLinks.forEach((link, idx) => {
+        link.order = idx + 1;
+      });
+
+      setRelatedLinks(newLinks);
+    }
+  };
+
+  // Drag and drop handler for movements
+  const handleMovementDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = movements.findIndex((_, idx) => `movement-${idx}` === active.id);
+      const newIndex = movements.findIndex((_, idx) => `movement-${idx}` === over.id);
+
+      const newMovements = arrayMove(movements, oldIndex, newIndex);
+
+      // Update order numbers
+      newMovements.forEach((movement, idx) => {
+        movement.order = idx + 1;
+      });
+
+      setMovements(newMovements);
+    }
+  };
+
   if (isLoading) {
     return (
       <AdminProtectedRoute>
@@ -242,12 +694,16 @@ export default function EditWorkPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-12">
               {/* Basic Information */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">기본 정보</h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">
+                    기본 정보
+                  </h2>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       카탈로그 번호 (6th Edition) *
@@ -507,14 +963,19 @@ export default function EditWorkPage() {
                       </span>
                     </label>
                   </div>
+                  </div>
                 </div>
               </div>
 
               {/* Images */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">이미지</h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">
+                    이미지
+                  </h2>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <ImageUpload
                     label="목록 이미지"
                     value={formData.image}
@@ -525,14 +986,19 @@ export default function EditWorkPage() {
                     value={formData.detailImage}
                     onChange={(url) => setFormData({ ...formData, detailImage: url })}
                   />
+                  </div>
                 </div>
               </div>
 
               {/* Detail Information */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">상세 정보</h2>
-
-                <div className="space-y-6">
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">
+                    상세 정보
+                  </h2>
+                </div>
+                <div className="p-6">
+                  <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       작곡 세부사항
@@ -598,164 +1064,155 @@ export default function EditWorkPage() {
                     </div>
                   </div>
                 </div>
+                </div>
+              </div>
+
+              {/* Related Links */}
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4 flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-white">
+                    관련 링크
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    {relatedLinks.length > 0 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={expandAllLinks}
+                          className="flex items-center space-x-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-sm"
+                          title="전체 펼치기"
+                        >
+                          <MdUnfoldMore className="w-4 h-4" />
+                          <span>전체 펼치기</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={collapseAllLinks}
+                          className="flex items-center space-x-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-sm"
+                          title="전체 닫기"
+                        >
+                          <MdUnfoldLess className="w-4 h-4" />
+                          <span>전체 닫기</span>
+                        </button>
+                      </>
+                    )}
+                    <button
+                      type="button"
+                      onClick={addRelatedLink}
+                      className="flex items-center space-x-2 px-4 py-2 bg-white text-slate-900 rounded-lg hover:bg-slate-50 transition font-semibold"
+                    >
+                      <MdAdd className="w-5 h-5" />
+                      <span>링크 추가</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="p-6">
+                  {relatedLinks.length === 0 ? (
+                    <p className="text-sm text-gray-500 text-center py-8 bg-slate-50 rounded-lg">
+                      관련 링크를 추가해주세요
+                    </p>
+                  ) : (
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={handleLinkDragEnd}
+                    >
+                      <SortableContext
+                        items={relatedLinks.map((_, index) => `link-${index}`)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <div className="space-y-4">
+                          {relatedLinks.map((link, index) => (
+                            <SortableRelatedLink
+                              key={`link-${index}`}
+                              link={link}
+                              index={index}
+                              isCollapsed={collapsedLinks.has(index)}
+                              onToggleCollapse={() => toggleLinkCollapse(index)}
+                              onRemove={() => removeRelatedLink(index)}
+                              onUpdate={(field, value) => updateRelatedLink(index, field, value)}
+                              sortableId={`link-${index}`}
+                            />
+                          ))}
+                        </div>
+                      </SortableContext>
+                    </DndContext>
+                  )}
+                </div>
               </div>
 
               {/* Movements */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-gray-900">악장</h2>
-                  <button
-                    type="button"
-                    onClick={addMovement}
-                    className="flex items-center space-x-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition"
-                  >
-                    <MdAdd className="w-5 h-5" />
-                    <span>악장 추가</span>
-                  </button>
-                </div>
-
-                {movements.length === 0 ? (
-                  <p className="text-sm text-gray-500 text-center py-8">
-                    악장을 추가해주세요
-                  </p>
-                ) : (
-                  <div className="space-y-6">
-                    {movements.map((movement, index) => (
-                      <div
-                        key={movement.id || index}
-                        className="p-4 border border-gray-200 rounded-lg"
-                      >
-                        <div className="flex items-center justify-between mb-4">
-                          <h3 className="font-medium text-gray-900">
-                            악장 {movement.order}
-                          </h3>
-                          <button
-                            type="button"
-                            onClick={() => removeMovement(index)}
-                            className="text-red-600 hover:text-red-900"
-                          >
-                            <MdDelete className="w-5 h-5" />
-                          </button>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              순서
-                            </label>
-                            <input
-                              type="number"
-                              value={movement.order}
-                              onChange={(e) =>
-                                updateMovement(index, 'order', parseInt(e.target.value))
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              재생시간
-                            </label>
-                            <input
-                              type="text"
-                              value={movement.duration}
-                              onChange={(e) =>
-                                updateMovement(index, 'duration', e.target.value)
-                              }
-                              placeholder="04:30"
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              제목 (한글)
-                            </label>
-                            <input
-                              type="text"
-                              value={movement.title}
-                              onChange={(e) =>
-                                updateMovement(index, 'title', e.target.value)
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              제목 (영문)
-                            </label>
-                            <input
-                              type="text"
-                              value={movement.titleEn}
-                              onChange={(e) =>
-                                updateMovement(index, 'titleEn', e.target.value)
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              등장인물/캐릭터
-                            </label>
-                            <input
-                              type="text"
-                              value={movement.character}
-                              onChange={(e) =>
-                                updateMovement(index, 'character', e.target.value)
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              YouTube URL
-                            </label>
-                            <input
-                              type="url"
-                              value={movement.youtubeUrl}
-                              onChange={(e) =>
-                                updateMovement(index, 'youtubeUrl', e.target.value)
-                              }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              설명
-                            </label>
-                            <textarea
-                              value={movement.description}
-                              onChange={(e) =>
-                                updateMovement(index, 'description', e.target.value)
-                              }
-                              rows={3}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              하이라이트
-                            </label>
-                            <textarea
-                              value={movement.highlights}
-                              onChange={(e) =>
-                                updateMovement(index, 'highlights', e.target.value)
-                              }
-                              rows={2}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden">
+                <div className="bg-slate-900 px-6 py-4 flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-white">
+                    악장
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    {movements.length > 0 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={expandAllMovements}
+                          className="flex items-center space-x-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-sm"
+                          title="전체 펼치기"
+                        >
+                          <MdUnfoldMore className="w-4 h-4" />
+                          <span>전체 펼치기</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={collapseAllMovements}
+                          className="flex items-center space-x-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition text-sm"
+                          title="전체 닫기"
+                        >
+                          <MdUnfoldLess className="w-4 h-4" />
+                          <span>전체 닫기</span>
+                        </button>
+                      </>
+                    )}
+                    <button
+                      type="button"
+                      onClick={addMovement}
+                      className="flex items-center space-x-2 px-4 py-2 bg-white text-slate-900 rounded-lg hover:bg-slate-50 transition font-semibold"
+                    >
+                      <MdAdd className="w-5 h-5" />
+                      <span>악장 추가</span>
+                    </button>
                   </div>
-                )}
+                </div>
+                <div className="p-6">
+                  {movements.length === 0 ? (
+                    <p className="text-sm text-gray-500 text-center py-8 bg-slate-50 rounded-lg">
+                      악장을 추가해주세요
+                    </p>
+                  ) : (
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={handleMovementDragEnd}
+                    >
+                      <SortableContext
+                        items={movements.map((_, index) => `movement-${index}`)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <div className="space-y-6">
+                          {movements.map((movement, index) => (
+                            <SortableMovement
+                              key={`movement-${index}`}
+                              movement={movement}
+                              index={index}
+                              isCollapsed={collapsedMovements.has(index)}
+                              onToggleCollapse={() => toggleMovementCollapse(index)}
+                              onRemove={() => removeMovement(index)}
+                              onUpdate={(field, value) => updateMovement(index, field, value)}
+                              sortableId={`movement-${index}`}
+                            />
+                          ))}
+                        </div>
+                      </SortableContext>
+                    </DndContext>
+                  )}
+                </div>
               </div>
 
               {/* Submit Buttons */}

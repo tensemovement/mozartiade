@@ -133,7 +133,6 @@ const koreanTitles: Record<string, string> = {
   'Sonata in D for piano 4-hands': '피아노 4손 연탄을 위한 소나타 D장조',
   'Sonata in F for piano 4-hands': '피아노 4손 연탄을 위한 소나타 F장조',
   'Sonata in C for piano 4-hands': '피아노 4손 연탄을 위한 소나타 C장조',
-  'Sonata in F for piano 4-hands': '피아노 4손 연탄을 위한 소나타 F장조',
 
   // Violin sonatas and other chamber works
   'Violin Sonata in A': '바이올린 소나타 A장조',

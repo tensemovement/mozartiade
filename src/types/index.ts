@@ -87,6 +87,16 @@ export interface Work {
   behindStory?: string; // 비하인드 스토리
   usageExamples?: string[]; // 활용 사례 (공연, 이벤트 등)
   movements?: Movement[]; // 악장 목록
+  relatedLinks?: RelatedLink[]; // 관련 링크
+}
+
+/**
+ * Related Link (관련 링크) types
+ */
+export interface RelatedLink {
+  title: string;
+  url: string;
+  description?: string;
 }
 
 /**
@@ -152,11 +162,18 @@ export interface ChronologyItem {
 
   // For works
   catalogNumber?: string; // K. number
+  catalogNumberFirstEd?: string; // K. number first edition (1862)
+  catalogNumberNinthEd?: string; // K. number 9th edition (2024)
+  compositionLocation?: string; // Location where the work was composed
   genre?: string;
   youtubeUrl?: string;
   sheetMusicUrl?: string;
   compositionDetails?: string;
   voteCount?: number; // 투표/좋아요 수
+  behindStory?: string;
+  usageExamples?: string[];
+  movements?: Movement[];
+  relatedLinks?: RelatedLink[];
 
   // UI
   highlight?: boolean;
