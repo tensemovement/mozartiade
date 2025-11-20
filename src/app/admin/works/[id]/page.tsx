@@ -71,17 +71,20 @@ function SortableRelatedLink({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: sortableId });
+  } = useSortable({
+    id: sortableId,
+    animateLayoutChanges: () => false,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition: transition ?? undefined,
     opacity: isDragging ? 0.5 : 1,
   };
 
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
-      <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md transition-all">
+      <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <div {...listeners} className="cursor-grab active:cursor-grabbing">
@@ -187,17 +190,20 @@ function SortableMovement({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: sortableId });
+  } = useSortable({
+    id: sortableId,
+    animateLayoutChanges: () => false,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition: transition ?? undefined,
     opacity: isDragging ? 0.5 : 1,
   };
 
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
-      <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md transition-all">
+      <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <div {...listeners} className="cursor-grab active:cursor-grabbing">
