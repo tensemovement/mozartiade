@@ -62,7 +62,7 @@ export default function AdminSidebar() {
     <div className="w-64 bg-slate-900 text-white h-screen fixed left-0 top-0 overflow-y-auto">
       {/* Logo */}
       <div className="p-6 border-b border-slate-700">
-        <h1 className="text-xl font-bold">EnjoyMozart</h1>
+        <h1 className="text-xl font-bold">Mozartiade</h1>
         <p className="text-sm text-slate-400 mt-1">Admin Dashboard</p>
       </div>
 

@@ -44,14 +44,14 @@ export default function Footer() {
               <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center p-2">
                 <Image
                   src="/images/logo.svg"
-                  alt="EnjoyMozart Logo"
+                  alt="Mozartiade Logo"
                   width={40}
                   height={40}
                   className="object-contain"
                 />
               </div>
               <div>
-                <h3 className="font-serif text-2xl font-bold">EnjoyMozart</h3>
+                <h3 className="font-serif text-2xl font-bold">Mozartiade</h3>
                 <p className="text-xs text-primary-200">
                   완전한 카탈로그와 연대기
                 </p>
@@ -194,7 +194,7 @@ export default function Footer() {
         <div className="border-t border-primary-800 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="font-sans text-sm text-primary-300">
-              © 2025 EnjoyMozart. All rights reserved.
+              © 2025 Mozartiade. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link

@@ -55,7 +55,7 @@ export default function Navigation() {
             }`}>
               <Image
                 src="/images/logo.svg"
-                alt="EnjoyMozart Logo"
+                alt="Mozartiade Logo"
                 width={40}
                 height={40}
                 className="object-contain"
@@ -66,7 +66,7 @@ export default function Navigation() {
               <h1 className={`font-serif text-xl font-bold transition-colors ${
                 isScrolled ? 'text-primary-900' : 'text-white drop-shadow-lg'
               }`}>
-                EnjoyMozart
+                Mozartiade
               </h1>
               <p className={`text-xs font-sans ${
                 isScrolled ? 'text-primary-700' : 'text-white/90 drop-shadow'

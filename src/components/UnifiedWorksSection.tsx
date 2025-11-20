@@ -6,7 +6,7 @@ import { selectedItemState } from '@/store/atoms';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatVoteCount } from '@/utils/format';
-import { MdFullscreen, MdFavorite, MdChevronRight, MdMusicNote, MdLibraryMusic } from 'react-icons/md';
+import { MdFullscreen, MdFavorite, MdChevronRight, MdMusicNote, MdArticle } from 'react-icons/md';
 import { Work } from '@/types';
 import { useState, useEffect } from 'react';
 
@@ -191,8 +191,8 @@ export default function UnifiedWorksSection() {
                         </div>
                       )}
                       {work.sheetMusicUrl && (
-                        <div className="px-3 py-1 bg-teal-100/90 backdrop-blur-sm text-teal-800 rounded-full font-sans text-xs font-semibold shadow-sm flex items-center gap-1" title="악보 보기 가능">
-                          <MdLibraryMusic className="h-3 w-3" />
+                        <div className="px-3 py-1 bg-accent-100/90 backdrop-blur-sm text-accent-800 rounded-full font-sans text-xs font-semibold shadow-sm flex items-center gap-1" title="악보 보기 가능">
+                          <MdArticle className="h-3 w-3" />
                         </div>
                       )}
                     </div>

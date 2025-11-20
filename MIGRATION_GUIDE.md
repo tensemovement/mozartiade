@@ -36,7 +36,7 @@ npx tsx prisma/seed.ts
 `.env` 파일에 다음 환경 변수가 설정되어 있어야 합니다:
 
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/enjoymozart?schema=public"
+DATABASE_URL="postgresql://user:password@localhost:5432/mozartiade?schema=public"
 ```
 
 ## 네트워크 제한 환경에서

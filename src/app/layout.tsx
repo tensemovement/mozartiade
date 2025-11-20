@@ -4,7 +4,7 @@ import { Providers } from "./providers";
 import LayoutContent from "@/components/LayoutContent";
 
 export const metadata: Metadata = {
-  title: "EnjoyMozart Portal - 모차르트 완전 카탈로그",
+  title: "Mozartiade Portal - 모차르트 완전 카탈로그",
   description: "모차르트의 626개 작품을 탐색하세요. 완전한 Köchel 카탈로그, 연대기, 악보, 음원, 영상, 해설까지 모든 자료를 제공합니다.",
   icons: {
     icon: '/images/logo.png',
