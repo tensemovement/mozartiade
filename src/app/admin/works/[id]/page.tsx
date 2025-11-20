@@ -85,7 +85,7 @@ function SortableRelatedLink({
   return (
     <div ref={setNodeRef} style={style} {...attributes} className="flex items-center">
       <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md w-full">
-        <div className="flex items-center justify-between mb-3">
+        <div className={`flex items-center justify-between ${!isCollapsed ? 'mb-3' : ''}`}>
           <div className="flex items-center gap-2">
             <div {...listeners} className="cursor-grab active:cursor-grabbing">
               <MdDragIndicator className="w-5 h-5 text-slate-400 flex-shrink-0" />
@@ -204,7 +204,7 @@ function SortableMovement({
   return (
     <div ref={setNodeRef} style={style} {...attributes} className="flex items-center">
       <div className="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 hover:shadow-md w-full">
-        <div className="flex items-center justify-between mb-3">
+        <div className={`flex items-center justify-between ${!isCollapsed ? 'mb-3' : ''}`}>
           <div className="flex items-center gap-2">
             <div {...listeners} className="cursor-grab active:cursor-grabbing">
               <MdDragIndicator className="w-5 h-5 text-slate-400 flex-shrink-0" />
