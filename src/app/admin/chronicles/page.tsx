@@ -570,8 +570,8 @@ export default function ChroniclesManagementPage() {
                     </div>
                   </DndContext>
 
-                  {/* Pagination */}
-                  {pagination.totalPages > 1 && (
+                  {/* Pagination - Hide when year filter is applied */}
+                  {!filters.year && pagination.totalPages > 1 && (
                     <Pagination
                       currentPage={pagination.page}
                       totalPages={pagination.totalPages}

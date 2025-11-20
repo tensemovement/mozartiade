@@ -20,13 +20,17 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const year = searchParams.get('year') || '';
+
+    // When year filter is applied, show all items on one page (no pagination)
+    const limit = year ? 9999 : parseInt(searchParams.get('limit') || '20');
+    const skip = year ? 0 : (page - 1) * limit;
+
     const search = searchParams.get('search') || '';
     const genre = searchParams.get('genre') || '';
-    const year = searchParams.get('year') || '';
     const highlight = searchParams.get('highlight') || '';
-
-    const skip = (page - 1) * limit;
+    const sort = searchParams.get('sort') || 'year';
+    const order = searchParams.get('order') || 'desc';
 
     // Build where clause
     const where: any = {};
@@ -47,6 +51,30 @@ export async function GET(req: NextRequest) {
       where.highlight = highlight === 'true';
     }
 
+    // Build orderBy clause based on sort parameter
+    let orderBy: any[];
+    switch (sort) {
+      case 'catalogNumber':
+        orderBy = [
+          { catalogNumberNumeric: order as 'asc' | 'desc' },
+          { catalogNumberSuffix: order as 'asc' | 'desc' },
+        ];
+        break;
+      case 'title':
+        orderBy = [{ title: order as 'asc' | 'desc' }];
+        break;
+      case 'voteCount':
+        orderBy = [{ voteCount: order as 'asc' | 'desc' }];
+        break;
+      case 'year':
+      default:
+        orderBy = [
+          { year: order as 'asc' | 'desc' },
+          { compositionOrder: order as 'asc' | 'desc' },
+        ];
+        break;
+    }
+
     // Get works and total count
     const [works, total] = await Promise.all([
       prisma.work.findMany({
@@ -60,10 +88,7 @@ export async function GET(req: NextRequest) {
             },
           },
         },
-        orderBy: [
-          { year: 'desc' },
-          { compositionOrder: 'desc' },
-        ],
+        orderBy,
       }),
       prisma.work.count({ where }),
     ]);
