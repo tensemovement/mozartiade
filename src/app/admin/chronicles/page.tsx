@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
@@ -12,6 +13,9 @@ import { Chronicle } from '@/types';
 import { MdAdd, MdEdit, MdDelete, MdTimeline, MdFilterList, MdClose } from 'react-icons/md';
 
 export default function ChroniclesManagementPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [chronicles, setChronicles] = useState<Chronicle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
@@ -21,16 +25,36 @@ export default function ChroniclesManagementPage() {
   });
 
   const [filters, setFilters] = useState({
-    type: 'all' as 'all' | 'life' | 'work',
-    yearFrom: '',
-    yearTo: '',
-    highlight: '',
-    sort: 'date',
-    order: 'desc',
+    type: (searchParams.get('type') as 'all' | 'life' | 'work') || 'all',
+    yearFrom: searchParams.get('yearFrom') || '',
+    yearTo: searchParams.get('yearTo') || '',
+    highlight: searchParams.get('highlight') || '',
+    sort: searchParams.get('sort') || 'date',
+    order: searchParams.get('order') || 'desc',
   });
 
-  const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
+  const [pagination, setPagination] = useState({
+    page: parseInt(searchParams.get('page') || '1'),
+    totalPages: 1,
+    total: 0
+  });
   const { get, del } = useAdminApi();
+
+  // URL 파라미터 업데이트
+  const updateURL = (newFilters: typeof filters, newPage: number) => {
+    const params = new URLSearchParams();
+
+    if (newFilters.type !== 'all') params.set('type', newFilters.type);
+    if (newFilters.yearFrom) params.set('yearFrom', newFilters.yearFrom);
+    if (newFilters.yearTo) params.set('yearTo', newFilters.yearTo);
+    if (newFilters.highlight) params.set('highlight', newFilters.highlight);
+    if (newFilters.sort !== 'date') params.set('sort', newFilters.sort);
+    if (newFilters.order !== 'desc') params.set('order', newFilters.order);
+    if (newPage > 1) params.set('page', newPage.toString());
+
+    const queryString = params.toString();
+    router.push(queryString ? `?${queryString}` : '/admin/chronicles', { scroll: false });
+  };
 
   useEffect(() => {
     fetchChronicles();
@@ -74,20 +98,24 @@ export default function ChroniclesManagementPage() {
   };
 
   const handleFilterChange = (key: string, value: string) => {
-    setFilters({ ...filters, [key]: value });
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
     setPagination({ ...pagination, page: 1 });
+    updateURL(newFilters, 1);
   };
 
   const resetFilters = () => {
-    setFilters({
-      type: 'all',
+    const newFilters = {
+      type: 'all' as 'all' | 'life' | 'work',
       yearFrom: '',
       yearTo: '',
       highlight: '',
       sort: 'date',
       order: 'desc',
-    });
+    };
+    setFilters(newFilters);
     setPagination({ ...pagination, page: 1 });
+    updateURL(newFilters, 1);
   };
 
   const hasActiveFilters = filters.type !== 'all' || filters.yearFrom || filters.yearTo || filters.highlight !== '';
@@ -399,7 +427,10 @@ export default function ChroniclesManagementPage() {
                     <Pagination
                       currentPage={pagination.page}
                       totalPages={pagination.totalPages}
-                      onPageChange={(page) => setPagination({ ...pagination, page })}
+                      onPageChange={(page) => {
+                        setPagination({ ...pagination, page });
+                        updateURL(filters, page);
+                      }}
                     />
                   )}
                 </>

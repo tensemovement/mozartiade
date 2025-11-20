@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
@@ -12,6 +13,9 @@ import { Work } from '@/types';
 import { MdAdd, MdEdit, MdDelete, MdSearch, MdMusicNote, MdFilterList, MdClose } from 'react-icons/md';
 
 export default function WorksManagementPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [works, setWorks] = useState<Work[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,17 +26,38 @@ export default function WorksManagementPage() {
   });
 
   const [filters, setFilters] = useState({
-    search: '',
-    genre: '',
-    yearFrom: '',
-    yearTo: '',
-    highlight: '',
-    sort: 'year',
-    order: 'desc',
+    search: searchParams.get('search') || '',
+    genre: searchParams.get('genre') || '',
+    yearFrom: searchParams.get('yearFrom') || '',
+    yearTo: searchParams.get('yearTo') || '',
+    highlight: searchParams.get('highlight') || '',
+    sort: searchParams.get('sort') || 'year',
+    order: searchParams.get('order') || 'desc',
   });
 
-  const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
+  const [pagination, setPagination] = useState({
+    page: parseInt(searchParams.get('page') || '1'),
+    totalPages: 1,
+    total: 0
+  });
   const { get, del } = useAdminApi();
+
+  // URL 파라미터 업데이트
+  const updateURL = (newFilters: typeof filters, newPage: number) => {
+    const params = new URLSearchParams();
+
+    if (newFilters.search) params.set('search', newFilters.search);
+    if (newFilters.genre) params.set('genre', newFilters.genre);
+    if (newFilters.yearFrom) params.set('yearFrom', newFilters.yearFrom);
+    if (newFilters.yearTo) params.set('yearTo', newFilters.yearTo);
+    if (newFilters.highlight) params.set('highlight', newFilters.highlight);
+    if (newFilters.sort !== 'year') params.set('sort', newFilters.sort);
+    if (newFilters.order !== 'desc') params.set('order', newFilters.order);
+    if (newPage > 1) params.set('page', newPage.toString());
+
+    const queryString = params.toString();
+    router.push(queryString ? `?${queryString}` : '/admin/works', { scroll: false });
+  };
 
   useEffect(() => {
     fetchGenres();
@@ -95,12 +120,14 @@ export default function WorksManagementPage() {
   };
 
   const handleFilterChange = (key: string, value: string) => {
-    setFilters({ ...filters, [key]: value });
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
     setPagination({ ...pagination, page: 1 });
+    updateURL(newFilters, 1);
   };
 
   const resetFilters = () => {
-    setFilters({
+    const newFilters = {
       search: '',
       genre: '',
       yearFrom: '',
@@ -108,8 +135,10 @@ export default function WorksManagementPage() {
       highlight: '',
       sort: 'year',
       order: 'desc',
-    });
+    };
+    setFilters(newFilters);
     setPagination({ ...pagination, page: 1 });
+    updateURL(newFilters, 1);
   };
 
   const hasActiveFilters = filters.search || filters.genre || filters.yearFrom || filters.yearTo || filters.highlight !== '';
@@ -439,7 +468,10 @@ export default function WorksManagementPage() {
                     <Pagination
                       currentPage={pagination.page}
                       totalPages={pagination.totalPages}
-                      onPageChange={(page) => setPagination({ ...pagination, page })}
+                      onPageChange={(page) => {
+                        setPagination({ ...pagination, page });
+                        updateURL(filters, page);
+                      }}
                     />
                   )}
                 </>
