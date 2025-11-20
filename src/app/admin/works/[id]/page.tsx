@@ -54,6 +54,7 @@ function SortableRelatedLink({
   onToggleCollapse,
   onRemove,
   onUpdate,
+  sortableId,
 }: {
   link: RelatedLinkForm;
   index: number;
@@ -61,6 +62,7 @@ function SortableRelatedLink({
   onToggleCollapse: () => void;
   onRemove: () => void;
   onUpdate: (field: keyof RelatedLinkForm, value: any) => void;
+  sortableId: string;
 }) {
   const {
     attributes,
@@ -69,7 +71,7 @@ function SortableRelatedLink({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: `link-${link.order}` });
+  } = useSortable({ id: sortableId });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -168,6 +170,7 @@ function SortableMovement({
   onToggleCollapse,
   onRemove,
   onUpdate,
+  sortableId,
 }: {
   movement: MovementForm;
   index: number;
@@ -175,6 +178,7 @@ function SortableMovement({
   onToggleCollapse: () => void;
   onRemove: () => void;
   onUpdate: (field: keyof MovementForm, value: any) => void;
+  sortableId: string;
 }) {
   const {
     attributes,
@@ -183,7 +187,7 @@ function SortableMovement({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: `movement-${movement.order}` });
+  } = useSortable({ id: sortableId });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -611,8 +615,8 @@ export default function EditWorkPage() {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = relatedLinks.findIndex((link) => `link-${link.order}` === active.id);
-      const newIndex = relatedLinks.findIndex((link) => `link-${link.order}` === over.id);
+      const oldIndex = relatedLinks.findIndex((_, idx) => `link-${idx}` === active.id);
+      const newIndex = relatedLinks.findIndex((_, idx) => `link-${idx}` === over.id);
 
       const newLinks = arrayMove(relatedLinks, oldIndex, newIndex);
 
@@ -630,8 +634,8 @@ export default function EditWorkPage() {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = movements.findIndex((movement) => `movement-${movement.order}` === active.id);
-      const newIndex = movements.findIndex((movement) => `movement-${movement.order}` === over.id);
+      const oldIndex = movements.findIndex((_, idx) => `movement-${idx}` === active.id);
+      const newIndex = movements.findIndex((_, idx) => `movement-${idx}` === over.id);
 
       const newMovements = arrayMove(movements, oldIndex, newIndex);
 
@@ -1108,19 +1112,20 @@ export default function EditWorkPage() {
                       onDragEnd={handleLinkDragEnd}
                     >
                       <SortableContext
-                        items={relatedLinks.map((link) => `link-${link.order}`)}
+                        items={relatedLinks.map((_, index) => `link-${index}`)}
                         strategy={verticalListSortingStrategy}
                       >
                         <div className="space-y-4">
                           {relatedLinks.map((link, index) => (
                             <SortableRelatedLink
-                              key={`link-${link.order}`}
+                              key={`link-${index}`}
                               link={link}
                               index={index}
                               isCollapsed={collapsedLinks.has(index)}
                               onToggleCollapse={() => toggleLinkCollapse(index)}
                               onRemove={() => removeRelatedLink(index)}
                               onUpdate={(field, value) => updateRelatedLink(index, field, value)}
+                              sortableId={`link-${index}`}
                             />
                           ))}
                         </div>
@@ -1181,19 +1186,20 @@ export default function EditWorkPage() {
                       onDragEnd={handleMovementDragEnd}
                     >
                       <SortableContext
-                        items={movements.map((movement) => `movement-${movement.order}`)}
+                        items={movements.map((_, index) => `movement-${index}`)}
                         strategy={verticalListSortingStrategy}
                       >
                         <div className="space-y-6">
                           {movements.map((movement, index) => (
                             <SortableMovement
-                              key={`movement-${movement.order}`}
+                              key={`movement-${index}`}
                               movement={movement}
                               index={index}
                               isCollapsed={collapsedMovements.has(index)}
                               onToggleCollapse={() => toggleMovementCollapse(index)}
                               onRemove={() => removeMovement(index)}
                               onUpdate={(field, value) => updateMovement(index, field, value)}
+                              sortableId={`movement-${index}`}
                             />
                           ))}
                         </div>
