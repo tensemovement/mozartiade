@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
@@ -12,6 +13,9 @@ import { Work } from '@/types';
 import { MdAdd, MdEdit, MdDelete, MdSearch, MdMusicNote, MdFilterList, MdClose } from 'react-icons/md';
 
 export default function WorksManagementPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [works, setWorks] = useState<Work[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,17 +26,36 @@ export default function WorksManagementPage() {
   });
 
   const [filters, setFilters] = useState({
-    search: '',
-    genre: '',
-    yearFrom: '',
-    yearTo: '',
-    highlight: '',
-    sort: 'year',
-    order: 'desc',
+    search: searchParams.get('search') || '',
+    genre: searchParams.get('genre') || '',
+    year: searchParams.get('year') || '',
+    highlight: searchParams.get('highlight') || '',
+    sort: searchParams.get('sort') || 'year',
+    order: searchParams.get('order') || 'desc',
   });
 
-  const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
+  const [pagination, setPagination] = useState({
+    page: parseInt(searchParams.get('page') || '1'),
+    totalPages: 1,
+    total: 0
+  });
   const { get, del } = useAdminApi();
+
+  // URL 파라미터 업데이트
+  const updateURL = (newFilters: typeof filters, newPage: number) => {
+    const params = new URLSearchParams();
+
+    if (newFilters.search) params.set('search', newFilters.search);
+    if (newFilters.genre) params.set('genre', newFilters.genre);
+    if (newFilters.year) params.set('year', newFilters.year);
+    if (newFilters.highlight) params.set('highlight', newFilters.highlight);
+    if (newFilters.sort !== 'year') params.set('sort', newFilters.sort);
+    if (newFilters.order !== 'desc') params.set('order', newFilters.order);
+    if (newPage > 1) params.set('page', newPage.toString());
+
+    const queryString = params.toString();
+    router.push(queryString ? `?${queryString}` : '/admin/works', { scroll: false });
+  };
 
   useEffect(() => {
     fetchGenres();
@@ -61,8 +84,7 @@ export default function WorksManagementPage() {
         page: pagination.page.toString(),
         ...(filters.search && { search: filters.search }),
         ...(filters.genre && { genre: filters.genre }),
-        ...(filters.yearFrom && { yearFrom: filters.yearFrom }),
-        ...(filters.yearTo && { yearTo: filters.yearTo }),
+        ...(filters.year && { year: filters.year }),
         ...(filters.highlight && { highlight: filters.highlight }),
         sort: filters.sort,
         order: filters.order,
@@ -95,24 +117,27 @@ export default function WorksManagementPage() {
   };
 
   const handleFilterChange = (key: string, value: string) => {
-    setFilters({ ...filters, [key]: value });
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
     setPagination({ ...pagination, page: 1 });
+    updateURL(newFilters, 1);
   };
 
   const resetFilters = () => {
-    setFilters({
+    const newFilters = {
       search: '',
       genre: '',
-      yearFrom: '',
-      yearTo: '',
+      year: '',
       highlight: '',
       sort: 'year',
       order: 'desc',
-    });
+    };
+    setFilters(newFilters);
     setPagination({ ...pagination, page: 1 });
+    updateURL(newFilters, 1);
   };
 
-  const hasActiveFilters = filters.search || filters.genre || filters.yearFrom || filters.yearTo || filters.highlight !== '';
+  const hasActiveFilters = filters.search || filters.genre || filters.year || filters.highlight !== '';
 
   return (
     <AdminProtectedRoute>
@@ -208,30 +233,16 @@ export default function WorksManagementPage() {
                       </select>
                     </div>
 
-                    {/* Year From */}
+                    {/* Year */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        작곡년도 (시작)
+                        작곡년도
                       </label>
                       <input
                         type="number"
                         placeholder="예: 1756"
-                        value={filters.yearFrom}
-                        onChange={(e) => handleFilterChange('yearFrom', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                      />
-                    </div>
-
-                    {/* Year To */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        작곡년도 (종료)
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="예: 1791"
-                        value={filters.yearTo}
-                        onChange={(e) => handleFilterChange('yearTo', e.target.value)}
+                        value={filters.year}
+                        onChange={(e) => handleFilterChange('year', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                       />
                     </div>
@@ -306,18 +317,10 @@ export default function WorksManagementPage() {
                       </button>
                     </span>
                   )}
-                  {filters.yearFrom && (
+                  {filters.year && (
                     <span className="inline-flex items-center space-x-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">
-                      <span>시작년도: {filters.yearFrom}</span>
-                      <button onClick={() => handleFilterChange('yearFrom', '')}>
-                        <MdClose className="w-4 h-4" />
-                      </button>
-                    </span>
-                  )}
-                  {filters.yearTo && (
-                    <span className="inline-flex items-center space-x-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">
-                      <span>종료년도: {filters.yearTo}</span>
-                      <button onClick={() => handleFilterChange('yearTo', '')}>
+                      <span>작곡년도: {filters.year}</span>
+                      <button onClick={() => handleFilterChange('year', '')}>
                         <MdClose className="w-4 h-4" />
                       </button>
                     </span>
@@ -439,7 +442,10 @@ export default function WorksManagementPage() {
                     <Pagination
                       currentPage={pagination.page}
                       totalPages={pagination.totalPages}
-                      onPageChange={(page) => setPagination({ ...pagination, page })}
+                      onPageChange={(page) => {
+                        setPagination({ ...pagination, page });
+                        updateURL(filters, page);
+                      }}
                     />
                   )}
                 </>

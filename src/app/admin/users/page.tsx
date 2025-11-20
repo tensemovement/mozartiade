@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import Modal from '@/components/admin/Modal';
@@ -12,6 +13,9 @@ import { User } from '@/types';
 import { MdEdit, MdDelete, MdSearch, MdPeople } from 'react-icons/md';
 
 export default function UsersManagementPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,13 +24,27 @@ export default function UsersManagementPage() {
     isOpen: false,
     user: null,
   });
-  const [search, setSearch] = useState('');
-  const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [pagination, setPagination] = useState({
+    page: parseInt(searchParams.get('page') || '1'),
+    totalPages: 1,
+    total: 0
+  });
   const [formData, setFormData] = useState({
     email: '',
     name: '',
   });
   const { get, put, del } = useAdminApi();
+
+  // URL 파라미터 업데이트
+  const updateURL = (newSearch: string, newPage: number) => {
+    const params = new URLSearchParams();
+    if (newSearch) params.set('search', newSearch);
+    if (newPage > 1) params.set('page', newPage.toString());
+
+    const queryString = params.toString();
+    router.push(queryString ? `?${queryString}` : '/admin/users', { scroll: false });
+  };
 
   useEffect(() => {
     fetchUsers();
@@ -114,8 +132,10 @@ export default function UsersManagementPage() {
                   placeholder="이름 또는 이메일로 검색..."
                   value={search}
                   onChange={(e) => {
-                    setSearch(e.target.value);
+                    const newSearch = e.target.value;
+                    setSearch(newSearch);
                     setPagination({ ...pagination, page: 1 });
+                    updateURL(newSearch, 1);
                   }}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                 />
@@ -195,7 +215,10 @@ export default function UsersManagementPage() {
                     <Pagination
                       currentPage={pagination.page}
                       totalPages={pagination.totalPages}
-                      onPageChange={(page) => setPagination({ ...pagination, page })}
+                      onPageChange={(page) => {
+                        setPagination({ ...pagination, page });
+                        updateURL(search, page);
+                      }}
                     />
                   )}
                 </>
