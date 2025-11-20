@@ -10,7 +10,113 @@ import EmptyState from '@/components/admin/EmptyState';
 import Pagination from '@/components/admin/Pagination';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { Chronicle } from '@/types';
-import { MdAdd, MdEdit, MdDelete, MdTimeline, MdFilterList, MdClose, MdSearch } from 'react-icons/md';
+import { MdAdd, MdEdit, MdDelete, MdTimeline, MdFilterList, MdClose, MdSearch, MdDragIndicator } from 'react-icons/md';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+// Sortable Row Component
+function SortableChronicleRow({ chronicle, onEdit, onDelete, isDraggable }: {
+  chronicle: Chronicle;
+  onEdit: (id: string) => void;
+  onDelete: (chronicle: Chronicle) => void;
+  isDraggable: boolean;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: chronicle.id, disabled: !isDraggable });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <tr ref={setNodeRef} style={style} className="hover:bg-gray-50">
+      {isDraggable && (
+        <td className="px-4 py-4 whitespace-nowrap">
+          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing">
+            <MdDragIndicator className="w-5 h-5 text-gray-400" />
+          </div>
+        </td>
+      )}
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center space-x-2">
+          <span
+            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+              chronicle.type === 'life'
+                ? 'bg-purple-100 text-purple-800'
+                : 'bg-green-100 text-green-800'
+            }`}
+          >
+            {chronicle.type === 'life' ? '생애' : '작품'}
+          </span>
+          {chronicle.highlight && (
+            <span className="px-2 py-0.5 text-xs font-semibold bg-yellow-100 text-yellow-800 rounded">
+              ⭐
+            </span>
+          )}
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        {chronicle.year}.
+        {chronicle.month ? `${chronicle.month}.` : ''}
+        {chronicle.day || ''}
+      </td>
+      <td className="px-6 py-4">
+        <div className="text-sm font-medium text-gray-900">
+          {chronicle.type === 'life'
+            ? chronicle.title
+            : chronicle.work?.title || '-'}
+        </div>
+        {chronicle.type === 'work' && chronicle.work?.catalogNumber && (
+          <div className="text-sm text-gray-500">
+            {chronicle.work.catalogNumber}
+          </div>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {chronicle.location || '-'}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+        <Link
+          href={`/admin/chronicles/${chronicle.id}`}
+          className="text-blue-600 hover:text-blue-900 mr-4"
+          title="수정"
+        >
+          <MdEdit className="w-5 h-5 inline" />
+        </Link>
+        <button
+          onClick={() => onDelete(chronicle)}
+          className="text-red-600 hover:text-red-900"
+          title="삭제"
+        >
+          <MdDelete className="w-5 h-5 inline" />
+        </button>
+      </td>
+    </tr>
+  );
+}
 
 export default function ChroniclesManagementPage() {
   const router = useRouter();
@@ -19,6 +125,7 @@ export default function ChroniclesManagementPage() {
   const [chronicles, setChronicles] = useState<Chronicle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
+  const [enableReordering, setEnableReordering] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; chronicle: Chronicle | null }>({
     isOpen: false,
     chronicle: null,
@@ -39,6 +146,22 @@ export default function ChroniclesManagementPage() {
     total: 0
   });
   const { get, del } = useAdminApi();
+
+  // Drag and Drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Check if reordering is allowed
+  const canReorder = filters.order === 'desc' && filters.year !== '' && !filters.search && filters.type === 'all';
+
+  // Filter chronicles to only show year-only items when reordering
+  const reorderableChronicles = canReorder
+    ? chronicles.filter(c => !c.month && !c.day)
+    : chronicles;
 
   // URL 파라미터 업데이트
   const updateURL = (newFilters: typeof filters, newPage: number) => {
@@ -119,6 +242,48 @@ export default function ChroniclesManagementPage() {
   };
 
   const hasActiveFilters = filters.search || filters.type !== 'all' || filters.year || filters.highlight !== '';
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const oldIndex = reorderableChronicles.findIndex((c) => c.id === active.id);
+    const newIndex = reorderableChronicles.findIndex((c) => c.id === over.id);
+
+    // Optimistically update UI
+    const newChronicles = arrayMove(reorderableChronicles, oldIndex, newIndex);
+    setChronicles(newChronicles);
+
+    // Call API to persist the change
+    try {
+      const response = await fetch('/api/admin/chronicles/reorder', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chronicleId: active.id,
+          newOrder: newIndex,
+          year: parseInt(filters.year),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        // Revert on error
+        alert(data.error || '순서 변경에 실패했습니다.');
+        await fetchChronicles();
+      }
+    } catch (error) {
+      console.error('Failed to reorder chronicles:', error);
+      alert('순서 변경 중 오류가 발생했습니다.');
+      await fetchChronicles();
+    }
+  };
 
   return (
     <AdminProtectedRoute>
@@ -316,6 +481,26 @@ export default function ChroniclesManagementPage() {
               )}
             </div>
 
+            {/* Reorder Checkbox */}
+            {canReorder && (
+              <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={enableReordering}
+                    onChange={(e) => setEnableReordering(e.target.checked)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm font-medium text-blue-900">
+                    순서 이동 모드 활성화 (드래그앤드랍으로 순서 변경)
+                  </span>
+                </label>
+                <p className="mt-1 text-xs text-blue-700 ml-6">
+                  현재 조건: 정렬순서 최신순, {filters.year}년도만 표시
+                </p>
+              </div>
+            )}
+
             {/* Table */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
               {isLoading ? (
@@ -334,89 +519,56 @@ export default function ChroniclesManagementPage() {
                 />
               ) : (
                 <>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            유형
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            날짜
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            제목/작품
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            위치
-                          </th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                            작업
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {chronicles.map((chronicle) => (
-                          <tr key={chronicle.id} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center space-x-2">
-                                <span
-                                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                    chronicle.type === 'life'
-                                      ? 'bg-purple-100 text-purple-800'
-                                      : 'bg-green-100 text-green-800'
-                                  }`}
-                                >
-                                  {chronicle.type === 'life' ? '생애' : '작품'}
-                                </span>
-                                {chronicle.highlight && (
-                                  <span className="px-2 py-0.5 text-xs font-semibold bg-yellow-100 text-yellow-800 rounded">
-                                    ⭐
-                                  </span>
-                                )}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              {chronicle.year}.
-                              {chronicle.month ? `${chronicle.month}.` : ''}
-                              {chronicle.day || ''}
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="text-sm font-medium text-gray-900">
-                                {chronicle.type === 'life'
-                                  ? chronicle.title
-                                  : chronicle.work?.title || '-'}
-                              </div>
-                              {chronicle.type === 'work' && chronicle.work?.catalogNumber && (
-                                <div className="text-sm text-gray-500">
-                                  {chronicle.work.catalogNumber}
-                                </div>
-                              )}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {chronicle.location || '-'}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                              <Link
-                                href={`/admin/chronicles/${chronicle.id}`}
-                                className="text-blue-600 hover:text-blue-900 mr-4"
-                                title="수정"
-                              >
-                                <MdEdit className="w-5 h-5 inline" />
-                              </Link>
-                              <button
-                                onClick={() => handleDelete(chronicle)}
-                                className="text-red-600 hover:text-red-900"
-                                title="삭제"
-                              >
-                                <MdDelete className="w-5 h-5 inline" />
-                              </button>
-                            </td>
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                  >
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            {enableReordering && canReorder && (
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+
+                              </th>
+                            )}
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              유형
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              날짜
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              제목/작품
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              위치
+                            </th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                              작업
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <SortableContext
+                          items={reorderableChronicles.map(c => c.id)}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {reorderableChronicles.map((chronicle) => (
+                              <SortableChronicleRow
+                                key={chronicle.id}
+                                chronicle={chronicle}
+                                onEdit={(id) => router.push(`/admin/chronicles/${id}`)}
+                                onDelete={handleDelete}
+                                isDraggable={enableReordering && canReorder}
+                              />
+                            ))}
+                          </tbody>
+                        </SortableContext>
+                      </table>
+                    </div>
+                  </DndContext>
 
                   {/* Pagination */}
                   {pagination.totalPages > 1 && (
