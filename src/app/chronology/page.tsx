@@ -212,7 +212,7 @@ export default function ChronologyPage() {
                     className={`px-4 py-1.5 rounded-lg font-mono text-xs font-bold transition-all duration-200 whitespace-nowrap ${
                       isActive
                         ? 'bg-accent-500 text-primary-900 shadow-lg scale-105'
-                        : 'bg-primary-800/50 text-accent-300 hover:bg-primary-700 hover:text-accent-200 hover:scale-110'
+                        : 'bg-primary-800/50 text-accent-300 hover:bg-primary-700 hover:text-accent-200 hover:scale-125'
                     }`}
                   >
                     {year}
