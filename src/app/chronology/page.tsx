@@ -7,7 +7,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { selectedItemState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
-import { MdFavorite, MdLocationOn, MdMusicNote, MdLibraryMusic } from 'react-icons/md';
+import { MdFavorite, MdLocationOn, MdMusicNote, MdArticle } from 'react-icons/md';
 import { ChronologyItem } from '@/types';
 
 export default function ChronologyPage() {
@@ -336,8 +336,8 @@ export default function ChronologyPage() {
                                     </span>
                                   )}
                                   {item.sheetMusicUrl && (
-                                    <span className="px-2 py-0.5 bg-teal-100 text-teal-800 border border-teal-200 rounded text-xs font-sans font-medium flex items-center gap-1" title="악보 보기 가능">
-                                      <MdLibraryMusic className="h-3 w-3" />
+                                    <span className="px-2 py-0.5 bg-accent-100 text-accent-800 border border-accent-200 rounded text-xs font-sans font-medium flex items-center gap-1" title="악보 보기 가능">
+                                      <MdArticle className="h-3 w-3" />
                                     </span>
                                   )}
                                 </div>

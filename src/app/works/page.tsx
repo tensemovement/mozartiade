@@ -8,7 +8,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { selectedItemState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
-import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdLibraryMusic } from 'react-icons/md';
+import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle } from 'react-icons/md';
 import { Work } from '@/types';
 
 export default function WorksPage() {
@@ -362,8 +362,8 @@ export default function WorksPage() {
                           </div>
                         )}
                         {work.sheetMusicUrl && (
-                          <div className="px-2.5 py-1 bg-teal-100/90 backdrop-blur-sm text-teal-800 rounded-full font-sans text-xs font-semibold shadow-sm flex items-center gap-1" title="악보 보기 가능">
-                            <MdLibraryMusic className="h-3 w-3" />
+                          <div className="px-2.5 py-1 bg-accent-100/90 backdrop-blur-sm text-accent-800 rounded-full font-sans text-xs font-semibold shadow-sm flex items-center gap-1" title="악보 보기 가능">
+                            <MdArticle className="h-3 w-3" />
                           </div>
                         )}
                       </div>
@@ -444,8 +444,8 @@ export default function WorksPage() {
                         </div>
                       )}
                       {work.sheetMusicUrl && (
-                        <div className="flex items-center gap-1 px-2.5 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-semibold" title="악보 보기 가능">
-                          <MdLibraryMusic className="h-3 w-3" />
+                        <div className="flex items-center gap-1 px-2.5 py-1 bg-accent-50 text-accent-700 rounded-full text-xs font-semibold" title="악보 보기 가능">
+                          <MdArticle className="h-3 w-3" />
                         </div>
                       )}
                       <Link
