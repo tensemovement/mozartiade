@@ -21,10 +21,11 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get('page') || '1');
     const year = searchParams.get('year') || '';
+    const reorderMode = searchParams.get('reorderMode') === 'true';
 
-    // When year filter is applied, show all items on one page (no pagination)
-    const limit = year ? 9999 : parseInt(searchParams.get('limit') || '20');
-    const skip = year ? 0 : (page - 1) * limit;
+    // When reorder mode is enabled, show all items on one page (no pagination)
+    const limit = reorderMode ? 9999 : parseInt(searchParams.get('limit') || '20');
+    const skip = reorderMode ? 0 : (page - 1) * limit;
 
     const search = searchParams.get('search') || '';
     const type = searchParams.get('type') || '';

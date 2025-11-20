@@ -68,6 +68,13 @@ export function useAdminApi() {
     });
   };
 
+  const patch = async <T,>(url: string, body?: any): Promise<T> => {
+    return request<T>(url, {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+    });
+  };
+
   const del = async <T,>(url: string): Promise<T> => {
     return request<T>(url, { method: 'DELETE' });
   };
@@ -78,6 +85,7 @@ export function useAdminApi() {
     get,
     post,
     put,
+    patch,
     del,
     request,
   };

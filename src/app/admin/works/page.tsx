@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import toast, { Toaster } from 'react-hot-toast';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import ConfirmModal from '@/components/admin/ConfirmModal';
@@ -141,7 +142,7 @@ export default function WorksManagementPage() {
     totalPages: 1,
     total: 0
   });
-  const { get, del } = useAdminApi();
+  const { get, del, patch } = useAdminApi();
 
   // Drag and Drop sensors
   const sensors = useSensors(
@@ -181,7 +182,7 @@ export default function WorksManagementPage() {
 
   useEffect(() => {
     fetchWorks();
-  }, [pagination.page, filters]);
+  }, [pagination.page, filters, enableReordering]);
 
   const fetchGenres = async () => {
     try {
@@ -206,6 +207,7 @@ export default function WorksManagementPage() {
         ...(filters.highlight && { highlight: filters.highlight }),
         sort: filters.sort,
         order: filters.order,
+        ...(enableReordering && canReorder && { reorderMode: 'true' }),
       });
 
       const data = await get<any>(`/api/admin/works?${params.toString()}`);
@@ -229,8 +231,9 @@ export default function WorksManagementPage() {
     try {
       await del(`/api/admin/works/${deleteConfirm.work.id}`);
       await fetchWorks();
+      toast.success('작품이 삭제되었습니다.');
     } catch (error) {
-      alert(error instanceof Error ? error.message : '삭제 중 오류가 발생했습니다.');
+      toast.error(error instanceof Error ? error.message : '삭제 중 오류가 발생했습니다.');
     }
   };
 
@@ -273,34 +276,22 @@ export default function WorksManagementPage() {
 
     // Call API to persist the change
     try {
-      const response = await fetch('/api/admin/works/reorder', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          workId: active.id,
-          newOrder: newIndex,
-          year: parseInt(filters.year),
-        }),
+      await patch('/api/admin/works/reorder', {
+        workId: active.id,
+        newOrder: newIndex,
+        year: parseInt(filters.year),
       });
-
-      const data = await response.json();
-
-      if (!data.success) {
-        // Revert on error
-        alert(data.error || '순서 변경에 실패했습니다.');
-        await fetchWorks();
-      }
+      toast.success('순서가 변경되었습니다.');
     } catch (error) {
       console.error('Failed to reorder works:', error);
-      alert('순서 변경 중 오류가 발생했습니다.');
+      toast.error(error instanceof Error ? error.message : '순서 변경 중 오류가 발생했습니다.');
       await fetchWorks();
     }
   };
 
   return (
     <AdminProtectedRoute>
+      <Toaster position="top-right" />
       <div className="flex">
         <AdminSidebar />
 
@@ -589,8 +580,8 @@ export default function WorksManagementPage() {
                     </div>
                   </DndContext>
 
-                  {/* Pagination - Hide when year filter is applied */}
-                  {!filters.year && pagination.totalPages > 1 && (
+                  {/* Pagination - Hide when reorder mode is enabled */}
+                  {!(enableReordering && canReorder) && pagination.totalPages > 1 && (
                     <Pagination
                       currentPage={pagination.page}
                       totalPages={pagination.totalPages}
