@@ -50,7 +50,7 @@ export default function AdminLoginPage() {
               관리자 로그인
             </h1>
             <p className="text-gray-600">
-              EnjoyMozart Admin Dashboard
+              Mozartiade Admin Dashboard
             </p>
           </div>
 
@@ -77,7 +77,7 @@ export default function AdminLoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none transition"
-                placeholder="admin@enjoymozart.com"
+                placeholder="admin@mozartiade.com"
                 disabled={isLoading}
               />
             </div>

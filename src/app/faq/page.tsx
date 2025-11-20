@@ -59,7 +59,7 @@ export default function FAQPage() {
             </h1>
 
             <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8">
-              Enjoy Mozart 서비스 이용에 대한 궁금한 점들을 모았습니다.
+              Mozartiade 서비스 이용에 대한 궁금한 점들을 모았습니다.
               <br />
               원하시는 답변을 찾아보세요.
             </p>
@@ -190,7 +190,7 @@ export default function FAQPage() {
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <a
-                    href="mailto:support@enjoymozart.com"
+                    href="mailto:support@mozartiade.com"
                     className="inline-flex items-center gap-2 px-8 py-4 bg-white text-secondary rounded-full font-medium hover:bg-cream transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                   >
                     <FiMail className="w-5 h-5" />
@@ -205,7 +205,7 @@ export default function FAQPage() {
                   <p className="text-sm text-white/70">
                     평일 10:00 - 18:00 (주말 및 공휴일 휴무)
                     <br />
-                    이메일: support@enjoymozart.com | 전화: 02-1234-5678
+                    이메일: support@mozartiade.com | 전화: 02-1234-5678
                   </p>
                 </div>
               </div>

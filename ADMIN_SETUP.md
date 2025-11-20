@@ -2,7 +2,7 @@
 
 ## 관리자 대시보드 설정 가이드
 
-이 가이드는 EnjoyMozart Admin Dashboard를 설정하고 사용하는 방법을 안내합니다.
+이 가이드는 Mozartiade Admin Dashboard를 설정하고 사용하는 방법을 안내합니다.
 
 ---
 
@@ -32,7 +32,7 @@ npm run prisma:seed-admin
 
 ### 기본 로그인 정보
 
-- **이메일**: `admin@enjoymozart.com`
+- **이메일**: `admin@mozartiade.com`
 - **비밀번호**: `admin123`
 - **역할**: SUPER_ADMIN
 

@@ -1,4 +1,4 @@
-# EnjoyMozart Lab
+# Mozartiade Lab
 
 A modern web application built with Next.js 14, TypeScript, and Tailwind CSS.
 
@@ -25,7 +25,7 @@ A modern web application built with Next.js 14, TypeScript, and Tailwind CSS.
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd enjoymozart-lab
+cd mozartiade-lab
 ```
 
 2. Install dependencies:

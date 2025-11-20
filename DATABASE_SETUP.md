@@ -32,12 +32,12 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="[YOUR-ANON-KEY]"
 1. PostgreSQL 설치 및 실행
 2. 데이터베이스 생성:
 ```bash
-createdb enjoymozart
+createdb mozartiade
 ```
 
 3. `.env` 파일 생성:
 ```env
-DATABASE_URL="postgresql://localhost:5432/enjoymozart"
+DATABASE_URL="postgresql://localhost:5432/mozartiade"
 ```
 
 ### 2. Prisma 설정
