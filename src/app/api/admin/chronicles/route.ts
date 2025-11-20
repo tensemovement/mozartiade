@@ -21,23 +21,23 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
+    const search = searchParams.get('search') || '';
     const type = searchParams.get('type') || '';
-    const yearFrom = searchParams.get('yearFrom') || '';
-    const yearTo = searchParams.get('yearTo') || '';
+    const year = searchParams.get('year') || '';
     const highlight = searchParams.get('highlight') || '';
 
     const skip = (page - 1) * limit;
 
     // Build where clause
     const where: any = {};
+    if (search) {
+      where.title = { contains: search, mode: 'insensitive' };
+    }
     if (type) {
       where.type = type;
     }
-    if (yearFrom) {
-      where.year = { ...where.year, gte: parseInt(yearFrom) };
-    }
-    if (yearTo) {
-      where.year = { ...where.year, lte: parseInt(yearTo) };
+    if (year) {
+      where.year = parseInt(year);
     }
     if (highlight) {
       where.highlight = highlight === 'true';

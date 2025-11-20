@@ -10,7 +10,7 @@ import EmptyState from '@/components/admin/EmptyState';
 import Pagination from '@/components/admin/Pagination';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { Chronicle } from '@/types';
-import { MdAdd, MdEdit, MdDelete, MdTimeline, MdFilterList, MdClose } from 'react-icons/md';
+import { MdAdd, MdEdit, MdDelete, MdTimeline, MdFilterList, MdClose, MdSearch } from 'react-icons/md';
 
 export default function ChroniclesManagementPage() {
   const router = useRouter();
@@ -25,9 +25,9 @@ export default function ChroniclesManagementPage() {
   });
 
   const [filters, setFilters] = useState({
+    search: searchParams.get('search') || '',
     type: (searchParams.get('type') as 'all' | 'life' | 'work') || 'all',
-    yearFrom: searchParams.get('yearFrom') || '',
-    yearTo: searchParams.get('yearTo') || '',
+    year: searchParams.get('year') || '',
     highlight: searchParams.get('highlight') || '',
     sort: searchParams.get('sort') || 'date',
     order: searchParams.get('order') || 'desc',
@@ -44,9 +44,9 @@ export default function ChroniclesManagementPage() {
   const updateURL = (newFilters: typeof filters, newPage: number) => {
     const params = new URLSearchParams();
 
+    if (newFilters.search) params.set('search', newFilters.search);
     if (newFilters.type !== 'all') params.set('type', newFilters.type);
-    if (newFilters.yearFrom) params.set('yearFrom', newFilters.yearFrom);
-    if (newFilters.yearTo) params.set('yearTo', newFilters.yearTo);
+    if (newFilters.year) params.set('year', newFilters.year);
     if (newFilters.highlight) params.set('highlight', newFilters.highlight);
     if (newFilters.sort !== 'date') params.set('sort', newFilters.sort);
     if (newFilters.order !== 'desc') params.set('order', newFilters.order);
@@ -65,9 +65,9 @@ export default function ChroniclesManagementPage() {
     try {
       const params = new URLSearchParams({
         page: pagination.page.toString(),
+        ...(filters.search && { search: filters.search }),
         ...(filters.type !== 'all' && { type: filters.type }),
-        ...(filters.yearFrom && { yearFrom: filters.yearFrom }),
-        ...(filters.yearTo && { yearTo: filters.yearTo }),
+        ...(filters.year && { year: filters.year }),
         ...(filters.highlight && { highlight: filters.highlight }),
       });
 
@@ -106,9 +106,9 @@ export default function ChroniclesManagementPage() {
 
   const resetFilters = () => {
     const newFilters = {
+      search: '',
       type: 'all' as 'all' | 'life' | 'work',
-      yearFrom: '',
-      yearTo: '',
+      year: '',
       highlight: '',
       sort: 'date',
       order: 'desc',
@@ -118,7 +118,7 @@ export default function ChroniclesManagementPage() {
     updateURL(newFilters, 1);
   };
 
-  const hasActiveFilters = filters.type !== 'all' || filters.yearFrom || filters.yearTo || filters.highlight !== '';
+  const hasActiveFilters = filters.search || filters.type !== 'all' || filters.year || filters.highlight !== '';
 
   return (
     <AdminProtectedRoute>
@@ -144,9 +144,21 @@ export default function ChroniclesManagementPage() {
               </Link>
             </div>
 
-            {/* Filters */}
+            {/* Search and Filters */}
             <div className="mb-6 space-y-4">
               <div className="flex gap-4">
+                {/* Search */}
+                <div className="flex-1 relative max-w-md">
+                  <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="제목으로 검색..."
+                    value={filters.search}
+                    onChange={(e) => handleFilterChange('search', e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                  />
+                </div>
+
                 {/* Type Filter Buttons */}
                 <div className="flex space-x-2">
                   <button
@@ -181,20 +193,18 @@ export default function ChroniclesManagementPage() {
                   </button>
                 </div>
 
-                <div className="flex-1"></div>
-
                 {/* Advanced Filter Toggle */}
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className={`flex items-center space-x-2 px-4 py-2 border rounded-lg transition ${
-                    showFilters || (filters.yearFrom || filters.yearTo || filters.highlight)
+                    showFilters || (filters.year || filters.highlight)
                       ? 'bg-slate-900 text-white border-slate-900'
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
                   <MdFilterList className="w-5 h-5" />
                   <span>고급 필터</span>
-                  {(filters.yearFrom || filters.yearTo || filters.highlight) && !showFilters && (
+                  {(filters.year || filters.highlight) && !showFilters && (
                     <span className="inline-flex items-center justify-center w-5 h-5 text-xs bg-white text-slate-900 rounded-full">
                       •
                     </span>
@@ -218,31 +228,17 @@ export default function ChroniclesManagementPage() {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* Year From */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {/* Year */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        년도 (시작)
+                        년도
                       </label>
                       <input
                         type="number"
                         placeholder="예: 1756"
-                        value={filters.yearFrom}
-                        onChange={(e) => handleFilterChange('yearFrom', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                      />
-                    </div>
-
-                    {/* Year To */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        년도 (종료)
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="예: 1791"
-                        value={filters.yearTo}
-                        onChange={(e) => handleFilterChange('yearTo', e.target.value)}
+                        value={filters.year}
+                        onChange={(e) => handleFilterChange('year', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                       />
                     </div>
@@ -284,6 +280,14 @@ export default function ChroniclesManagementPage() {
               {/* Active Filters Display */}
               {hasActiveFilters && (
                 <div className="flex flex-wrap gap-2">
+                  {filters.search && (
+                    <span className="inline-flex items-center space-x-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">
+                      <span>검색: {filters.search}</span>
+                      <button onClick={() => handleFilterChange('search', '')}>
+                        <MdClose className="w-4 h-4" />
+                      </button>
+                    </span>
+                  )}
                   {filters.type !== 'all' && (
                     <span className="inline-flex items-center space-x-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">
                       <span>유형: {filters.type === 'life' ? '생애 사건' : '작품 작곡'}</span>
@@ -292,18 +296,10 @@ export default function ChroniclesManagementPage() {
                       </button>
                     </span>
                   )}
-                  {filters.yearFrom && (
+                  {filters.year && (
                     <span className="inline-flex items-center space-x-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">
-                      <span>시작년도: {filters.yearFrom}</span>
-                      <button onClick={() => handleFilterChange('yearFrom', '')}>
-                        <MdClose className="w-4 h-4" />
-                      </button>
-                    </span>
-                  )}
-                  {filters.yearTo && (
-                    <span className="inline-flex items-center space-x-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">
-                      <span>종료년도: {filters.yearTo}</span>
-                      <button onClick={() => handleFilterChange('yearTo', '')}>
+                      <span>년도: {filters.year}</span>
+                      <button onClick={() => handleFilterChange('year', '')}>
                         <MdClose className="w-4 h-4" />
                       </button>
                     </span>
