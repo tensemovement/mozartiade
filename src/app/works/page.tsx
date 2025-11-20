@@ -8,7 +8,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { selectedItemState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
-import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList } from 'react-icons/md';
+import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdLibraryMusic } from 'react-icons/md';
 import { Work } from '@/types';
 
 export default function WorksPage() {
@@ -353,6 +353,21 @@ export default function WorksPage() {
                         {formatVoteCount(work.voteCount)}
                       </div>
                     )}
+                    {/* Right bottom badges: Music & Sheet Music */}
+                    {(work.youtubeUrl || work.sheetMusicUrl) && (
+                      <div className="absolute bottom-3 right-3 flex gap-1.5 z-10">
+                        {work.youtubeUrl && (
+                          <div className="px-2.5 py-1 bg-purple-100/90 backdrop-blur-sm text-purple-800 rounded-full font-sans text-xs font-semibold shadow-sm flex items-center gap-1" title="음악 감상 가능">
+                            <MdMusicNote className="h-3 w-3" />
+                          </div>
+                        )}
+                        {work.sheetMusicUrl && (
+                          <div className="px-2.5 py-1 bg-teal-100/90 backdrop-blur-sm text-teal-800 rounded-full font-sans text-xs font-semibold shadow-sm flex items-center gap-1" title="악보 보기 가능">
+                            <MdLibraryMusic className="h-3 w-3" />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Content */}
@@ -421,6 +436,16 @@ export default function WorksPage() {
                         <div className="flex items-center gap-1 px-2.5 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-semibold">
                           <MdFavorite className="h-3 w-3" />
                           {formatVoteCount(work.voteCount)}
+                        </div>
+                      )}
+                      {work.youtubeUrl && (
+                        <div className="flex items-center gap-1 px-2.5 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-semibold" title="음악 감상 가능">
+                          <MdMusicNote className="h-3 w-3" />
+                        </div>
+                      )}
+                      {work.sheetMusicUrl && (
+                        <div className="flex items-center gap-1 px-2.5 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-semibold" title="악보 보기 가능">
+                          <MdLibraryMusic className="h-3 w-3" />
                         </div>
                       )}
                       <Link
