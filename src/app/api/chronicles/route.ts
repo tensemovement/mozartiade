@@ -10,6 +10,7 @@ export async function GET(request: Request) {
 
     const chronicles = await prisma.chronicle.findMany({
       where: {
+        isVisible: true, // 사용자 화면에서는 노출 항목만 표시
         ...(year && { year: parseInt(year) }),
         ...(type && { type }),
         ...(highlight && { highlight: true }),

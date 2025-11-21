@@ -31,6 +31,7 @@ export default function NewChroniclePage() {
     description: '',
     location: '',
     workId: '',
+    isVisible: false,
     highlight: false,
     image: '',
   });
@@ -49,6 +50,7 @@ export default function NewChroniclePage() {
         title: formData.type === 'life' ? formData.title : null,
         description: formData.description || null,
         location: formData.location || null,
+        isVisible: formData.isVisible,
       };
 
       await post('/api/admin/chronicles', submitData);
@@ -259,6 +261,33 @@ export default function NewChroniclePage() {
                       rows={4}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                     />
+                  </div>
+
+                  {/* 노출여부 */}
+                  <div className="md:col-span-2 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="text-sm font-medium text-gray-900">
+                          노출여부
+                        </label>
+                        <p className="text-sm text-gray-500 mt-1">
+                          사용자 화면에서 이 항목을 노출할지 선택합니다
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, isVisible: !formData.isVisible })}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                          formData.isVisible ? 'bg-green-600' : 'bg-gray-300'
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            formData.isVisible ? 'translate-x-6' : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                    </div>
                   </div>
 
                   <div className="md:col-span-2">

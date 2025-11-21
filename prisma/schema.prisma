@@ -94,6 +94,7 @@ model Work {
   highlight              Boolean  @default(false)
   image                  String?
   voteCount              Int      @default(0)
+  isVisible              Boolean  @default(false) // 노출 여부 (기본값: 노출 안함)
 
   // Detail page fields
   detailImage            String?
@@ -176,6 +177,7 @@ model Chronicle {
   // 공통 필드
   highlight   Boolean       @default(false)
   image       String?
+  isVisible   Boolean       @default(false) // 노출 여부 (기본값: 노출 안함)
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt

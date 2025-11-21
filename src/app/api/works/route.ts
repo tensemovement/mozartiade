@@ -33,7 +33,9 @@ export async function GET(request: NextRequest) {
     const order = searchParams.get('order') || 'asc'
 
     // Build where clause
-    const where: any = {}
+    const where: any = {
+      isVisible: true, // 사용자 화면에서는 노출 항목만 표시
+    }
 
     if (genre) {
       where.genre = genre

@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get('search') || '';
     const genre = searchParams.get('genre') || '';
     const highlight = searchParams.get('highlight') || '';
+    const isVisible = searchParams.get('isVisible') || '';
     const sort = searchParams.get('sort') || 'year';
     const order = searchParams.get('order') || 'desc';
 
@@ -50,6 +51,9 @@ export async function GET(req: NextRequest) {
     }
     if (highlight) {
       where.highlight = highlight === 'true';
+    }
+    if (isVisible) {
+      where.isVisible = isVisible === 'true';
     }
 
     // Build orderBy clause based on sort parameter
@@ -171,6 +175,7 @@ export async function POST(req: NextRequest) {
       detailImage,
       behindStory,
       usageExamples,
+      isVisible,
     } = body;
 
     // Create work
@@ -198,6 +203,7 @@ export async function POST(req: NextRequest) {
         detailImage,
         behindStory,
         usageExamples: usageExamples || [],
+        isVisible: isVisible || false,
       },
       include: {
         movements: true,
