@@ -7,7 +7,7 @@ import { MdClose, MdPlayArrow, MdPerson, MdStars } from 'react-icons/md';
 
 export default function MovementPanel() {
   const [movement, setMovement] = useRecoilState(selectedMovementState);
-  const [, setSelectedItem] = useRecoilState(selectedWorkState);
+  const [, setSelectedWork] = useRecoilState(selectedWorkState);
   const selectedWork = useRecoilValue(selectedWorkState);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -45,9 +45,9 @@ export default function MovementPanel() {
   // 악장패널이 열릴 때 작품패널 닫기
   useEffect(() => {
     if (movement) {
-      setSelectedItem(null);
+      setSelectedWork(null);
     }
-  }, [movement, setSelectedItem]);
+  }, [movement, setSelectedWork]);
 
   // 애니메이션 제어: 다른 패널에서 전환되는 경우 애니메이션 없음
   useEffect(() => {

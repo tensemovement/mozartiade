@@ -89,7 +89,7 @@ export default function WorkPanel() {
             </Link>
             {/* Close button */}
             <button
-              onClick={() => setSelectedItem(null)}
+              onClick={() => setSelectedWork(null)}
               className="p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
             >
               <MdClose className="h-5 w-5 text-gray-700" />
@@ -361,7 +361,7 @@ export default function WorkPanel() {
             </Link>
             {/* Close button */}
             <button
-              onClick={() => setSelectedItem(null)}
+              onClick={() => setSelectedWork(null)}
               className="p-2 bg-white hover:bg-gray-100 rounded-full transition-all hover:scale-110 shadow-lg border border-gray-200"
             >
               <MdClose className="h-5 w-5 text-gray-700" />

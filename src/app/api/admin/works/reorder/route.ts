@@ -82,7 +82,7 @@ export async function PATCH(req: NextRequest) {
     });
 
     // Find current and new positions
-    const currentIndex = worksInYear.findIndex(w => w.id === workId);
+    const currentIndex = worksInYear.findIndex((w: { id: string }) => w.id === workId);
     if (currentIndex === -1) {
       return NextResponse.json(
         {
