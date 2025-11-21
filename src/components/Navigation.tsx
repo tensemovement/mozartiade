@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import Link from 'next/link';
 import Image from 'next/image';
 import { selectedItemState, selectedMovementState } from '@/store/atoms';
-import { MdSearch, MdMenu, MdClose } from 'react-icons/md';
+import { MdSearch, MdMenu, MdClose, MdMusicNote } from 'react-icons/md';
 import AnimatedTitle from './AnimatedTitle';
 
 export default function Navigation() {
@@ -63,15 +63,68 @@ export default function Navigation() {
                 priority
               />
             </div>
-            <div>
-              <AnimatedTitle isScrolled={isScrolled} />
-              <p className={`text-xs font-sans ${
-                isScrolled ? 'text-primary-700' : 'text-white/90 drop-shadow'
-              }`}>
-                완전한 카탈로그와 연대기
-              </p>
+            <div className="flex items-center gap-2">
+              <div>
+                <AnimatedTitle isScrolled={isScrolled} />
+                <p className={`text-xs font-sans ${
+                  isScrolled ? 'text-primary-700' : 'text-white/90 drop-shadow'
+                }`}>
+                  완전한 카탈로그와 연대기
+                </p>
+              </div>
+              {/* 춤추는 음표 */}
+              <div className="flex gap-1 ml-1">
+                <MdMusicNote
+                  className={`w-4 h-4 ${
+                    isScrolled ? 'text-primary-600' : 'text-white/80 drop-shadow'
+                  }`}
+                  style={{
+                    animation: 'musicNote1 1.2s ease-in-out infinite',
+                  }}
+                />
+                <MdMusicNote
+                  className={`w-4 h-4 ${
+                    isScrolled ? 'text-primary-600' : 'text-white/80 drop-shadow'
+                  }`}
+                  style={{
+                    animation: 'musicNote2 1.2s ease-in-out infinite',
+                  }}
+                />
+              </div>
             </div>
           </Link>
+
+          <style jsx>{`
+            @keyframes musicNote1 {
+              0%, 100% {
+                opacity: 0.3;
+                transform: translateY(0px) scale(1);
+              }
+              25% {
+                opacity: 1;
+                transform: translateY(-3px) scale(1.1);
+              }
+              50% {
+                opacity: 0.5;
+                transform: translateY(0px) scale(1);
+              }
+            }
+
+            @keyframes musicNote2 {
+              0%, 100% {
+                opacity: 0.5;
+                transform: translateY(0px) scale(1);
+              }
+              50% {
+                opacity: 1;
+                transform: translateY(-3px) scale(1.1);
+              }
+              75% {
+                opacity: 0.3;
+                transform: translateY(0px) scale(1);
+              }
+            }
+          `}</style>
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-1">
