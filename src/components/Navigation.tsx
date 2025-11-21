@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { selectedItemState, selectedMovementState } from '@/store/atoms';
 import { MdSearch, MdMenu, MdClose } from 'react-icons/md';
+import AnimatedTitle from './AnimatedTitle';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -63,11 +64,7 @@ export default function Navigation() {
               />
             </div>
             <div>
-              <h1 className={`font-serif text-xl font-bold transition-colors ${
-                isScrolled ? 'text-primary-900' : 'text-white drop-shadow-lg'
-              }`}>
-                Mozartiade
-              </h1>
+              <AnimatedTitle isScrolled={isScrolled} />
               <p className={`text-xs font-sans ${
                 isScrolled ? 'text-primary-700' : 'text-white/90 drop-shadow'
               }`}>
