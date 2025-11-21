@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAdmin } from '@/contexts/AdminContext';
 import {
@@ -62,8 +63,22 @@ export default function AdminSidebar() {
     <div className="w-64 bg-slate-900 text-white h-screen fixed left-0 top-0 overflow-y-auto">
       {/* Logo */}
       <div className="p-6 border-b border-slate-700">
-        <h1 className="text-xl font-bold">Mozartiade</h1>
-        <p className="text-sm text-slate-400 mt-1">Admin Dashboard</p>
+        <Link href="/admin" className="flex items-center space-x-3 group">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center transform transition-all group-hover:scale-110 overflow-hidden bg-white">
+            <Image
+              src="/images/logo.svg"
+              alt="Mozartiade Logo"
+              width={32}
+              height={32}
+              className="object-contain"
+              priority
+            />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold">Mozartiade</h1>
+            <p className="text-sm text-slate-400">Admin Dashboard</p>
+          </div>
+        </Link>
       </div>
 
       {/* User Info */}
