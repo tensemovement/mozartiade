@@ -36,7 +36,7 @@ const menuItems = [
     icon: MdMusicNote,
   },
   {
-    label: '일대기 관리',
+    label: '연대기 관리',
     href: '/admin/chronicles',
     icon: MdTimeline,
   },

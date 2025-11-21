@@ -318,7 +318,7 @@ export default function WorkDetailPage({ params }: PageProps) {
                         음악 감상
                       </h2>
                       <button
-                        onClick={() => setSelectedItem({ ...work, type: 'work' })}
+                        onClick={() => setSelectedItem({ ...work, type: 'work' as const })}
                         className="px-3 py-1.5 bg-accent hover:bg-accent/90 text-white text-xs font-semibold rounded-lg transition-all hover:scale-105 flex items-center gap-1"
                       >
                         <MdPlayArrow className="h-4 w-4" />
@@ -342,11 +342,11 @@ export default function WorkDetailPage({ params }: PageProps) {
                               <h3 className="text-gray-900 font-semibold text-sm mb-1 group-hover:text-accent transition-colors">
                                 {movement.title}
                               </h3>
-                              {movement.character && (
-                                <p className="text-gray-600 text-xs mb-1">{movement.character}</p>
+                              {movement.titleEn && (
+                                <p className="text-gray-500 text-xs italic mb-1">{movement.titleEn}</p>
                               )}
-                              {movement.duration && (
-                                <p className="text-gray-500 text-xs">{movement.duration}</p>
+                              {movement.character && (
+                                <p className="text-gray-600 text-xs">{movement.character}</p>
                               )}
                             </div>
                           </div>

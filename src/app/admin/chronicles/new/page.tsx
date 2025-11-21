@@ -55,10 +55,10 @@ export default function NewChroniclePage() {
 
       await post('/api/admin/chronicles', submitData);
 
-      alert('일대기가 성공적으로 등록되었습니다.');
+      alert('연대기가 성공적으로 등록되었습니다.');
       router.push('/admin/chronicles');
     } catch (err) {
-      setError(err instanceof Error ? err.message : '일대기 등록에 실패했습니다.');
+      setError(err instanceof Error ? err.message : '연대기 등록에 실패했습니다.');
     } finally {
       setIsSubmitting(false);
     }
@@ -78,9 +78,9 @@ export default function NewChroniclePage() {
                 className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
               >
                 <MdArrowBack className="w-5 h-5 mr-2" />
-                일대기 목록으로
+                연대기 목록으로
               </Link>
-              <h1 className="text-3xl font-bold text-gray-900">일대기 추가</h1>
+              <h1 className="text-3xl font-bold text-gray-900">연대기 추가</h1>
             </div>
 
             {error && (
@@ -318,7 +318,7 @@ export default function NewChroniclePage() {
                 </div>
                 <div className="p-6">
                   <ImageUpload
-                    label="일대기 이미지"
+                    label="연대기 이미지"
                     value={formData.image}
                     onChange={(url) => setFormData({ ...formData, image: url })}
                   />
@@ -338,7 +338,7 @@ export default function NewChroniclePage() {
                   disabled={isSubmitting}
                   className="px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition disabled:opacity-50"
                 >
-                  {isSubmitting ? '등록 중...' : '일대기 등록'}
+                  {isSubmitting ? '등록 중...' : '연대기 등록'}
                 </button>
               </div>
             </form>
@@ -351,7 +351,13 @@ export default function NewChroniclePage() {
         isOpen={isWorkModalOpen}
         onClose={() => setIsWorkModalOpen(false)}
         onSelect={(workId, work) => {
-          setFormData({ ...formData, workId });
+          setFormData({
+            ...formData,
+            workId,
+            year: work.year,
+            month: work.month ? String(work.month) : '',
+            day: work.day ? String(work.day) : ''
+          });
           setSelectedWork({
             id: work.id,
             catalogNumber: work.catalogNumber,

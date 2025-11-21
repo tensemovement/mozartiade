@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { selectedMovementState, selectedItemState } from '@/store/atoms';
-import { MdClose, MdPlayArrow, MdPerson, MdTimer, MdStars } from 'react-icons/md';
+import { MdClose, MdPlayArrow, MdPerson, MdStars } from 'react-icons/md';
 
 export default function MovementPanel() {
   const [movement, setMovement] = useRecoilState(selectedMovementState);
@@ -102,12 +102,6 @@ export default function MovementPanel() {
             <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-white/20 text-white border border-white/30">
               악장 {movement.order}
             </div>
-            {movement.duration && (
-              <div className="px-3 py-1 bg-white/20 rounded-lg font-mono text-xs font-bold text-white border border-white/30 flex items-center gap-1">
-                <MdTimer className="h-3 w-3" />
-                {movement.duration}
-              </div>
-            )}
           </div>
 
           <h2 className="font-serif text-2xl font-bold text-white mb-2 pr-24">
@@ -223,12 +217,6 @@ export default function MovementPanel() {
             <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-white/20 text-white border border-white/30">
               악장 {movement.order}
             </div>
-            {movement.duration && (
-              <div className="px-3 py-1 bg-white/20 rounded-lg font-mono text-xs font-bold text-white border border-white/30 flex items-center gap-1">
-                <MdTimer className="h-3 w-3" />
-                {movement.duration}
-              </div>
-            )}
           </div>
 
           <h2 className="font-serif text-xl font-bold text-white mb-2 pr-16">

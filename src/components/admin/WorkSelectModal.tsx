@@ -10,6 +10,8 @@ interface Work {
   title: string;
   genre: string;
   year: number;
+  month: number | null;
+  day: number | null;
   highlight: boolean;
 }
 

@@ -910,7 +910,7 @@ export default function EditWorkPage() {
 
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      설명 *
+                      요약 설명 *
                     </label>
                     <textarea
                       value={formData.description}

@@ -39,7 +39,7 @@ export async function GET(
       return NextResponse.json(
         {
           success: false,
-          error: '일대기를 찾을 수 없습니다.',
+          error: '연대기를 찾을 수 없습니다.',
         } as ApiResponse,
         { status: 404 }
       );
@@ -57,7 +57,7 @@ export async function GET(
     return NextResponse.json(
       {
         success: false,
-        error: '일대기 조회 중 오류가 발생했습니다.',
+        error: '연대기 조회 중 오류가 발생했습니다.',
       } as ApiResponse,
       { status: 500 }
     );
@@ -104,7 +104,7 @@ export async function PUT(
       return NextResponse.json(
         {
           success: false,
-          error: '일대기를 찾을 수 없습니다.',
+          error: '연대기를 찾을 수 없습니다.',
         } as ApiResponse,
         { status: 404 }
       );
@@ -167,7 +167,7 @@ export async function PUT(
     return NextResponse.json(
       {
         success: false,
-        error: '일대기 수정 중 오류가 발생했습니다.',
+        error: '연대기 수정 중 오류가 발생했습니다.',
       } as ApiResponse,
       { status: 500 }
     );
@@ -212,7 +212,7 @@ export async function DELETE(
       return NextResponse.json(
         {
           success: false,
-          error: '일대기를 찾을 수 없습니다.',
+          error: '연대기를 찾을 수 없습니다.',
         } as ApiResponse,
         { status: 404 }
       );
@@ -226,7 +226,7 @@ export async function DELETE(
     return NextResponse.json(
       {
         success: true,
-        data: { message: '일대기가 삭제되었습니다.' },
+        data: { message: '연대기가 삭제되었습니다.' },
       } as ApiResponse,
       { status: 200 }
     );
@@ -235,7 +235,7 @@ export async function DELETE(
     return NextResponse.json(
       {
         success: false,
-        error: '일대기 삭제 중 오류가 발생했습니다.',
+        error: '연대기 삭제 중 오류가 발생했습니다.',
       } as ApiResponse,
       { status: 500 }
     );

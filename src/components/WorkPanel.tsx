@@ -291,7 +291,7 @@ export default function WorkPanel() {
             <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-200">
               <h3 className="font-serif text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
                 <MdMusicNote className="h-4 w-4 text-amber-600" />
-                구성 악곡
+                음악감상
               </h3>
               <div className="space-y-2">
                 {selectedItem.movements.map((movement: any) => (
@@ -307,11 +307,11 @@ export default function WorkPanel() {
                         <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
                           {movement.title}
                         </h4>
-                        {movement.character && (
-                          <p className="font-sans text-xs text-gray-600 mb-0.5">{movement.character}</p>
+                        {movement.titleEn && (
+                          <p className="font-sans text-xs text-gray-500 italic mb-0.5">{movement.titleEn}</p>
                         )}
-                        {movement.duration && (
-                          <p className="font-sans text-xs text-gray-500">{movement.duration}</p>
+                        {movement.character && (
+                          <p className="font-sans text-xs text-gray-600">{movement.character}</p>
                         )}
                       </div>
                     </div>
@@ -563,7 +563,7 @@ export default function WorkPanel() {
             <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-200">
               <h3 className="font-serif text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
                 <MdMusicNote className="h-4 w-4 text-amber-600" />
-                구성 악곡
+                음악감상
               </h3>
               <div className="space-y-2">
                 {selectedItem.movements.map((movement: any) => (
@@ -579,11 +579,11 @@ export default function WorkPanel() {
                         <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
                           {movement.title}
                         </h4>
-                        {movement.character && (
-                          <p className="font-sans text-xs text-gray-600 mb-0.5">{movement.character}</p>
+                        {movement.titleEn && (
+                          <p className="font-sans text-xs text-gray-500 italic mb-0.5">{movement.titleEn}</p>
                         )}
-                        {movement.duration && (
-                          <p className="font-sans text-xs text-gray-500">{movement.duration}</p>
+                        {movement.character && (
+                          <p className="font-sans text-xs text-gray-600">{movement.character}</p>
                         )}
                       </div>
                     </div>
