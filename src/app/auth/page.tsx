@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { MdEmail, MdLock, MdPerson } from 'react-icons/md';
 
 export default function AuthPage() {
@@ -96,12 +97,22 @@ export default function AuthPage() {
       <div className="relative w-full max-w-md">
         {/* 로고/타이틀 */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block">
-            <h1 className="font-serif text-4xl font-bold text-white mb-2">
+          <Link href="/" className="inline-flex items-center justify-center space-x-3 group">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center transform transition-all group-hover:scale-110 overflow-hidden bg-white/90 backdrop-blur-sm">
+              <Image
+                src="/images/logo.svg"
+                alt="Mozartiade Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+                priority
+              />
+            </div>
+            <h1 className="font-serif text-4xl font-bold text-white">
               Mozartiade
             </h1>
           </Link>
-          <p className="text-gray-300 font-sans">
+          <p className="text-gray-300 font-sans mt-2">
             모차르트의 세계로 떠나는 여정
           </p>
         </div>
