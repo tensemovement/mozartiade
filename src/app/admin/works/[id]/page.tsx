@@ -239,19 +239,6 @@ function SortableMovement({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                재생시간
-              </label>
-              <input
-                type="text"
-                value={movement.duration}
-                onChange={(e) => onUpdate('duration', e.target.value)}
-                placeholder="04:30"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
                 제목 (한글)
               </label>
               <input
