@@ -157,11 +157,12 @@ model RelatedLink {
 
 // 모차르트 연대기 - 생애 사건과 작품을 모두 포함하는 타임라인
 model Chronicle {
-  id          String        @id @default(cuid())
-  type        ChronicleType // 'life' (생애 사건) 또는 'work' (작품 작곡)
-  year        Int
-  month       Int?
-  day         Int?
+  id             String        @id @default(cuid())
+  type           ChronicleType // 'life' (생애 사건) 또는 'work' (작품 작곡)
+  year           Int
+  month          Int?
+  day            Int?
+  chronicleOrder Int?          // Order within the year (1, 2, 3, ...) for precise chronological sorting
 
   // 생애 사건 정보 (type='life'일 때만 사용)
   title       String?
@@ -182,6 +183,7 @@ model Chronicle {
   @@index([year])
   @@index([type])
   @@index([year, month, day])
+  @@index([year, chronicleOrder])
   @@index([workId])
 }
 

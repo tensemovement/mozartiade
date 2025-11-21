@@ -20,13 +20,17 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const year = searchParams.get('year') || '';
+    const reorderMode = searchParams.get('reorderMode') === 'true';
+
+    // When reorder mode is enabled, show all items on one page (no pagination)
+    const limit = reorderMode ? 9999 : parseInt(searchParams.get('limit') || '20');
+    const skip = reorderMode ? 0 : (page - 1) * limit;
+
     const search = searchParams.get('search') || '';
     const type = searchParams.get('type') || '';
-    const year = searchParams.get('year') || '';
     const highlight = searchParams.get('highlight') || '';
-
-    const skip = (page - 1) * limit;
+    const order = searchParams.get('order') || 'desc';
 
     // Build where clause
     const where: any = {};
@@ -42,6 +46,14 @@ export async function GET(req: NextRequest) {
     if (highlight) {
       where.highlight = highlight === 'true';
     }
+
+    // Build orderBy clause
+    const orderBy: any[] = [
+      { year: order as 'asc' | 'desc' },
+      { month: order as 'asc' | 'desc' },
+      { day: order as 'asc' | 'desc' },
+      { chronicleOrder: order as 'asc' | 'desc' },
+    ];
 
     // Get chronicles and total count
     const [chronicles, total] = await Promise.all([
@@ -59,11 +71,7 @@ export async function GET(req: NextRequest) {
             },
           },
         },
-        orderBy: [
-          { year: 'desc' },
-          { month: 'desc' },
-          { day: 'desc' },
-        ],
+        orderBy,
       }),
       prisma.chronicle.count({ where }),
     ]);

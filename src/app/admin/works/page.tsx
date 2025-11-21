@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import toast, { Toaster } from 'react-hot-toast';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import ConfirmModal from '@/components/admin/ConfirmModal';
@@ -10,7 +11,108 @@ import EmptyState from '@/components/admin/EmptyState';
 import Pagination from '@/components/admin/Pagination';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { Work } from '@/types';
-import { MdAdd, MdEdit, MdDelete, MdSearch, MdMusicNote, MdFilterList, MdClose } from 'react-icons/md';
+import { MdAdd, MdEdit, MdDelete, MdSearch, MdMusicNote, MdFilterList, MdClose, MdDragIndicator } from 'react-icons/md';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+// Sortable Row Component
+function SortableWorkRow({ work, onEdit, onDelete, isDraggable }: {
+  work: Work;
+  onEdit: (id: string) => void;
+  onDelete: (work: Work) => void;
+  isDraggable: boolean;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: work.id, disabled: !isDraggable });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <tr ref={setNodeRef} style={style} className="hover:bg-gray-50">
+      {isDraggable && (
+        <td className="px-4 py-4 whitespace-nowrap">
+          <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing">
+            <MdDragIndicator className="w-5 h-5 text-gray-400" />
+          </div>
+        </td>
+      )}
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center space-x-2">
+          <div className="text-sm font-medium text-gray-900">
+            {work.catalogNumber || '-'}
+          </div>
+          {work.highlight && (
+            <span className="px-2 py-0.5 text-xs font-semibold bg-yellow-100 text-yellow-800 rounded">
+              ⭐
+            </span>
+          )}
+        </div>
+      </td>
+      <td className="px-6 py-4">
+        <div className="text-sm font-medium text-gray-900">
+          {work.title}
+        </div>
+        {work.titleEn && (
+          <div className="text-sm text-gray-500">
+            {work.titleEn}
+          </div>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+          {work.genre || '미분류'}
+        </span>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {work.year}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {work.movements?.length || 0}개
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+        <Link
+          href={`/admin/works/${work.id}`}
+          className="text-blue-600 hover:text-blue-900 mr-4"
+          title="수정"
+        >
+          <MdEdit className="w-5 h-5 inline" />
+        </Link>
+        <button
+          onClick={() => onDelete(work)}
+          className="text-red-600 hover:text-red-900"
+          title="삭제"
+        >
+          <MdDelete className="w-5 h-5 inline" />
+        </button>
+      </td>
+    </tr>
+  );
+}
 
 export default function WorksManagementPage() {
   const router = useRouter();
@@ -20,6 +122,7 @@ export default function WorksManagementPage() {
   const [genres, setGenres] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
+  const [enableReordering, setEnableReordering] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; work: Work | null }>({
     isOpen: false,
     work: null,
@@ -39,7 +142,23 @@ export default function WorksManagementPage() {
     totalPages: 1,
     total: 0
   });
-  const { get, del } = useAdminApi();
+  const { get, del, patch } = useAdminApi();
+
+  // Drag and Drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Check if reordering is allowed
+  const canReorder = filters.sort === 'year' && filters.order === 'desc' && filters.year !== '' && !filters.search && !filters.genre;
+
+  // Filter works to only show year-only items when reordering
+  const reorderableWorks = canReorder
+    ? works.filter(w => !w.month && !w.day)
+    : works;
 
   // URL 파라미터 업데이트
   const updateURL = (newFilters: typeof filters, newPage: number) => {
@@ -63,7 +182,7 @@ export default function WorksManagementPage() {
 
   useEffect(() => {
     fetchWorks();
-  }, [pagination.page, filters]);
+  }, [pagination.page, filters, enableReordering]);
 
   const fetchGenres = async () => {
     try {
@@ -88,6 +207,7 @@ export default function WorksManagementPage() {
         ...(filters.highlight && { highlight: filters.highlight }),
         sort: filters.sort,
         order: filters.order,
+        ...(enableReordering && canReorder && { reorderMode: 'true' }),
       });
 
       const data = await get<any>(`/api/admin/works?${params.toString()}`);
@@ -111,8 +231,9 @@ export default function WorksManagementPage() {
     try {
       await del(`/api/admin/works/${deleteConfirm.work.id}`);
       await fetchWorks();
+      toast.success('작품이 삭제되었습니다.');
     } catch (error) {
-      alert(error instanceof Error ? error.message : '삭제 중 오류가 발생했습니다.');
+      toast.error(error instanceof Error ? error.message : '삭제 중 오류가 발생했습니다.');
     }
   };
 
@@ -139,8 +260,38 @@ export default function WorksManagementPage() {
 
   const hasActiveFilters = filters.search || filters.genre || filters.year || filters.highlight !== '';
 
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const oldIndex = reorderableWorks.findIndex((w) => w.id === active.id);
+    const newIndex = reorderableWorks.findIndex((w) => w.id === over.id);
+
+    // Optimistically update UI
+    const newWorks = arrayMove(reorderableWorks, oldIndex, newIndex);
+    setWorks(newWorks);
+
+    // Call API to persist the change
+    try {
+      await patch('/api/admin/works/reorder', {
+        workId: active.id,
+        newOrder: newIndex,
+        year: parseInt(filters.year),
+      });
+      toast.success('순서가 변경되었습니다.');
+    } catch (error) {
+      console.error('Failed to reorder works:', error);
+      toast.error(error instanceof Error ? error.message : '순서 변경 중 오류가 발생했습니다.');
+      await fetchWorks();
+    }
+  };
+
   return (
     <AdminProtectedRoute>
+      <Toaster position="top-right" />
       <div className="flex">
         <AdminSidebar />
 
@@ -337,6 +488,26 @@ export default function WorksManagementPage() {
               )}
             </div>
 
+            {/* Reorder Checkbox */}
+            {canReorder && (
+              <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={enableReordering}
+                    onChange={(e) => setEnableReordering(e.target.checked)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm font-medium text-blue-900">
+                    순서 이동 모드 활성화 (드래그앤드랍으로 순서 변경)
+                  </span>
+                </label>
+                <p className="mt-1 text-xs text-blue-700 ml-6">
+                  현재 조건: 정렬기준 작곡년도, 정렬순서 내림차순, {filters.year}년도만 표시
+                </p>
+              </div>
+            )}
+
             {/* Table */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
               {isLoading ? (
@@ -355,90 +526,62 @@ export default function WorksManagementPage() {
                 />
               ) : (
                 <>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            카탈로그
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            제목
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            장르
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            작곡년도
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                            악장
-                          </th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                            작업
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {works.map((work) => (
-                          <tr key={work.id} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center space-x-2">
-                                <div className="text-sm font-medium text-gray-900">
-                                  {work.catalogNumber || '-'}
-                                </div>
-                                {work.highlight && (
-                                  <span className="px-2 py-0.5 text-xs font-semibold bg-yellow-100 text-yellow-800 rounded">
-                                    ⭐
-                                  </span>
-                                )}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="text-sm font-medium text-gray-900">
-                                {work.title}
-                              </div>
-                              {work.titleEn && (
-                                <div className="text-sm text-gray-500">
-                                  {work.titleEn}
-                                </div>
-                              )}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                {work.genre || '미분류'}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {work.year}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {work.movements?.length || 0}개
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                              <Link
-                                href={`/admin/works/${work.id}`}
-                                className="text-blue-600 hover:text-blue-900 mr-4"
-                                title="수정"
-                              >
-                                <MdEdit className="w-5 h-5 inline" />
-                              </Link>
-                              <button
-                                onClick={() => handleDelete(work)}
-                                className="text-red-600 hover:text-red-900"
-                                title="삭제"
-                              >
-                                <MdDelete className="w-5 h-5 inline" />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                  >
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            {enableReordering && canReorder && (
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
 
-                  {/* Pagination */}
-                  {pagination.totalPages > 1 && (
+                              </th>
+                            )}
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              카탈로그
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              제목
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              장르
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              작곡년도
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              악장
+                            </th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                              작업
+                            </th>
+                          </tr>
+                        </thead>
+                        <SortableContext
+                          items={reorderableWorks.map(w => w.id)}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {reorderableWorks.map((work) => (
+                              <SortableWorkRow
+                                key={work.id}
+                                work={work}
+                                onEdit={(id) => router.push(`/admin/works/${id}`)}
+                                onDelete={handleDelete}
+                                isDraggable={enableReordering && canReorder}
+                              />
+                            ))}
+                          </tbody>
+                        </SortableContext>
+                      </table>
+                    </div>
+                  </DndContext>
+
+                  {/* Pagination - Hide when reorder mode is enabled */}
+                  {!(enableReordering && canReorder) && pagination.totalPages > 1 && (
                     <Pagination
                       currentPage={pagination.page}
                       totalPages={pagination.totalPages}
