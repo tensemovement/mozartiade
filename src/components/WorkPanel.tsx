@@ -141,7 +141,7 @@ export default function WorkPanel() {
 
             {/* 기본 정보 - 컴팩트 */}
             {selectedWork.type === 'work' && (
-              <div className="flex flex-wrap gap-3 text-xs">
+              <div className="flex flex-wrap gap-3 text-xs mb-2">
                 {selectedWork.compositionLocation && (
                   <div className="flex items-center gap-1.5 text-white/80">
                     <MdLocationOn className="h-3 w-3" />
@@ -152,6 +152,24 @@ export default function WorkPanel() {
                   <div className="flex items-center gap-1.5 text-white/80">
                     <MdFavorite className="h-3 w-3 text-accent-300" />
                     <span>{selectedWork.voteCount.toLocaleString()}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 추가 카탈로그 번호 - 컴팩트 */}
+            {selectedWork.type === 'work' && (selectedWork.catalogNumberFirstEd || selectedWork.catalogNumberNinthEd) && (
+              <div className="flex flex-wrap gap-2 text-xs">
+                {selectedWork.catalogNumberFirstEd && (
+                  <div className="px-2 py-1 bg-white/10 rounded border border-white/20">
+                    <span className="text-white/60 mr-1">1판:</span>
+                    <span className="text-white font-bold">{selectedWork.catalogNumberFirstEd}</span>
+                  </div>
+                )}
+                {selectedWork.catalogNumberNinthEd && (
+                  <div className="px-2 py-1 bg-white/10 rounded border border-white/20">
+                    <span className="text-white/60 mr-1">9판:</span>
+                    <span className="text-white font-bold">{selectedWork.catalogNumberNinthEd}</span>
                   </div>
                 )}
               </div>
@@ -255,26 +273,6 @@ export default function WorkPanel() {
             </div>
           )}
 
-          {/* 추가 카탈로그 번호 */}
-          {selectedWork.type === 'work' && (selectedWork.catalogNumberFirstEd || selectedWork.catalogNumberNinthEd) && (
-            <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
-              <h3 className="font-serif text-base font-bold text-gray-900 mb-3">추가 카탈로그 번호</h3>
-              <div className="grid grid-cols-2 gap-2">
-                {selectedWork.catalogNumberFirstEd && (
-                  <div className="bg-white p-3 rounded-lg border border-gray-200">
-                    <p className="text-xs text-gray-500 mb-1">1판 (1862)</p>
-                    <p className="text-sm font-bold text-gray-900">{selectedWork.catalogNumberFirstEd}</p>
-                  </div>
-                )}
-                {selectedWork.catalogNumberNinthEd && (
-                  <div className="bg-white p-3 rounded-lg border border-gray-200">
-                    <p className="text-xs text-gray-500 mb-1">9판 (2024)</p>
-                    <p className="text-sm font-bold text-gray-900">{selectedWork.catalogNumberNinthEd}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
 
           {/* 작곡 배경 */}
           {selectedWork.compositionDetails && (
@@ -320,7 +318,6 @@ export default function WorkPanel() {
             </div>
           )}
 
-          )}
         </div>
       </div>
 
@@ -399,7 +396,7 @@ export default function WorkPanel() {
 
             {/* 기본 정보 - 컴팩트 */}
             {selectedWork.type === 'work' && (
-              <div className="flex flex-wrap gap-2 text-xs">
+              <div className="flex flex-wrap gap-2 text-xs mb-1.5">
                 {selectedWork.compositionLocation && (
                   <div className="flex items-center gap-1 text-white/80">
                     <MdLocationOn className="h-3 w-3" />
@@ -410,6 +407,24 @@ export default function WorkPanel() {
                   <div className="flex items-center gap-1 text-white/80">
                     <MdFavorite className="h-3 w-3 text-accent-300" />
                     <span>{selectedWork.voteCount.toLocaleString()}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 추가 카탈로그 번호 - 컴팩트 */}
+            {selectedWork.type === 'work' && (selectedWork.catalogNumberFirstEd || selectedWork.catalogNumberNinthEd) && (
+              <div className="flex flex-wrap gap-1.5 text-xs">
+                {selectedWork.catalogNumberFirstEd && (
+                  <div className="px-1.5 py-0.5 bg-white/10 rounded border border-white/20">
+                    <span className="text-white/60 mr-0.5">1판:</span>
+                    <span className="text-white font-bold">{selectedWork.catalogNumberFirstEd}</span>
+                  </div>
+                )}
+                {selectedWork.catalogNumberNinthEd && (
+                  <div className="px-1.5 py-0.5 bg-white/10 rounded border border-white/20">
+                    <span className="text-white/60 mr-0.5">9판:</span>
+                    <span className="text-white font-bold">{selectedWork.catalogNumberNinthEd}</span>
                   </div>
                 )}
               </div>
@@ -513,28 +528,7 @@ export default function WorkPanel() {
             </div>
           )}
 
-          {/* 추가 카탈로그 번호 */}
-          {selectedWork.type === 'work' && (selectedWork.catalogNumberFirstEd || selectedWork.catalogNumberNinthEd) && (
-            <div className="mb-6 p-3 bg-gray-50 rounded-xl border border-gray-200">
-              <h3 className="font-serif text-sm font-bold text-gray-900 mb-2">추가 카탈로그 번호</h3>
-              <div className="grid grid-cols-2 gap-2">
-                {selectedWork.catalogNumberFirstEd && (
-                  <div className="bg-white p-2 rounded-lg border border-gray-200">
-                    <p className="text-xs text-gray-500 mb-0.5">1판 (1862)</p>
-                    <p className="text-xs font-bold text-gray-900">{selectedWork.catalogNumberFirstEd}</p>
-                  </div>
-                )}
-                {selectedWork.catalogNumberNinthEd && (
-                  <div className="bg-white p-2 rounded-lg border border-gray-200">
-                    <p className="text-xs text-gray-500 mb-0.5">9판 (2024)</p>
-                    <p className="text-xs font-bold text-gray-900">{selectedWork.catalogNumberNinthEd}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
 
-          )}
         </div>
       </div>
 

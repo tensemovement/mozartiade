@@ -125,9 +125,55 @@ export default function WorkDetailPage({ params }: PageProps) {
             </p>
 
             {/* 설명 */}
-            <p className="text-white/90 text-lg md:text-xl mb-8 leading-relaxed">
+            <p className="text-white/90 text-lg md:text-xl mb-6 leading-relaxed">
               {work.description}
             </p>
+
+            {/* 작품 기본 정보 - 컴팩트 */}
+            <div className="mb-6 p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                {work.compositionLocation && (
+                  <div>
+                    <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">작곡 장소</h3>
+                    <p className="text-white font-medium">{work.compositionLocation}</p>
+                  </div>
+                )}
+                <div>
+                  <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">작곡 일자</h3>
+                  <p className="text-white font-medium">{formatDate()}</p>
+                </div>
+                {work.voteCount !== undefined && (
+                  <div>
+                    <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">좋아요</h3>
+                    <p className="text-white font-medium flex items-center gap-1">
+                      <MdFavorite className="text-accent-300" />
+                      {work.voteCount.toLocaleString()}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* 추가 카탈로그 번호 */}
+              {(work.catalogNumberFirstEd || work.catalogNumberNinthEd) && (
+                <div className="mt-4 pt-4 border-t border-white/20">
+                  <h3 className="text-xs font-semibold text-white/60 uppercase mb-2">추가 카탈로그 번호</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {work.catalogNumberFirstEd && (
+                      <div className="px-3 py-1.5 bg-white/10 rounded-lg border border-white/20">
+                        <span className="text-white/60 text-xs mr-1">1판:</span>
+                        <span className="text-white font-bold text-sm">{work.catalogNumberFirstEd}</span>
+                      </div>
+                    )}
+                    {work.catalogNumberNinthEd && (
+                      <div className="px-3 py-1.5 bg-white/10 rounded-lg border border-white/20">
+                        <span className="text-white/60 text-xs mr-1">9판:</span>
+                        <span className="text-white font-bold text-sm">{work.catalogNumberNinthEd}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* 액션 버튼 */}
             <div className="flex flex-wrap gap-4">
@@ -161,80 +207,6 @@ export default function WorkDetailPage({ params }: PageProps) {
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* 왼쪽 컬럼 - 상세 정보 */}
             <div className="lg:col-span-2 space-y-8">
-              {/* 작품 기본 정보 카드 */}
-              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-md">
-                <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                  <MdMusicNote className="text-accent" />
-                  작품 기본 정보
-                </h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                  {/* 작곡 일자 */}
-                  <div>
-                    <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">작곡 일자</h3>
-                    <p className="text-gray-900 font-medium text-lg">{formatDate()}</p>
-                  </div>
-
-                  {/* 작곡 장소 */}
-                  {work.compositionLocation && (
-                    <div>
-                      <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">작곡 장소</h3>
-                      <p className="text-gray-900 font-medium text-lg">{work.compositionLocation}</p>
-                    </div>
-                  )}
-
-                  {/* 장르 */}
-                  {work.genre && (
-                    <div>
-                      <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">장르</h3>
-                      <p className="text-gray-900 font-medium text-lg">{work.genre}</p>
-                    </div>
-                  )}
-
-                  {/* 투표 수 */}
-                  {work.voteCount !== undefined && (
-                    <div>
-                      <h3 className="text-xs font-semibold text-gray-500 uppercase mb-2">좋아요</h3>
-                      <p className="text-gray-900 font-medium text-lg flex items-center gap-2">
-                        <MdFavorite className="text-accent" />
-                        {work.voteCount.toLocaleString()}
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {/* 카탈로그 번호 섹션 */}
-                {(work.catalogNumber || work.catalogNumberFirstEd || work.catalogNumberNinthEd) && (
-                  <div className="mt-8 pt-8 border-t border-gray-200">
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-4">카탈로그 번호</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {/* 6판 (메인) */}
-                      {work.catalogNumber && (
-                        <div className="bg-accent/5 p-4 rounded-xl border border-accent/20">
-                          <h4 className="text-xs font-semibold text-gray-500 mb-1">6판 (쾨헬 목록)</h4>
-                          <p className="text-accent font-bold text-2xl">{work.catalogNumber}</p>
-                        </div>
-                      )}
-
-                      {/* 1판 */}
-                      {work.catalogNumberFirstEd && (
-                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                          <h4 className="text-xs font-semibold text-gray-500 mb-1">1판 (1862)</h4>
-                          <p className="text-gray-900 font-bold text-xl">{work.catalogNumberFirstEd}</p>
-                        </div>
-                      )}
-
-                      {/* 9판 */}
-                      {work.catalogNumberNinthEd && (
-                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                          <h4 className="text-xs font-semibold text-gray-500 mb-1">9판 (2024)</h4>
-                          <p className="text-gray-900 font-bold text-xl">{work.catalogNumberNinthEd}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-
               {/* 작품 상세 */}
               {work.compositionDetails && (
                 <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-md">
