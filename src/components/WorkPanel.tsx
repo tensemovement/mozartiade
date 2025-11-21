@@ -295,16 +295,17 @@ export default function WorkPanel() {
               </h3>
               <div className="space-y-2">
                 {selectedWork.movements.map((movement: any) => (
-                  <div
+                  <button
                     key={movement.id}
-                    className="p-3 bg-white rounded-lg border border-amber-200 hover:border-amber-400 transition-colors"
+                    onClick={() => setSelectedMovement(movement)}
+                    className="w-full text-left p-3 bg-white rounded-lg border border-amber-200 hover:border-amber-400 transition-all duration-300 group cursor-pointer hover:shadow-md"
                   >
                     <div className="flex items-start gap-2">
-                      <div className="mt-0.5 w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center flex-shrink-0">
+                      <div className="mt-0.5 w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all">
                         <span className="text-white text-xs font-bold">{movement.order}</span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5 group-hover:text-amber-700 transition-colors">
                           {movement.title}
                         </h4>
                         {movement.titleEn && (
@@ -315,7 +316,7 @@ export default function WorkPanel() {
                         )}
                       </div>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -567,16 +568,17 @@ export default function WorkPanel() {
               </h3>
               <div className="space-y-2">
                 {selectedWork.movements.map((movement: any) => (
-                  <div
+                  <button
                     key={movement.id}
-                    className="p-3 bg-white rounded-lg border border-amber-200 hover:border-amber-400 transition-colors"
+                    onClick={() => setSelectedMovement(movement)}
+                    className="w-full text-left p-3 bg-white rounded-lg border border-amber-200 hover:border-amber-400 transition-all duration-300 group cursor-pointer hover:shadow-md"
                   >
                     <div className="flex items-start gap-2">
-                      <div className="mt-0.5 w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center flex-shrink-0">
+                      <div className="mt-0.5 w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all">
                         <span className="text-white text-xs font-bold">{movement.order}</span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
+                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5 group-hover:text-amber-700 transition-colors">
                           {movement.title}
                         </h4>
                         {movement.titleEn && (
@@ -587,7 +589,7 @@ export default function WorkPanel() {
                         )}
                       </div>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
