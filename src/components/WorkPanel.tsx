@@ -159,7 +159,7 @@ export default function WorkPanel() {
 
             {/* 추가 카탈로그 번호 - 컴팩트 */}
             {selectedWork.type === 'work' && (selectedWork.catalogNumberFirstEd || selectedWork.catalogNumberNinthEd) && (
-              <div className="flex flex-wrap gap-2 text-xs">
+              <div className="flex flex-wrap gap-2 text-xs mb-2">
                 {selectedWork.catalogNumberFirstEd && (
                   <div className="px-2 py-1 bg-white/10 rounded border border-white/20">
                     <span className="text-white/60 mr-1">1판:</span>
@@ -174,15 +174,29 @@ export default function WorkPanel() {
                 )}
               </div>
             )}
+
+            {/* 악보 다운로드 링크 */}
+            {selectedWork.type === 'work' && selectedWork.sheetMusicUrl && (
+              <a
+                href={selectedWork.sheetMusicUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-lg text-xs font-medium text-white transition-all group"
+              >
+                <MdArticle className="h-3.5 w-3.5" />
+                <span>악보 다운로드</span>
+                <MdOpenInNew className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
+              </a>
+            )}
           </div>
         </div>
 
         {/* Content - Scrollable */}
         <div className="flex-1 overflow-y-auto p-8">
-          {/* YouTube and Sheet Music - 맨 위로 이동 */}
-          {selectedWork.type === 'work' && (
-            <div className="space-y-3 mb-6">
-              {selectedWork.youtubeUrl && (() => {
+          {/* YouTube - 맨 위로 이동 */}
+          {selectedWork.type === 'work' && selectedWork.youtubeUrl && (
+            <div className="mb-6">
+              {(() => {
                 const embedUrl = getYoutubeEmbedUrl(selectedWork.youtubeUrl);
                 return embedUrl ? (
                   <div className="rounded-lg overflow-hidden border border-gray-300">
@@ -210,38 +224,13 @@ export default function WorkPanel() {
                   </div>
                 );
               })()}
-
-              {selectedWork.sheetMusicUrl && (
-                <a
-                  href={selectedWork.sheetMusicUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block p-3 bg-accent-50 rounded-lg border border-accent-200 hover:border-accent-400 transition-all group"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                      <MdArticle className="h-4 w-4 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
-                        악보 다운로드
-                      </h4>
-                      <p className="font-sans text-xs text-gray-600">
-                        IMSLP에서 무료 악보 열람하기
-                      </p>
-                    </div>
-                    <MdOpenInNew className="h-4 w-4 text-accent-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-                  </div>
-                </a>
-              )}
             </div>
           )}
 
           {/* 악장 목록 - 두 번째로 이동 */}
           {selectedWork.movements && selectedWork.movements.length > 0 && (
             <div className="mb-6 p-4 rounded-xl border border-gray-200">
-              <h3 className="font-serif text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
-                <MdMusicNote className="h-4 w-4 text-amber-600" />
+              <h3 className="font-serif text-base font-bold text-gray-900 mb-3">
                 음악감상
               </h3>
               <div className="space-y-2">
@@ -249,14 +238,14 @@ export default function WorkPanel() {
                   <button
                     key={movement.id}
                     onClick={() => setSelectedMovement(movement)}
-                    className="w-full text-left p-3 bg-white rounded-lg border border-amber-200 hover:border-amber-400 transition-all duration-300 group cursor-pointer hover:shadow-md"
+                    className="w-full text-left p-3 bg-white rounded-lg border border-gray-200 hover:border-gray-400 transition-all duration-300 group cursor-pointer hover:shadow-md"
                   >
                     <div className="flex items-start gap-2">
-                      <div className="mt-0.5 w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all">
+                      <div className="mt-0.5 w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all">
                         <span className="text-white text-xs font-bold">{movement.order}</span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5 group-hover:text-amber-700 transition-colors">
+                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5 group-hover:text-gray-700 transition-colors">
                           {movement.title}
                         </h4>
                         {movement.titleEn && (
@@ -280,8 +269,7 @@ export default function WorkPanel() {
               {/* 작품 설명 */}
               {selectedWork.compositionDetails && (
                 <div>
-                  <h3 className="font-serif text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    <MdDescription className="h-4 w-4 text-secondary-600" />
+                  <h3 className="font-serif text-base font-bold text-gray-900 mb-2">
                     작품 설명
                   </h3>
                   <p className="font-sans text-xs text-gray-700 leading-relaxed whitespace-pre-line">
@@ -306,7 +294,7 @@ export default function WorkPanel() {
               {selectedWork.usageExamples && selectedWork.usageExamples.length > 0 && (
                 <div>
                   <h3 className="font-serif text-base font-bold text-gray-900 mb-3">
-                    공연 & 활용 사례
+                    활용 사례
                   </h3>
                   <div className="space-y-2">
                     {selectedWork.usageExamples.map((example: string, index: number) => (
@@ -419,7 +407,7 @@ export default function WorkPanel() {
 
             {/* 추가 카탈로그 번호 - 컴팩트 */}
             {selectedWork.type === 'work' && (selectedWork.catalogNumberFirstEd || selectedWork.catalogNumberNinthEd) && (
-              <div className="flex flex-wrap gap-1.5 text-xs">
+              <div className="flex flex-wrap gap-1.5 text-xs mb-1.5">
                 {selectedWork.catalogNumberFirstEd && (
                   <div className="px-1.5 py-0.5 bg-white/10 rounded border border-white/20">
                     <span className="text-white/60 mr-0.5">1판:</span>
@@ -434,15 +422,29 @@ export default function WorkPanel() {
                 )}
               </div>
             )}
+
+            {/* 악보 다운로드 링크 */}
+            {selectedWork.type === 'work' && selectedWork.sheetMusicUrl && (
+              <a
+                href={selectedWork.sheetMusicUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-lg text-xs font-medium text-white transition-all group"
+              >
+                <MdArticle className="h-3 w-3" />
+                <span>악보 다운로드</span>
+                <MdOpenInNew className="h-2.5 w-2.5 group-hover:translate-x-0.5 transition-transform" />
+              </a>
+            )}
           </div>
         </div>
 
         {/* Content - Scrollable */}
         <div className="flex-1 overflow-y-auto p-6">
-          {/* YouTube and Sheet Music - 맨 위로 이동 */}
-          {selectedWork.type === 'work' && (
-            <div className="space-y-3 mb-6">
-              {selectedWork.youtubeUrl && (() => {
+          {/* YouTube - 맨 위로 이동 */}
+          {selectedWork.type === 'work' && selectedWork.youtubeUrl && (
+            <div className="mb-6">
+              {(() => {
                 const embedUrl = getYoutubeEmbedUrl(selectedWork.youtubeUrl);
                 return embedUrl ? (
                   <div className="rounded-lg overflow-hidden border border-gray-300">
@@ -470,38 +472,13 @@ export default function WorkPanel() {
                   </div>
                 );
               })()}
-
-              {selectedWork.sheetMusicUrl && (
-                <a
-                  href={selectedWork.sheetMusicUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block p-3 bg-accent-50 rounded-lg border border-accent-200 hover:border-accent-400 transition-all group"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                      <MdArticle className="h-3.5 w-3.5 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
-                        악보 다운로드
-                      </h4>
-                      <p className="font-sans text-xs text-gray-600">
-                        IMSLP에서 무료 악보 열람하기
-                      </p>
-                    </div>
-                    <MdOpenInNew className="h-3.5 w-3.5 text-accent-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-                  </div>
-                </a>
-              )}
             </div>
           )}
 
           {/* 악장 목록 - 두 번째로 이동 */}
           {selectedWork.movements && selectedWork.movements.length > 0 && (
             <div className="mb-6 p-3 rounded-xl border border-gray-200">
-              <h3 className="font-serif text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
-                <MdMusicNote className="h-3.5 w-3.5 text-amber-600" />
+              <h3 className="font-serif text-sm font-bold text-gray-900 mb-2">
                 음악감상
               </h3>
               <div className="space-y-2">
@@ -509,14 +486,14 @@ export default function WorkPanel() {
                   <button
                     key={movement.id}
                     onClick={() => setSelectedMovement(movement)}
-                    className="w-full text-left p-2.5 bg-white rounded-lg border border-amber-200 hover:border-amber-400 transition-all duration-300 group cursor-pointer hover:shadow-md"
+                    className="w-full text-left p-2.5 bg-white rounded-lg border border-gray-200 hover:border-gray-400 transition-all duration-300 group cursor-pointer hover:shadow-md"
                   >
                     <div className="flex items-start gap-2">
-                      <div className="mt-0.5 w-5 h-5 rounded-full bg-amber-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all">
+                      <div className="mt-0.5 w-5 h-5 rounded-full bg-gray-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all">
                         <span className="text-white text-xs font-bold">{movement.order}</span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-serif text-xs font-bold text-gray-900 mb-0.5 group-hover:text-amber-700 transition-colors">
+                        <h4 className="font-serif text-xs font-bold text-gray-900 mb-0.5 group-hover:text-gray-700 transition-colors">
                           {movement.title}
                         </h4>
                         {movement.titleEn && (

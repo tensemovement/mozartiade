@@ -188,6 +188,17 @@ export default function WorkDetailPage({ params }: PageProps) {
                   전체 감상하기
                 </a>
               )}
+              {work.sheetMusicUrl && (
+                <a
+                  href={work.sheetMusicUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-2"
+                >
+                  <MdArticle className="text-xl group-hover:scale-110 transition-transform" />
+                  악보 다운로드
+                </a>
+              )}
               <button className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-2">
                 <MdFavorite className="text-xl" />
                 {work.voteCount?.toLocaleString()}
@@ -238,7 +249,7 @@ export default function WorkDetailPage({ params }: PageProps) {
                   {work.usageExamples && work.usageExamples.length > 0 && (
                     <div>
                       <h3 className="font-serif text-xl font-bold text-gray-900 mb-4">
-                        공연 & 활용 사례
+                        활용 사례
                       </h3>
                       <div className="space-y-3">
                         {work.usageExamples.map((example, index) => (
@@ -259,34 +270,9 @@ export default function WorkDetailPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* 오른쪽 컬럼 - 악보, 음악감상, 관련 링크 */}
+            {/* 오른쪽 컬럼 - 음악감상, 관련 링크 */}
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-6">
-                {/* 악보 다운로드 */}
-                {work.sheetMusicUrl && (
-                  <a
-                    href={work.sheetMusicUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block p-3 bg-accent-50 rounded-lg border border-accent-200 hover:border-accent-400 transition-all group"
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                        <MdArticle className="h-4 w-4 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-serif text-sm font-bold text-gray-900 mb-0.5">
-                          악보 다운로드
-                        </h4>
-                        <p className="font-sans text-xs text-gray-600">
-                          IMSLP에서 무료 악보 열람하기
-                        </p>
-                      </div>
-                      <MdOpenInNew className="h-4 w-4 text-accent-600 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-                    </div>
-                  </a>
-                )}
-
                 {/* 음악 감상 */}
                 {work.movements && work.movements.length > 0 && (
                   <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md">
