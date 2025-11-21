@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FcGoogle } from 'react-icons/fc';
 import { MdEmail, MdLock, MdPerson } from 'react-icons/md';
 
 export default function AuthPage() {
@@ -76,23 +75,12 @@ export default function AuthPage() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    setIsLoading(true);
-    setError('');
-    try {
-      await signIn('google', { callbackUrl: '/' });
-    } catch (error) {
-      setError('구글 로그인에 실패했습니다.');
-      setIsLoading(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-900 via-secondary-900 to-primary-800 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black flex items-center justify-center px-4 py-12">
       {/* 배경 장식 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gray-700/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gray-600/10 rounded-full blur-3xl"></div>
       </div>
 
       {/* 메인 컨테이너 */}
@@ -110,9 +98,9 @@ export default function AuthPage() {
         </div>
 
         {/* 인증 카드 */}
-        <div className="glass-card rounded-2xl shadow-elevated p-8 backdrop-blur-xl bg-white/95">
+        <div className="glass-card rounded-2xl shadow-elevated p-8 backdrop-blur-xl bg-gray-900/95 border border-gray-800">
           {/* 탭 전환 */}
-          <div className="flex mb-8 bg-gray-100 rounded-xl p-1">
+          <div className="flex mb-8 bg-gray-800 rounded-xl p-1">
             <button
               onClick={() => {
                 setIsLogin(true);
@@ -120,8 +108,8 @@ export default function AuthPage() {
               }}
               className={`flex-1 py-3 rounded-lg font-sans font-semibold transition-all duration-300 ${
                 isLogin
-                  ? 'bg-white text-primary-900 shadow-md'
-                  : 'text-gray-600 hover:text-primary-900'
+                  ? 'bg-gray-950 text-white shadow-md'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               로그인
@@ -133,8 +121,8 @@ export default function AuthPage() {
               }}
               className={`flex-1 py-3 rounded-lg font-sans font-semibold transition-all duration-300 ${
                 !isLogin
-                  ? 'bg-white text-primary-900 shadow-md'
-                  : 'text-gray-600 hover:text-primary-900'
+                  ? 'bg-gray-950 text-white shadow-md'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               회원가입
@@ -153,19 +141,19 @@ export default function AuthPage() {
             {/* 이름 (회원가입만) */}
             {!isLogin && (
               <div>
-                <label htmlFor="name" className="block text-sm font-sans font-semibold text-gray-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-sans font-semibold text-gray-300 mb-2">
                   이름
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <MdPerson className="h-5 w-5 text-gray-400" />
+                    <MdPerson className="h-5 w-5 text-gray-500" />
                   </div>
                   <input
                     id="name"
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all font-sans"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent transition-all font-sans placeholder-gray-500"
                     placeholder="홍길동"
                   />
                 </div>
@@ -174,12 +162,12 @@ export default function AuthPage() {
 
             {/* 이메일 */}
             <div>
-              <label htmlFor="email" className="block text-sm font-sans font-semibold text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-sans font-semibold text-gray-300 mb-2">
                 이메일
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <MdEmail className="h-5 w-5 text-gray-400" />
+                  <MdEmail className="h-5 w-5 text-gray-500" />
                 </div>
                 <input
                   id="email"
@@ -187,7 +175,7 @@ export default function AuthPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all font-sans"
+                  className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent transition-all font-sans placeholder-gray-500"
                   placeholder="example@email.com"
                 />
               </div>
@@ -195,12 +183,12 @@ export default function AuthPage() {
 
             {/* 비밀번호 */}
             <div>
-              <label htmlFor="password" className="block text-sm font-sans font-semibold text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-sans font-semibold text-gray-300 mb-2">
                 비밀번호
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <MdLock className="h-5 w-5 text-gray-400" />
+                  <MdLock className="h-5 w-5 text-gray-500" />
                 </div>
                 <input
                   id="password"
@@ -208,12 +196,12 @@ export default function AuthPage() {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all font-sans"
+                  className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent transition-all font-sans placeholder-gray-500"
                   placeholder="••••••••"
                 />
               </div>
               {!isLogin && (
-                <p className="mt-2 text-xs text-gray-500 font-sans">
+                <p className="mt-2 text-xs text-gray-400 font-sans">
                   최소 6자 이상 입력해주세요
                 </p>
               )}
@@ -223,32 +211,11 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 bg-primary-900 text-white rounded-lg font-sans font-semibold hover:bg-primary-800 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3.5 bg-gray-950 text-white rounded-lg font-sans font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700"
             >
               {isLoading ? '처리 중...' : isLogin ? '로그인' : '회원가입'}
             </button>
           </form>
-
-          {/* 구분선 */}
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500 font-sans">또는</span>
-            </div>
-          </div>
-
-          {/* 구글 로그인 */}
-          <button
-            type="button"
-            onClick={handleGoogleSignIn}
-            disabled={isLoading}
-            className="w-full flex items-center justify-center gap-3 py-3.5 bg-white border-2 border-gray-300 rounded-lg font-sans font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <FcGoogle className="h-6 w-6" />
-            Google로 {isLogin ? '로그인' : '가입하기'}
-          </button>
         </div>
 
         {/* 하단 링크 */}
