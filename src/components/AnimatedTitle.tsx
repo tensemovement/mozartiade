@@ -20,7 +20,7 @@ export default function AnimatedTitle({ isScrolled }: AnimatedTitleProps) {
       if (displayedText.length < currentFullText.length) {
         const timeout = setTimeout(() => {
           setDisplayedText(currentFullText.slice(0, displayedText.length + 1));
-        }, 100); // 각 글자가 나타나는 속도
+        }, 120); // 각 글자가 나타나는 속도
         return () => clearTimeout(timeout);
       } else {
         // 타이핑이 완료되면 잠시 대기 후 다음 텍스트로 전환
@@ -44,8 +44,18 @@ export default function AnimatedTitle({ isScrolled }: AnimatedTitleProps) {
     <h1 className={`font-serif text-xl font-bold transition-colors ${
       isScrolled ? 'text-primary-900' : 'text-white drop-shadow-lg'
     }`}>
-      {displayedText}
-      <span className="animate-pulse">|</span>
+      {displayedText.split('').map((char, index) => (
+        <span
+          key={index}
+          className="inline-block animate-fadeIn"
+          style={{
+            animationDelay: `${index * 50}ms`,
+            animationFillMode: 'backwards'
+          }}
+        >
+          {char}
+        </span>
+      ))}
     </h1>
   );
 }
