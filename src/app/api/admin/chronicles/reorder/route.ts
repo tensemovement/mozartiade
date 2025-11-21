@@ -51,7 +51,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: '일대기를 찾을 수 없습니다.',
+          error: '연대기를 찾을 수 없습니다.',
         } as ApiResponse,
         { status: 404 }
       );
@@ -62,7 +62,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: '일대기가 지정된 년도에 속하지 않습니다.',
+          error: '연대기가 지정된 년도에 속하지 않습니다.',
         } as ApiResponse,
         { status: 400 }
       );
@@ -82,12 +82,12 @@ export async function PATCH(req: NextRequest) {
     });
 
     // Find current and new positions
-    const currentIndex = chroniclesInYear.findIndex(c => c.id === chronicleId);
+    const currentIndex = chroniclesInYear.findIndex((c: { id: string }) => c.id === chronicleId);
     if (currentIndex === -1) {
       return NextResponse.json(
         {
           success: false,
-          error: '순서 변경 조건을 만족하지 않습니다. 년도만 입력된 일대기만 순서 변경이 가능합니다.',
+          error: '순서 변경 조건을 만족하지 않습니다. 년도만 입력된 연대기만 순서 변경이 가능합니다.',
         } as ApiResponse,
         { status: 400 }
       );
@@ -120,7 +120,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: '일대기 순서 변경 중 오류가 발생했습니다.',
+        error: '연대기 순서 변경 중 오류가 발생했습니다.',
       } as ApiResponse,
       { status: 500 }
     );

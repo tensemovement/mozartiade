@@ -100,7 +100,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: '일대기 목록 조회 중 오류가 발생했습니다.',
+        error: '연대기 목록 조회 중 오류가 발생했습니다.',
       } as ApiResponse,
       { status: 500 }
     );
@@ -225,7 +225,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: '일대기 생성 중 오류가 발생했습니다.',
+        error: '연대기 생성 중 오류가 발생했습니다.',
       } as ApiResponse,
       { status: 500 }
     );

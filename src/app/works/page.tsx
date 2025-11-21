@@ -6,13 +6,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { selectedItemState } from '@/store/atoms';
+import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle } from 'react-icons/md';
 import { Work } from '@/types';
 
 export default function WorksPage() {
-  const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
+  const [selectedWork, setSelectedWork] = useRecoilState(selectedWorkState);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
   const [selectedInstrument, setSelectedInstrument] = useState<string>('all');
@@ -308,7 +308,7 @@ export default function WorksPage() {
                 <div
                   key={work.id}
                   className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-100"
-                  onClick={() => setSelectedItem({ ...work, type: 'work' as const })}
+                  onClick={() => setSelectedWork({ ...work, type: 'work' as const })}
                 >
                   {/* Header with K number */}
                   <div className="relative h-28 bg-gray-100 flex items-center justify-center overflow-hidden">
@@ -397,7 +397,7 @@ export default function WorksPage() {
                 <div
                   key={work.id}
                   className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-gray-100 hover:border-primary-300"
-                  onClick={() => setSelectedItem({ ...work, type: 'work' as const })}
+                  onClick={() => setSelectedWork({ ...work, type: 'work' as const })}
                 >
                   <div className="flex items-center gap-4 p-4">
                     {/* Left: K Number & Year */}

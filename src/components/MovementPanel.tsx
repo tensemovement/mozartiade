@@ -2,16 +2,16 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { selectedMovementState, selectedItemState } from '@/store/atoms';
-import { MdClose, MdPlayArrow, MdPerson, MdTimer, MdStars } from 'react-icons/md';
+import { selectedMovementState, selectedWorkState } from '@/store/atoms';
+import { MdClose, MdPlayArrow, MdPerson, MdStars } from 'react-icons/md';
 
 export default function MovementPanel() {
   const [movement, setMovement] = useRecoilState(selectedMovementState);
-  const [, setSelectedItem] = useRecoilState(selectedItemState);
-  const selectedItem = useRecoilValue(selectedItemState);
+  const [, setSelectedWork] = useRecoilState(selectedWorkState);
+  const selectedWork = useRecoilValue(selectedWorkState);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
-  const prevItemRef = useRef(selectedItem);
+  const prevWorkRef = useRef(selectedWork);
 
   // Window scroll 감지 (SidePanel과 동일)
   useEffect(() => {
@@ -45,19 +45,19 @@ export default function MovementPanel() {
   // 악장패널이 열릴 때 작품패널 닫기
   useEffect(() => {
     if (movement) {
-      setSelectedItem(null);
+      setSelectedWork(null);
     }
-  }, [movement, setSelectedItem]);
+  }, [movement, setSelectedWork]);
 
   // 애니메이션 제어: 다른 패널에서 전환되는 경우 애니메이션 없음
   useEffect(() => {
     if (movement) {
       // 이전에 작품패널이 열려있었다면 애니메이션 없음 (패널 전환)
       // 이전에 아무것도 없었다면 애니메이션 적용 (새로 열림)
-      setShouldAnimate(prevItemRef.current === null);
+      setShouldAnimate(prevWorkRef.current === null);
     }
-    prevItemRef.current = selectedItem;
-  }, [movement, selectedItem]);
+    prevWorkRef.current = selectedWork;
+  }, [movement, selectedWork]);
 
   if (!movement) {
     return null;
@@ -102,12 +102,6 @@ export default function MovementPanel() {
             <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-white/20 text-white border border-white/30">
               악장 {movement.order}
             </div>
-            {movement.duration && (
-              <div className="px-3 py-1 bg-white/20 rounded-lg font-mono text-xs font-bold text-white border border-white/30 flex items-center gap-1">
-                <MdTimer className="h-3 w-3" />
-                {movement.duration}
-              </div>
-            )}
           </div>
 
           <h2 className="font-serif text-2xl font-bold text-white mb-2 pr-24">
@@ -223,12 +217,6 @@ export default function MovementPanel() {
             <div className="px-3 py-1 rounded-lg font-mono text-xs font-bold bg-white/20 text-white border border-white/30">
               악장 {movement.order}
             </div>
-            {movement.duration && (
-              <div className="px-3 py-1 bg-white/20 rounded-lg font-mono text-xs font-bold text-white border border-white/30 flex items-center gap-1">
-                <MdTimer className="h-3 w-3" />
-                {movement.duration}
-              </div>
-            )}
           </div>
 
           <h2 className="font-serif text-xl font-bold text-white mb-2 pr-16">

@@ -81,6 +81,7 @@ export interface Work {
   highlight?: boolean;
   image?: string;
   voteCount?: number; // 투표/좋아요 수
+  isVisible?: boolean; // 노출 여부
 
   // 상세 페이지용 추가 정보
   detailImage?: string; // 상세 페이지 배경 이미지
@@ -139,6 +140,7 @@ export interface Chronicle {
   // 공통 필드
   highlight?: boolean;
   image?: string;
+  isVisible?: boolean;
 
   createdAt?: Date;
   updatedAt?: Date;
@@ -151,6 +153,7 @@ export type ChronologyItemType = ChronicleType; // 'life' | 'work'
 
 export interface ChronologyItem {
   id: string;
+  workId?: string; // 실제 작품 ID (type='work'일 때만 사용)
   type: ChronologyItemType;
   year: number;
   month?: number;

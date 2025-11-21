@@ -2,20 +2,30 @@
 
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { selectedItemState, selectedMovementState } from '@/store/atoms';
+import { selectedWorkState, selectedMovementState } from '@/store/atoms';
 import { MdSearch, MdMenu, MdClose } from 'react-icons/md';
 import AnimatedTitle from './AnimatedTitle';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const selectedItem = useRecoilValue(selectedItemState);
+  const pathname = usePathname();
+  const selectedWork = useRecoilValue(selectedWorkState);
   const selectedMovement = useRecoilValue(selectedMovementState);
 
   // 어느 패널이라도 열려있으면 true
-  const isPanelOpen = selectedItem !== null || selectedMovement !== null;
+  const isPanelOpen = selectedWork !== null || selectedMovement !== null;
+
+  // 메뉴 아이템이 활성 상태인지 확인
+  const isActive = (href: string) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(href);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,19 +85,26 @@ export default function Navigation() {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-1">
-            {menuItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`px-4 py-2 rounded-lg font-sans text-sm font-medium transition-all duration-200 ${
-                  isScrolled
-                    ? 'text-primary-900 hover:bg-primary-50 hover:text-primary-800'
-                    : 'text-white hover:bg-white/20 drop-shadow-md'
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {menuItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`px-4 py-2 rounded-lg font-sans text-sm font-medium transition-all duration-200 relative ${
+                    isScrolled
+                      ? active
+                        ? 'text-primary-800 bg-primary-100 font-semibold'
+                        : 'text-primary-900 hover:bg-primary-50 hover:text-primary-800'
+                      : active
+                        ? 'text-white bg-white/30 drop-shadow-lg font-semibold backdrop-blur-sm'
+                        : 'text-white hover:bg-white/20 drop-shadow-md'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Search & CTA */}
@@ -130,16 +147,23 @@ export default function Navigation() {
         {isMobileMenuOpen && (
           <div className="lg:hidden pb-4 animate-fadeIn">
             <div className="flex flex-col space-y-2 bg-white/95 backdrop-blur-md rounded-lg p-4 shadow-lg">
-              {menuItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="px-4 py-3 rounded-lg font-sans text-sm font-medium text-primary-900 hover:bg-primary-50 transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {menuItems.map((item) => {
+                const active = isActive(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`px-4 py-3 rounded-lg font-sans text-sm font-medium transition-colors ${
+                      active
+                        ? 'text-primary-800 bg-primary-100 font-semibold'
+                        : 'text-primary-900 hover:bg-primary-50'
+                    }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
               <Link
                 href="/auth"
                 className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors block text-center"

@@ -232,7 +232,7 @@ export default function ChroniclesManagementPage() {
     try {
       await del(`/api/admin/chronicles/${deleteConfirm.chronicle.id}`);
       await fetchChronicles();
-      toast.success('일대기가 삭제되었습니다.');
+      toast.success('연대기가 삭제되었습니다.');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : '삭제 중 오류가 발생했습니다.');
     }
@@ -302,9 +302,9 @@ export default function ChroniclesManagementPage() {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">일대기 관리</h1>
+                <h1 className="text-3xl font-bold text-gray-900">연대기 관리</h1>
                 <p className="mt-2 text-gray-600">
-                  모차르트의 생애와 작품 일대기를 관리합니다 (총 {pagination.total}개)
+                  모차르트의 생애와 작품 연대기를 관리합니다 (총 {pagination.total}개)
                 </p>
               </div>
               <Link
@@ -312,7 +312,7 @@ export default function ChroniclesManagementPage() {
                 className="flex items-center space-x-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition"
               >
                 <MdAdd className="w-5 h-5" />
-                <span>일대기 추가</span>
+                <span>연대기 추가</span>
               </Link>
             </div>
 
@@ -533,10 +533,10 @@ export default function ChroniclesManagementPage() {
               ) : chronicles.length === 0 ? (
                 <EmptyState
                   icon={<MdTimeline className="w-8 h-8 text-gray-400" />}
-                  title="일대기가 없습니다"
-                  description={hasActiveFilters ? "검색 결과가 없습니다. 다른 필터를 시도해보세요." : "첫 일대기를 추가해보세요."}
+                  title="연대기가 없습니다"
+                  description={hasActiveFilters ? "검색 결과가 없습니다. 다른 필터를 시도해보세요." : "첫 연대기를 추가해보세요."}
                   action={!hasActiveFilters ? {
-                    label: "일대기 추가",
+                    label: "연대기 추가",
                     onClick: () => window.location.href = '/admin/chronicles/new'
                   } : undefined}
                 />
@@ -619,8 +619,8 @@ export default function ChroniclesManagementPage() {
         isOpen={deleteConfirm.isOpen}
         onClose={() => setDeleteConfirm({ isOpen: false, chronicle: null })}
         onConfirm={confirmDelete}
-        title="일대기 삭제"
-        message={`정말 이 일대기를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`}
+        title="연대기 삭제"
+        message={`정말 이 연대기를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`}
         confirmText="삭제"
         type="danger"
       />

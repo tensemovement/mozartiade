@@ -5,13 +5,13 @@ import { useRecoilState } from 'recoil';
 import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { selectedItemState } from '@/store/atoms';
+import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFavorite, MdLocationOn, MdMusicNote, MdArticle } from 'react-icons/md';
 import { ChronologyItem } from '@/types';
 
 export default function ChronologyPage() {
-  const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
+  const [selectedWork, setSelectedWork] = useRecoilState(selectedWorkState);
   const [activeYear, setActiveYear] = useState<number | null>(null);
   const [chronologyData, setChronologyData] = useState<ChronologyItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -273,7 +273,7 @@ export default function ChronologyPage() {
                           <div
                             key={item.id}
                             className="relative flex items-start gap-4 group cursor-pointer"
-                            onClick={() => setSelectedItem(item)}
+                            onClick={() => setSelectedWork(item)}
                           >
                         {/* Date column */}
                         <div className="w-32 flex-shrink-0 text-right pr-6">

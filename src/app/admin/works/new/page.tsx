@@ -436,7 +436,7 @@ export default function NewWorkPage() {
                   <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      작곡 세부사항
+                      작품 설명
                     </label>
                     <textarea
                       value={formData.compositionDetails}
@@ -552,21 +552,6 @@ export default function NewWorkPage() {
                               onChange={(e) =>
                                 updateMovement(index, 'order', parseInt(e.target.value))
                               }
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              재생시간
-                            </label>
-                            <input
-                              type="text"
-                              value={movement.duration}
-                              onChange={(e) =>
-                                updateMovement(index, 'duration', e.target.value)
-                              }
-                              placeholder="04:30"
                               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                             />
                           </div>

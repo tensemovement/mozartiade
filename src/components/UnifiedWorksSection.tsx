@@ -2,7 +2,7 @@
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { useRecoilState } from 'recoil';
-import { selectedItemState } from '@/store/atoms';
+import { selectedWorkState } from '@/store/atoms';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatVoteCount } from '@/utils/format';
@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 
 export default function UnifiedWorksSection() {
   const { ref, isVisible } = useScrollAnimation();
-  const [, setSelectedItem] = useRecoilState(selectedItemState);
+  const [, setSelectedWork] = useRecoilState(selectedWorkState);
   const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -135,7 +135,7 @@ export default function UnifiedWorksSection() {
               <div
                 key={work.id}
                 onClick={() => {
-                  setSelectedItem({ ...work, type: 'work' as const });
+                  setSelectedWork({ ...work, type: 'work' as const });
                 }}
                 className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-100"
               >

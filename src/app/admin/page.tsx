@@ -22,7 +22,7 @@ export default function AdminDashboard() {
       color: 'bg-green-500',
     },
     {
-      label: '일대기 이벤트',
+      label: '연대기 이벤트',
       value: '-',
       icon: MdTimeline,
       color: 'bg-purple-500',
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
                   className="p-4 border-2 border-gray-200 rounded-lg hover:border-slate-400 hover:bg-gray-50 transition group"
                 >
                   <MdTimeline className="w-8 h-8 text-gray-400 group-hover:text-slate-600 mb-2" />
-                  <p className="font-medium text-gray-900">일대기 추가</p>
+                  <p className="font-medium text-gray-900">연대기 추가</p>
                   <p className="text-sm text-gray-500 mt-1">
                     생애 사건을 기록합니다
                   </p>
