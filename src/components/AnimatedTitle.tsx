@@ -41,21 +41,27 @@ export default function AnimatedTitle({ isScrolled }: AnimatedTitleProps) {
   }, [displayedText, isTyping, currentTextIndex]);
 
   return (
-    <h1 className={`font-serif text-xl font-bold transition-colors ${
+    <h1 className={`font-serif text-xl font-bold transition-colors relative ${
       isScrolled ? 'text-primary-900' : 'text-white drop-shadow-lg'
     }`}>
-      {displayedText.split('').map((char, index) => (
-        <span
-          key={index}
-          className="inline-block animate-fadeIn"
-          style={{
-            animationDelay: `${index * 50}ms`,
-            animationFillMode: 'backwards'
-          }}
-        >
-          {char}
-        </span>
-      ))}
+      {/* 영역 확보용 invisible 텍스트 (더 긴 텍스트로 설정) */}
+      <span className="invisible">모차르티아데</span>
+
+      {/* 실제 애니메이션 텍스트 */}
+      <span className="absolute left-0 top-0">
+        {displayedText.split('').map((char, index) => (
+          <span
+            key={index}
+            className="inline-block animate-fadeIn"
+            style={{
+              animationDelay: `${index * 50}ms`,
+              animationFillMode: 'backwards'
+            }}
+          >
+            {char}
+          </span>
+        ))}
+      </span>
     </h1>
   );
 }
