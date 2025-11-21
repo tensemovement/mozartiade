@@ -63,7 +63,7 @@ export default function Navigation() {
                 priority
               />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="relative flex items-center gap-2">
               <div>
                 <AnimatedTitle isScrolled={isScrolled} />
                 <p className={`text-xs font-sans ${
@@ -73,23 +73,38 @@ export default function Navigation() {
                 </p>
               </div>
               {/* 춤추는 음표 */}
-              <div className="flex gap-1 ml-1">
+              <div className="relative w-8 h-10">
+                {/* 첫 번째 음표 - 우측 상단, 30도 기울임 */}
                 <MdMusicNote
-                  className={`w-4 h-4 ${
+                  className={`w-4 h-4 absolute top-0 right-0 ${
                     isScrolled ? 'text-primary-600' : 'text-white/80 drop-shadow'
                   }`}
                   style={{
                     animation: 'musicNote1 1.2s ease-in-out infinite',
+                    transformOrigin: 'center',
                   }}
                 />
-                <MdMusicNote
-                  className={`w-4 h-4 ${
-                    isScrolled ? 'text-primary-600' : 'text-white/80 drop-shadow'
-                  }`}
-                  style={{
-                    animation: 'musicNote2 1.2s ease-in-out infinite',
-                  }}
-                />
+                {/* 두 번째 음표 - 우측 하단, -30도 기울임, 16분음표 스타일 */}
+                <div className="absolute bottom-0 right-0">
+                  <MdMusicNote
+                    className={`w-4 h-4 ${
+                      isScrolled ? 'text-primary-600' : 'text-white/80 drop-shadow'
+                    }`}
+                    style={{
+                      animation: 'musicNote16th 0.6s ease-in-out infinite',
+                      transformOrigin: 'center',
+                    }}
+                  />
+                  {/* 16분음표 효과를 위한 추가 빔 */}
+                  <div
+                    className={`absolute top-0 right-1 w-2 h-0.5 ${
+                      isScrolled ? 'bg-primary-600' : 'bg-white/80'
+                    }`}
+                    style={{
+                      animation: 'musicNote16th 0.6s ease-in-out infinite',
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </Link>
@@ -98,30 +113,38 @@ export default function Navigation() {
             @keyframes musicNote1 {
               0%, 100% {
                 opacity: 0.3;
-                transform: translateY(0px) scale(1);
+                transform: translateY(0px) scale(1) rotate(30deg);
               }
               25% {
                 opacity: 1;
-                transform: translateY(-3px) scale(1.1);
+                transform: translateY(-3px) scale(1.1) rotate(30deg);
               }
               50% {
                 opacity: 0.5;
-                transform: translateY(0px) scale(1);
+                transform: translateY(0px) scale(1) rotate(30deg);
               }
             }
 
-            @keyframes musicNote2 {
+            @keyframes musicNote16th {
               0%, 100% {
+                opacity: 0.4;
+                transform: translateY(0px) scale(0.95) rotate(-30deg);
+              }
+              15% {
+                opacity: 0.9;
+                transform: translateY(-2px) scale(1.05) rotate(-30deg);
+              }
+              30% {
                 opacity: 0.5;
-                transform: translateY(0px) scale(1);
+                transform: translateY(0px) scale(0.95) rotate(-30deg);
               }
-              50% {
+              45% {
                 opacity: 1;
-                transform: translateY(-3px) scale(1.1);
+                transform: translateY(-2px) scale(1.1) rotate(-30deg);
               }
-              75% {
-                opacity: 0.3;
-                transform: translateY(0px) scale(1);
+              60% {
+                opacity: 0.6;
+                transform: translateY(0px) scale(0.95) rotate(-30deg);
               }
             }
           `}</style>
