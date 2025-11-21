@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminAuth, hasMinimumRole } from '@/lib/adminAuth';
 import { ApiResponse } from '@/types';
+import { withBatchTransaction } from '@/lib/transaction';
 
 // PATCH - Reorder chronicles within a year
 export async function PATCH(req: NextRequest) {
@@ -98,15 +99,15 @@ export async function PATCH(req: NextRequest) {
     const [movedChronicle] = reorderedChronicles.splice(currentIndex, 1);
     reorderedChronicles.splice(newOrder, 0, movedChronicle);
 
-    // Update chronicleOrder for all affected chronicles
-    await prisma.$transaction(
-      reorderedChronicles.map((chronicle, index) =>
-        prisma.chronicle.update({
-          where: { id: chronicle.id },
-          data: { chronicleOrder: index + 1 },
-        })
-      )
-    );
+    // Update chronicleOrder for all affected chronicles in a transaction
+    await withBatchTransaction(async (tx) => {
+      for (let i = 0; i < reorderedChronicles.length; i++) {
+        await tx.chronicle.update({
+          where: { id: reorderedChronicles[i].id },
+          data: { chronicleOrder: i + 1 },
+        });
+      }
+    });
 
     return NextResponse.json(
       {

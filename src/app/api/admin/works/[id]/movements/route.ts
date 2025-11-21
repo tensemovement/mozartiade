@@ -33,7 +33,7 @@ export async function POST(
     }
 
     const body = await req.json();
-    const { order, title, titleEn, character, description, youtubeUrl, duration, highlights } = body;
+    const { order, title, titleEn, character, description, youtubeUrl, highlights } = body;
 
     // Check if work exists
     const work = await prisma.work.findUnique({
@@ -60,7 +60,6 @@ export async function POST(
         character,
         description,
         youtubeUrl,
-        duration,
         highlights,
       },
     });

@@ -34,7 +34,6 @@ interface MovementForm {
   character: string;
   description: string;
   youtubeUrl: string;
-  duration: string;
   highlights: string;
 }
 
@@ -425,7 +424,6 @@ export default function EditWorkPage() {
           character: m.character || '',
           description: m.description,
           youtubeUrl: m.youtubeUrl || '',
-          duration: m.duration || '',
           highlights: m.highlights || '',
         })));
       }
@@ -452,8 +450,8 @@ export default function EditWorkPage() {
     setError('');
 
     try {
-      // Update work
-      const workData = {
+      // Prepare all data for a single transaction
+      const requestData = {
         ...formData,
         catalogNumberNumeric: formData.catalogNumberNumeric ? parseInt(formData.catalogNumberNumeric) : null,
         month: formData.month ? parseInt(formData.month) : null,
@@ -461,41 +459,15 @@ export default function EditWorkPage() {
         compositionOrder: formData.compositionOrder ? parseInt(formData.compositionOrder) : null,
         isVisible: formData.isVisible,
         usageExamples: formData.usageExamples.filter(ex => ex.trim() !== ''),
+        // Include movements and related links in the same request
+        movements,
+        deletedMovementIds,
+        relatedLinks,
+        deletedRelatedLinkIds,
       };
 
-      await put(`/api/admin/works/${workId}`, workData);
-
-      // Delete removed movements
-      for (const movementId of deletedMovementIds) {
-        await del(`/api/admin/movements/${movementId}`);
-      }
-
-      // Update or create movements
-      for (const movement of movements) {
-        if (movement.id) {
-          // Update existing movement
-          await put(`/api/admin/movements/${movement.id}`, movement);
-        } else {
-          // Create new movement
-          await post(`/api/admin/works/${workId}/movements`, movement);
-        }
-      }
-
-      // Delete removed related links
-      for (const linkId of deletedRelatedLinkIds) {
-        await del(`/api/admin/related-links/${linkId}`);
-      }
-
-      // Update or create related links
-      for (const link of relatedLinks) {
-        if (link.id) {
-          // Update existing link
-          await put(`/api/admin/related-links/${link.id}`, link);
-        } else {
-          // Create new link
-          await post(`/api/admin/works/${workId}/related-links`, link);
-        }
-      }
+      // Single API call that handles everything in a transaction
+      await put(`/api/admin/works/${workId}`, requestData);
 
       alert('작품이 성공적으로 수정되었습니다.');
       router.push('/admin/works');
@@ -516,7 +488,6 @@ export default function EditWorkPage() {
         character: '',
         description: '',
         youtubeUrl: '',
-        duration: '',
         highlights: '',
       },
     ]);

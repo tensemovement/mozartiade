@@ -386,6 +386,90 @@ export function useDebounce<T>(value: T, delay: number): T {
 - Implement CSRF protection
 - Use Prisma for SQL injection prevention
 
+### 데이터베이스 트랜잭션 (CRITICAL)
+```
+RULE: 모든 업데이트/생성/삭제 작업은 트랜잭션으로 보호되어야 합니다
+
+⚠️ TRANSACTION REQUIREMENTS:
+
+✅ MUST USE TRANSACTIONS FOR:
+1. 여러 개의 업데이트/생성/삭제 작업이 연관된 경우
+   - 예: 작품 수정 시 movements와 relatedLinks도 함께 수정
+   - 예: 순서 변경 시 여러 레코드를 업데이트
+
+2. 데이터 검증 후 업데이트하는 경우
+   - 예: workId 검증 후 chronicle 업데이트
+   - 예: 존재 여부 확인 후 연관 데이터 생성
+
+3. 배치 작업
+   - 예: 여러 레코드의 순서(order) 필드 업데이트
+   - 예: 대량 데이터 삽입/수정
+
+📝 TRANSACTION WRAPPER USAGE:
+
+// 일반 트랜잭션 (업데이트/생성/삭제)
+import { withTransaction } from '@/lib/transaction'
+
+await withTransaction(async (tx) => {
+  await tx.work.update({ ... })
+  await tx.movement.create({ ... })
+  return result
+})
+
+// 배치 트랜잭션 (여러 레코드 처리)
+import { withBatchTransaction } from '@/lib/transaction'
+
+await withBatchTransaction(async (tx) => {
+  for (const item of items) {
+    await tx.work.update({ ... })
+  }
+})
+
+// 읽기 전용 트랜잭션 (일관된 스냅샷 필요)
+import { withReadTransaction } from '@/lib/transaction'
+
+await withReadTransaction(async (tx) => {
+  const work = await tx.work.findUnique({ ... })
+  const movements = await tx.movement.findMany({ ... })
+  return { work, movements }
+})
+
+🎯 RATIONALE:
+- 데이터 무결성 보장
+- 부분 업데이트 방지 (All or Nothing)
+- 동시성 문제 해결
+- 에러 발생 시 자동 롤백
+
+❌ DO NOT:
+- 트랜잭션 없이 여러 업데이트 작업 수행
+- 프론트엔드에서 여러 번의 API 호출로 업데이트
+  → 대신 서버에서 하나의 API로 통합하고 트랜잭션 사용
+
+✅ DO:
+- 서버에서 하나의 API 엔드포인트로 모든 관련 작업 처리
+- withTransaction, withBatchTransaction, withReadTransaction 사용
+- 에러 발생 시 적절한 에러 메시지 반환
+
+📌 ISOLATION LEVELS:
+- 기본: READ COMMITTED (withTransaction)
+- 읽기 전용: READ COMMITTED (withReadTransaction)
+- 중요한 업데이트: SERIALIZABLE (옵션으로 지정)
+
+💡 EXAMPLE:
+
+// ❌ BAD: 트랜잭션 없이 여러 작업
+await prisma.work.update({ ... })
+await prisma.movement.create({ ... })
+await prisma.relatedLink.create({ ... })
+
+// ✅ GOOD: 트랜잭션으로 묶음
+await withTransaction(async (tx) => {
+  await tx.work.update({ ... })
+  await tx.movement.create({ ... })
+  await tx.relatedLink.create({ ... })
+})
+```
+
 ### 아이콘 사용
 ```
 RULE: Use react-icons library for all icons
