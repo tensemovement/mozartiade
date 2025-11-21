@@ -1018,7 +1018,7 @@ export default function EditWorkPage() {
                   <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      작곡 세부사항
+                      작품 설명
                     </label>
                     <textarea
                       value={formData.compositionDetails}

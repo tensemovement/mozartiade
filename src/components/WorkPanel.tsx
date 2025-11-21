@@ -239,7 +239,7 @@ export default function WorkPanel() {
 
           {/* 악장 목록 - 두 번째로 이동 */}
           {selectedWork.movements && selectedWork.movements.length > 0 && (
-            <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-200">
+            <div className="mb-6 p-4 rounded-xl border border-gray-200">
               <h3 className="font-serif text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
                 <MdMusicNote className="h-4 w-4 text-amber-600" />
                 음악감상
@@ -274,47 +274,52 @@ export default function WorkPanel() {
           )}
 
 
-          {/* 작곡 배경 */}
-          {selectedWork.compositionDetails && (
-            <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-200">
-              <h3 className="font-serif text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
-                <MdDescription className="h-4 w-4 text-secondary-600" />
-                작곡 배경
-              </h3>
-              <p className="font-sans text-xs text-gray-700 leading-relaxed whitespace-pre-line">
-                {selectedWork.compositionDetails}
-              </p>
-            </div>
-          )}
+          {/* 작품 상세 정보 통합 */}
+          {(selectedWork.compositionDetails || selectedWork.behindStory || (selectedWork.usageExamples && selectedWork.usageExamples.length > 0)) && (
+            <div className="mb-6 p-4 rounded-xl border border-gray-200 space-y-6">
+              {/* 작품 설명 */}
+              {selectedWork.compositionDetails && (
+                <div>
+                  <h3 className="font-serif text-base font-bold text-gray-900 mb-2 flex items-center gap-2">
+                    <MdDescription className="h-4 w-4 text-secondary-600" />
+                    작품 설명
+                  </h3>
+                  <p className="font-sans text-xs text-gray-700 leading-relaxed whitespace-pre-line">
+                    {selectedWork.compositionDetails}
+                  </p>
+                </div>
+              )}
 
-          {/* 비하인드 스토리 */}
-          {selectedWork.behindStory && (
-            <div className="mb-6 p-4 bg-purple-50 rounded-xl border border-purple-200">
-              <h3 className="font-serif text-base font-bold text-gray-900 mb-2">
-                비하인드 스토리
-              </h3>
-              <p className="font-sans text-xs text-gray-700 leading-relaxed whitespace-pre-line">
-                {selectedWork.behindStory}
-              </p>
-            </div>
-          )}
+              {/* 비하인드 스토리 */}
+              {selectedWork.behindStory && (
+                <div>
+                  <h3 className="font-serif text-base font-bold text-gray-900 mb-2">
+                    비하인드 스토리
+                  </h3>
+                  <p className="font-sans text-xs text-gray-700 leading-relaxed whitespace-pre-line">
+                    {selectedWork.behindStory}
+                  </p>
+                </div>
+              )}
 
-          {/* 활용 사례 */}
-          {selectedWork.usageExamples && selectedWork.usageExamples.length > 0 && (
-            <div className="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
-              <h3 className="font-serif text-base font-bold text-gray-900 mb-3">
-                공연 & 활용 사례
-              </h3>
-              <div className="space-y-2">
-                {selectedWork.usageExamples.map((example: string, index: number) => (
-                  <div key={index} className="flex items-start gap-2">
-                    <div className="mt-0.5 w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-xs font-bold">{index + 1}</span>
-                    </div>
-                    <p className="font-sans text-xs text-gray-700 leading-relaxed">{example}</p>
+              {/* 활용 사례 */}
+              {selectedWork.usageExamples && selectedWork.usageExamples.length > 0 && (
+                <div>
+                  <h3 className="font-serif text-base font-bold text-gray-900 mb-3">
+                    공연 & 활용 사례
+                  </h3>
+                  <div className="space-y-2">
+                    {selectedWork.usageExamples.map((example: string, index: number) => (
+                      <div key={index} className="flex items-start gap-2">
+                        <div className="mt-0.5 w-5 h-5 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
+                          <span className="text-white text-xs font-bold">{index + 1}</span>
+                        </div>
+                        <p className="font-sans text-xs text-gray-700 leading-relaxed">{example}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -494,7 +499,7 @@ export default function WorkPanel() {
 
           {/* 악장 목록 - 두 번째로 이동 */}
           {selectedWork.movements && selectedWork.movements.length > 0 && (
-            <div className="mb-6 p-3 bg-amber-50 rounded-xl border border-amber-200">
+            <div className="mb-6 p-3 rounded-xl border border-gray-200">
               <h3 className="font-serif text-sm font-bold text-gray-900 mb-2 flex items-center gap-2">
                 <MdMusicNote className="h-3.5 w-3.5 text-amber-600" />
                 음악감상

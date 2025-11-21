@@ -207,49 +207,54 @@ export default function WorkDetailPage({ params }: PageProps) {
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* 왼쪽 컬럼 - 상세 정보 */}
             <div className="lg:col-span-2 space-y-8">
-              {/* 작품 상세 */}
-              {work.compositionDetails && (
-                <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-md">
-                  <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">
-                    작품 설명
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {work.compositionDetails}
-                  </p>
-                </div>
-              )}
+              {/* 작품 상세 정보 통합 */}
+              {(work.compositionDetails || work.behindStory || (work.usageExamples && work.usageExamples.length > 0)) && (
+                <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-md space-y-8">
+                  {/* 작품 설명 */}
+                  {work.compositionDetails && (
+                    <div>
+                      <h3 className="font-serif text-xl font-bold text-gray-900 mb-4">
+                        작품 설명
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                        {work.compositionDetails}
+                      </p>
+                    </div>
+                  )}
 
-              {/* 비하인드 스토리 */}
-              {work.behindStory && (
-                <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-md">
-                  <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">
-                    비하인드 스토리
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {work.behindStory}
-                  </p>
-                </div>
-              )}
+                  {/* 비하인드 스토리 */}
+                  {work.behindStory && (
+                    <div>
+                      <h3 className="font-serif text-xl font-bold text-gray-900 mb-4">
+                        비하인드 스토리
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                        {work.behindStory}
+                      </p>
+                    </div>
+                  )}
 
-              {/* 활용 사례 */}
-              {work.usageExamples && work.usageExamples.length > 0 && (
-                <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-md">
-                  <h2 className="font-serif text-2xl font-bold text-gray-900 mb-6">
-                    공연 & 활용 사례
-                  </h2>
-                  <div className="space-y-3">
-                    {work.usageExamples.map((example, index) => (
-                      <div
-                        key={index}
-                        className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-100"
-                      >
-                        <div className="mt-1 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                          <span className="text-accent text-xs font-bold">{index + 1}</span>
-                        </div>
-                        <p className="text-gray-700 leading-relaxed">{example}</p>
+                  {/* 활용 사례 */}
+                  {work.usageExamples && work.usageExamples.length > 0 && (
+                    <div>
+                      <h3 className="font-serif text-xl font-bold text-gray-900 mb-4">
+                        공연 & 활용 사례
+                      </h3>
+                      <div className="space-y-3">
+                        {work.usageExamples.map((example, index) => (
+                          <div
+                            key={index}
+                            className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-100"
+                          >
+                            <div className="mt-1 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                              <span className="text-accent text-xs font-bold">{index + 1}</span>
+                            </div>
+                            <p className="text-gray-700 leading-relaxed">{example}</p>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
