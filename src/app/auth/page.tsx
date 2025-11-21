@@ -76,7 +76,16 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen relative flex items-center justify-center px-4 py-12">
+      {/* 배경 이미지 */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url(/images/m/mozart004.jpg)' }}
+      />
+
+      {/* 어두운 오버레이 */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
       {/* 배경 장식 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gray-700/10 rounded-full blur-3xl"></div>
