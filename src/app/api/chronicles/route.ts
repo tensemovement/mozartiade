@@ -59,6 +59,7 @@ export async function GET(request: Request) {
         const work = chronicle.work;
         return {
           id: chronicle.id,
+          workId: work?.id, // 실제 작품 ID 추가
           type: 'work' as const,
           year: chronicle.year,
           month: chronicle.month,

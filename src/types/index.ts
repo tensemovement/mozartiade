@@ -153,6 +153,7 @@ export type ChronologyItemType = ChronicleType; // 'life' | 'work'
 
 export interface ChronologyItem {
   id: string;
+  workId?: string; // 실제 작품 ID (type='work'일 때만 사용)
   type: ChronologyItemType;
   year: number;
   month?: number;

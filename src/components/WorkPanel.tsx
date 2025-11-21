@@ -81,7 +81,7 @@ export default function WorkPanel() {
           <div className="absolute top-4 right-4 flex gap-2">
             {/* Detail page button */}
             <Link
-              href={`/works/${selectedWork.id}`}
+              href={`/works/${selectedWork.workId || selectedWork.id}`}
               className="p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full transition-all hover:scale-110 shadow-lg"
               title="상세보기"
             >
