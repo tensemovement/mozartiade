@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminAuth, hasMinimumRole } from '@/lib/adminAuth';
 import { ApiResponse } from '@/types';
+import { withBatchTransaction } from '@/lib/transaction';
 
 // PATCH - Reorder works within a year
 export async function PATCH(req: NextRequest) {
@@ -98,15 +99,15 @@ export async function PATCH(req: NextRequest) {
     const [movedWork] = reorderedWorks.splice(currentIndex, 1);
     reorderedWorks.splice(newOrder, 0, movedWork);
 
-    // Update compositionOrder for all affected works
-    await prisma.$transaction(
-      reorderedWorks.map((work, index) =>
-        prisma.work.update({
-          where: { id: work.id },
-          data: { compositionOrder: index + 1 },
-        })
-      )
-    );
+    // Update compositionOrder for all affected works in a transaction
+    await withBatchTransaction(async (tx) => {
+      for (let i = 0; i < reorderedWorks.length; i++) {
+        await tx.work.update({
+          where: { id: reorderedWorks[i].id },
+          data: { compositionOrder: i + 1 },
+        });
+      }
+    });
 
     return NextResponse.json(
       {

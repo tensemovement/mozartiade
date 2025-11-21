@@ -59,7 +59,6 @@ export async function PUT(
         character: body.character,
         description: body.description,
         youtubeUrl: body.youtubeUrl,
-        duration: body.duration,
         highlights: body.highlights,
       },
     });

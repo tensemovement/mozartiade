@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminAuth, hasMinimumRole } from '@/lib/adminAuth';
 import { ApiResponse, Work } from '@/types';
+import { withTransaction } from '@/lib/transaction';
 
 // GET - Get single work
 export async function GET(
@@ -66,7 +67,7 @@ export async function GET(
   }
 }
 
-// PUT - Update work
+// PUT - Update work with all related data in a transaction
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -96,6 +97,13 @@ export async function PUT(
     }
 
     const body = await req.json();
+    const {
+      movements = [],
+      deletedMovementIds = [],
+      relatedLinks = [],
+      deletedRelatedLinkIds = [],
+      ...workData
+    } = body;
 
     // Check if work exists
     const existingWork = await prisma.work.findUnique({
@@ -112,46 +120,129 @@ export async function PUT(
       );
     }
 
-    // Update work
-    const work = await prisma.work.update({
-      where: { id: params.id },
-      data: {
-        catalogNumber: body.catalogNumber,
-        catalogNumberNumeric: body.catalogNumberNumeric,
-        catalogNumberSuffix: body.catalogNumberSuffix,
-        catalogNumberFirstEd: body.catalogNumberFirstEd,
-        catalogNumberNinthEd: body.catalogNumberNinthEd,
-        year: body.year,
-        month: body.month,
-        day: body.day,
-        compositionOrder: body.compositionOrder,
-        compositionLocation: body.compositionLocation,
-        title: body.title,
-        titleEn: body.titleEn,
-        description: body.description,
-        genre: body.genre,
-        youtubeUrl: body.youtubeUrl,
-        sheetMusicUrl: body.sheetMusicUrl,
-        compositionDetails: body.compositionDetails,
-        highlight: body.highlight,
-        image: body.image,
-        detailImage: body.detailImage,
-        behindStory: body.behindStory,
-        usageExamples: body.usageExamples,
-        isVisible: body.isVisible,
-      },
-      include: {
-        movements: {
-          orderBy: {
-            order: 'asc',
+    // Execute all operations in a transaction
+    const work = await withTransaction(async (tx) => {
+      // 1. Delete removed movements
+      if (deletedMovementIds.length > 0) {
+        await tx.movement.deleteMany({
+          where: {
+            id: { in: deletedMovementIds },
+            workId: params.id, // Ensure movements belong to this work
+          },
+        });
+      }
+
+      // 2. Delete removed related links
+      if (deletedRelatedLinkIds.length > 0) {
+        await tx.relatedLink.deleteMany({
+          where: {
+            id: { in: deletedRelatedLinkIds },
+            workId: params.id, // Ensure links belong to this work
+          },
+        });
+      }
+
+      // 3. Update or create movements
+      for (const movement of movements) {
+        if (movement.id) {
+          // Update existing movement
+          await tx.movement.update({
+            where: { id: movement.id },
+            data: {
+              order: movement.order,
+              title: movement.title,
+              titleEn: movement.titleEn,
+              character: movement.character,
+              description: movement.description,
+              youtubeUrl: movement.youtubeUrl,
+              highlights: movement.highlights,
+            },
+          });
+        } else {
+          // Create new movement
+          await tx.movement.create({
+            data: {
+              workId: params.id,
+              order: movement.order,
+              title: movement.title,
+              titleEn: movement.titleEn,
+              character: movement.character,
+              description: movement.description,
+              youtubeUrl: movement.youtubeUrl,
+              highlights: movement.highlights,
+            },
+          });
+        }
+      }
+
+      // 4. Update or create related links
+      for (const link of relatedLinks) {
+        if (link.id) {
+          // Update existing link
+          await tx.relatedLink.update({
+            where: { id: link.id },
+            data: {
+              title: link.title,
+              url: link.url,
+              description: link.description,
+              order: link.order,
+            },
+          });
+        } else {
+          // Create new link
+          await tx.relatedLink.create({
+            data: {
+              workId: params.id,
+              title: link.title,
+              url: link.url,
+              description: link.description,
+              order: link.order,
+            },
+          });
+        }
+      }
+
+      // 5. Update work (last to ensure all related data is consistent)
+      return await tx.work.update({
+        where: { id: params.id },
+        data: {
+          catalogNumber: workData.catalogNumber,
+          catalogNumberNumeric: workData.catalogNumberNumeric,
+          catalogNumberSuffix: workData.catalogNumberSuffix,
+          catalogNumberFirstEd: workData.catalogNumberFirstEd,
+          catalogNumberNinthEd: workData.catalogNumberNinthEd,
+          year: workData.year,
+          month: workData.month,
+          day: workData.day,
+          compositionOrder: workData.compositionOrder,
+          compositionLocation: workData.compositionLocation,
+          title: workData.title,
+          titleEn: workData.titleEn,
+          description: workData.description,
+          genre: workData.genre,
+          youtubeUrl: workData.youtubeUrl,
+          sheetMusicUrl: workData.sheetMusicUrl,
+          compositionDetails: workData.compositionDetails,
+          highlight: workData.highlight,
+          image: workData.image,
+          detailImage: workData.detailImage,
+          behindStory: workData.behindStory,
+          usageExamples: workData.usageExamples,
+          isVisible: workData.isVisible,
+        },
+        include: {
+          movements: {
+            orderBy: {
+              order: 'asc',
+            },
+          },
+          relatedLinks: {
+            orderBy: {
+              order: 'asc',
+            },
           },
         },
-        relatedLinks: {
-          orderBy: {
-            order: 'asc',
-          },
-        },
-      },
+      });
     });
 
     return NextResponse.json(

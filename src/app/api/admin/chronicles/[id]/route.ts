@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminAuth, hasMinimumRole } from '@/lib/adminAuth';
 import { ApiResponse, Chronicle } from '@/types';
+import { withTransaction } from '@/lib/transaction';
 
 // GET - Get single chronicle
 export async function GET(
@@ -110,49 +111,46 @@ export async function PUT(
       );
     }
 
-    // If workId is provided, verify it exists
-    if (body.workId) {
-      const work = await prisma.work.findUnique({
-        where: { id: body.workId },
-      });
+    // Update chronicle with validation in a transaction
+    const chronicle = await withTransaction(async (tx) => {
+      // If workId is provided, verify it exists
+      if (body.workId) {
+        const work = await tx.work.findUnique({
+          where: { id: body.workId },
+        });
 
-      if (!work) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: '작품을 찾을 수 없습니다.',
-          } as ApiResponse,
-          { status: 404 }
-        );
+        if (!work) {
+          throw new Error('작품을 찾을 수 없습니다.');
+        }
       }
-    }
 
-    // Update chronicle
-    const chronicle = await prisma.chronicle.update({
-      where: { id: params.id },
-      data: {
-        type: body.type,
-        year: body.year,
-        month: body.month,
-        day: body.day,
-        title: body.title,
-        description: body.description,
-        location: body.location,
-        workId: body.workId,
-        highlight: body.highlight,
-        image: body.image,
-        isVisible: body.isVisible,
-      },
-      include: {
-        work: {
-          select: {
-            id: true,
-            title: true,
-            catalogNumber: true,
-            genre: true,
+      // Update chronicle
+      return await tx.chronicle.update({
+        where: { id: params.id },
+        data: {
+          type: body.type,
+          year: body.year,
+          month: body.month,
+          day: body.day,
+          title: body.title,
+          description: body.description,
+          location: body.location,
+          workId: body.workId,
+          highlight: body.highlight,
+          image: body.image,
+          isVisible: body.isVisible,
+        },
+        include: {
+          work: {
+            select: {
+              id: true,
+              title: true,
+              catalogNumber: true,
+              genre: true,
+            },
           },
         },
-      },
+      });
     });
 
     return NextResponse.json(
