@@ -5,13 +5,13 @@ import { useRecoilState } from 'recoil';
 import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { selectedItemState } from '@/store/atoms';
+import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFavorite, MdLocationOn, MdMusicNote, MdArticle } from 'react-icons/md';
 import { ChronologyItem } from '@/types';
 
 export default function ChronologyPage() {
-  const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
+  const [selectedWork, setSelectedItem] = useRecoilState(selectedWorkState);
   const [activeYear, setActiveYear] = useState<number | null>(null);
   const [chronologyData, setChronologyData] = useState<ChronologyItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);

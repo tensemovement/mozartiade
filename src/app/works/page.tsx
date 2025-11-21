@@ -6,13 +6,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { selectedItemState } from '@/store/atoms';
+import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle } from 'react-icons/md';
 import { Work } from '@/types';
 
 export default function WorksPage() {
-  const [selectedItem, setSelectedItem] = useRecoilState(selectedItemState);
+  const [selectedWork, setSelectedItem] = useRecoilState(selectedWorkState);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
   const [selectedInstrument, setSelectedInstrument] = useState<string>('all');

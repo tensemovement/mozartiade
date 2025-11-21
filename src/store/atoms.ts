@@ -1,8 +1,8 @@
 import { atom } from 'recoil';
 import { ChronologyItem, Movement } from '@/types';
 
-export const selectedItemState = atom<ChronologyItem | null>({
-  key: 'selectedItemState',
+export const selectedWorkState = atom<ChronologyItem | null>({
+  key: 'selectedWorkState',
   default: null,
 });
 

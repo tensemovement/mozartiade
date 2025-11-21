@@ -4,18 +4,18 @@ import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import Link from 'next/link';
 import Image from 'next/image';
-import { selectedItemState, selectedMovementState } from '@/store/atoms';
+import { selectedWorkState, selectedMovementState } from '@/store/atoms';
 import { MdSearch, MdMenu, MdClose } from 'react-icons/md';
 import AnimatedTitle from './AnimatedTitle';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const selectedItem = useRecoilValue(selectedItemState);
+  const selectedWork = useRecoilValue(selectedWorkState);
   const selectedMovement = useRecoilValue(selectedMovementState);
 
   // 어느 패널이라도 열려있으면 true
-  const isPanelOpen = selectedItem !== null || selectedMovement !== null;
+  const isPanelOpen = selectedWork !== null || selectedMovement !== null;
 
   useEffect(() => {
     const handleScroll = () => {

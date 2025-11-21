@@ -2,16 +2,16 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { selectedMovementState, selectedItemState } from '@/store/atoms';
+import { selectedMovementState, selectedWorkState } from '@/store/atoms';
 import { MdClose, MdPlayArrow, MdPerson, MdStars } from 'react-icons/md';
 
 export default function MovementPanel() {
   const [movement, setMovement] = useRecoilState(selectedMovementState);
-  const [, setSelectedItem] = useRecoilState(selectedItemState);
-  const selectedItem = useRecoilValue(selectedItemState);
+  const [, setSelectedItem] = useRecoilState(selectedWorkState);
+  const selectedWork = useRecoilValue(selectedWorkState);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
-  const prevItemRef = useRef(selectedItem);
+  const prevWorkRef = useRef(selectedWork);
 
   // Window scroll 감지 (SidePanel과 동일)
   useEffect(() => {
@@ -54,10 +54,10 @@ export default function MovementPanel() {
     if (movement) {
       // 이전에 작품패널이 열려있었다면 애니메이션 없음 (패널 전환)
       // 이전에 아무것도 없었다면 애니메이션 적용 (새로 열림)
-      setShouldAnimate(prevItemRef.current === null);
+      setShouldAnimate(prevWorkRef.current === null);
     }
-    prevItemRef.current = selectedItem;
-  }, [movement, selectedItem]);
+    prevWorkRef.current = selectedWork;
+  }, [movement, selectedWork]);
 
   if (!movement) {
     return null;

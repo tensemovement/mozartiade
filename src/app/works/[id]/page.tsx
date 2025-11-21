@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
 import WorkPanel from '@/components/WorkPanel';
 import MovementPanel from '@/components/MovementPanel';
 import { Work, Movement, RelatedLink } from '@/types';
-import { selectedMovementState, selectedItemState } from '@/store/atoms';
+import { selectedMovementState, selectedWorkState } from '@/store/atoms';
 import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote, MdArticle, MdOpenInNew } from 'react-icons/md';
 
 interface PageProps {
@@ -23,7 +23,7 @@ export default function WorkDetailPage({ params }: PageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedMovement, setSelectedMovement] = useRecoilState(selectedMovementState);
-  const [, setSelectedItem] = useRecoilState(selectedItemState);
+  const [, setSelectedWork] = useRecoilState(selectedWorkState);
 
   // Fetch work from API
   useEffect(() => {
@@ -318,7 +318,7 @@ export default function WorkDetailPage({ params }: PageProps) {
                         음악 감상
                       </h2>
                       <button
-                        onClick={() => setSelectedItem({ ...work, type: 'work' as const })}
+                        onClick={() => setSelectedWork({ ...work, type: 'work' as const })}
                         className="px-3 py-1.5 bg-accent hover:bg-accent/90 text-white text-xs font-semibold rounded-lg transition-all hover:scale-105 flex items-center gap-1"
                       >
                         <MdPlayArrow className="h-4 w-4" />
