@@ -138,6 +138,7 @@ export async function PUT(
         detailImage: body.detailImage,
         behindStory: body.behindStory,
         usageExamples: body.usageExamples,
+        isVisible: body.isVisible,
       },
       include: {
         movements: {

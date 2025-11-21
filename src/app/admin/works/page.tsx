@@ -94,6 +94,17 @@ function SortableWorkRow({ work, onEdit, onDelete, isDraggable }: {
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {work.movements?.length || 0}개
       </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <span
+          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+            work.isVisible
+              ? 'bg-green-100 text-green-800'
+              : 'bg-gray-100 text-gray-800'
+          }`}
+        >
+          {work.isVisible ? '노출' : '비노출'}
+        </span>
+      </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Link
           href={`/admin/works/${work.id}`}
@@ -133,6 +144,7 @@ export default function WorksManagementPage() {
     genre: searchParams.get('genre') || '',
     year: searchParams.get('year') || '',
     highlight: searchParams.get('highlight') || '',
+    isVisible: searchParams.get('isVisible') || '',
     sort: searchParams.get('sort') || 'year',
     order: searchParams.get('order') || 'desc',
   });
@@ -168,6 +180,7 @@ export default function WorksManagementPage() {
     if (newFilters.genre) params.set('genre', newFilters.genre);
     if (newFilters.year) params.set('year', newFilters.year);
     if (newFilters.highlight) params.set('highlight', newFilters.highlight);
+    if (newFilters.isVisible) params.set('isVisible', newFilters.isVisible);
     if (newFilters.sort !== 'year') params.set('sort', newFilters.sort);
     if (newFilters.order !== 'desc') params.set('order', newFilters.order);
     if (newPage > 1) params.set('page', newPage.toString());
@@ -205,6 +218,7 @@ export default function WorksManagementPage() {
         ...(filters.genre && { genre: filters.genre }),
         ...(filters.year && { year: filters.year }),
         ...(filters.highlight && { highlight: filters.highlight }),
+        ...(filters.isVisible && { isVisible: filters.isVisible }),
         sort: filters.sort,
         order: filters.order,
         ...(enableReordering && canReorder && { reorderMode: 'true' }),
@@ -250,6 +264,7 @@ export default function WorksManagementPage() {
       genre: '',
       year: '',
       highlight: '',
+      isVisible: '',
       sort: 'year',
       order: 'desc',
     };
@@ -258,7 +273,7 @@ export default function WorksManagementPage() {
     updateURL(newFilters, 1);
   };
 
-  const hasActiveFilters = filters.search || filters.genre || filters.year || filters.highlight !== '';
+  const hasActiveFilters = filters.search || filters.genre || filters.year || filters.highlight !== '' || filters.isVisible !== '';
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -333,14 +348,14 @@ export default function WorksManagementPage() {
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className={`flex items-center space-x-2 px-4 py-2 border rounded-lg transition ${
-                    showFilters || hasActiveFilters
+                    showFilters || (filters.year || filters.genre || filters.highlight || filters.isVisible)
                       ? 'bg-slate-900 text-white border-slate-900'
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
                   <MdFilterList className="w-5 h-5" />
                   <span>필터</span>
-                  {hasActiveFilters && !showFilters && (
+                  {(filters.year || filters.genre || filters.highlight || filters.isVisible) && !showFilters && (
                     <span className="inline-flex items-center justify-center w-5 h-5 text-xs bg-white text-slate-900 rounded-full">
                       •
                     </span>
@@ -411,6 +426,22 @@ export default function WorksManagementPage() {
                         <option value="">전체</option>
                         <option value="true">하이라이트만</option>
                         <option value="false">일반 작품만</option>
+                      </select>
+                    </div>
+
+                    {/* Visibility Filter */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        노출여부
+                      </label>
+                      <select
+                        value={filters.isVisible}
+                        onChange={(e) => handleFilterChange('isVisible', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                      >
+                        <option value="">전체</option>
+                        <option value="true">노출</option>
+                        <option value="false">비노출</option>
                       </select>
                     </div>
 
@@ -554,6 +585,9 @@ export default function WorksManagementPage() {
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                               악장
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              노출여부
                             </th>
                             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
                               작업

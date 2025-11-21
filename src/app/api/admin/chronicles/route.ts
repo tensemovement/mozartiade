@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get('search') || '';
     const type = searchParams.get('type') || '';
     const highlight = searchParams.get('highlight') || '';
+    const isVisible = searchParams.get('isVisible') || '';
     const order = searchParams.get('order') || 'desc';
 
     // Build where clause
@@ -45,6 +46,9 @@ export async function GET(req: NextRequest) {
     }
     if (highlight) {
       where.highlight = highlight === 'true';
+    }
+    if (isVisible) {
+      where.isVisible = isVisible === 'true';
     }
 
     // Build orderBy clause
@@ -141,6 +145,7 @@ export async function POST(req: NextRequest) {
       workId,
       highlight,
       image,
+      isVisible,
     } = body;
 
     // Validate required fields based on type
@@ -194,6 +199,7 @@ export async function POST(req: NextRequest) {
         workId,
         highlight: highlight || false,
         image,
+        isVisible: isVisible || false,
       },
       include: {
         work: {

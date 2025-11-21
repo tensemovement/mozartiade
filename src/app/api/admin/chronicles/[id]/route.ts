@@ -141,6 +141,7 @@ export async function PUT(
         workId: body.workId,
         highlight: body.highlight,
         image: body.image,
+        isVisible: body.isVisible,
       },
       include: {
         work: {

@@ -99,6 +99,17 @@ function SortableChronicleRow({ chronicle, onEdit, onDelete, isDraggable }: {
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {chronicle.location || '-'}
       </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <span
+          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+            chronicle.isVisible
+              ? 'bg-green-100 text-green-800'
+              : 'bg-gray-100 text-gray-800'
+          }`}
+        >
+          {chronicle.isVisible ? '노출' : '비노출'}
+        </span>
+      </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Link
           href={`/admin/chronicles/${chronicle.id}`}
@@ -137,6 +148,7 @@ export default function ChroniclesManagementPage() {
     type: (searchParams.get('type') as 'all' | 'life' | 'work') || 'all',
     year: searchParams.get('year') || '',
     highlight: searchParams.get('highlight') || '',
+    isVisible: searchParams.get('isVisible') || '',
     sort: searchParams.get('sort') || 'date',
     order: searchParams.get('order') || 'desc',
   });
@@ -172,6 +184,7 @@ export default function ChroniclesManagementPage() {
     if (newFilters.type !== 'all') params.set('type', newFilters.type);
     if (newFilters.year) params.set('year', newFilters.year);
     if (newFilters.highlight) params.set('highlight', newFilters.highlight);
+    if (newFilters.isVisible) params.set('isVisible', newFilters.isVisible);
     if (newFilters.sort !== 'date') params.set('sort', newFilters.sort);
     if (newFilters.order !== 'desc') params.set('order', newFilters.order);
     if (newPage > 1) params.set('page', newPage.toString());
@@ -193,6 +206,7 @@ export default function ChroniclesManagementPage() {
         ...(filters.type !== 'all' && { type: filters.type }),
         ...(filters.year && { year: filters.year }),
         ...(filters.highlight && { highlight: filters.highlight }),
+        ...(filters.isVisible && { isVisible: filters.isVisible }),
         ...(filters.order && { order: filters.order }),
         ...(enableReordering && canReorder && { reorderMode: 'true' }),
       });
@@ -237,6 +251,7 @@ export default function ChroniclesManagementPage() {
       type: 'all' as 'all' | 'life' | 'work',
       year: '',
       highlight: '',
+      isVisible: '',
       sort: 'date',
       order: 'desc',
     };
@@ -245,7 +260,7 @@ export default function ChroniclesManagementPage() {
     updateURL(newFilters, 1);
   };
 
-  const hasActiveFilters = filters.search || filters.type !== 'all' || filters.year || filters.highlight !== '';
+  const hasActiveFilters = filters.search || filters.type !== 'all' || filters.year || filters.highlight !== '' || filters.isVisible !== '';
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -354,14 +369,14 @@ export default function ChroniclesManagementPage() {
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className={`flex items-center space-x-2 px-4 py-2 border rounded-lg transition ${
-                    showFilters || (filters.year || filters.highlight)
+                    showFilters || (filters.year || filters.highlight || filters.isVisible)
                       ? 'bg-slate-900 text-white border-slate-900'
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
                   <MdFilterList className="w-5 h-5" />
                   <span>고급 필터</span>
-                  {(filters.year || filters.highlight) && !showFilters && (
+                  {(filters.year || filters.highlight || filters.isVisible) && !showFilters && (
                     <span className="inline-flex items-center justify-center w-5 h-5 text-xs bg-white text-slate-900 rounded-full">
                       •
                     </span>
@@ -385,7 +400,7 @@ export default function ChroniclesManagementPage() {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Year */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -413,6 +428,22 @@ export default function ChroniclesManagementPage() {
                         <option value="">전체</option>
                         <option value="true">하이라이트만</option>
                         <option value="false">일반 이벤트만</option>
+                      </select>
+                    </div>
+
+                    {/* Visibility Filter */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        노출여부
+                      </label>
+                      <select
+                        value={filters.isVisible}
+                        onChange={(e) => handleFilterChange('isVisible', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+                      >
+                        <option value="">전체</option>
+                        <option value="true">노출</option>
+                        <option value="false">비노출</option>
                       </select>
                     </div>
 
@@ -536,6 +567,9 @@ export default function ChroniclesManagementPage() {
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                               위치
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              노출여부
                             </th>
                             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
                               작업
