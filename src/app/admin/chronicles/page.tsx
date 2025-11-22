@@ -217,6 +217,10 @@ export default function ChroniclesManagementPage() {
 
       const data = await get<any>(`/api/admin/chronicles?${params.toString()}`);
 
+      console.log('[Frontend] API Response:', data);
+      console.log('[Frontend] Chronicles:', data.chronicles);
+      console.log('[Frontend] Pagination:', data.pagination);
+
       setChronicles(data.chronicles);
       setPagination(data.pagination);
     } catch (error) {

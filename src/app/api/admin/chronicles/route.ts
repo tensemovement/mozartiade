@@ -117,23 +117,29 @@ export async function GET(req: NextRequest) {
     ]);
 
     console.log('Query results:', { total, chroniclesCount: chronicles.length, skip, limit });
+
+    const response = {
+      success: true,
+      data: {
+        chronicles,
+        pagination: {
+          page,
+          limit,
+          total,
+          totalPages: Math.ceil(total / limit),
+        },
+      },
+    };
+
+    console.log('API Response structure:', {
+      success: response.success,
+      hasData: !!response.data,
+      chroniclesInResponse: response.data.chronicles.length,
+      paginationInResponse: response.data.pagination,
+    });
     console.log('=== End Debug ===\n');
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: {
-          chronicles,
-          pagination: {
-            page,
-            limit,
-            total,
-            totalPages: Math.ceil(total / limit),
-          },
-        },
-      } as ApiResponse,
-      { status: 200 }
-    );
+    return NextResponse.json(response as ApiResponse, { status: 200 });
   } catch (error) {
     console.error('Get chronicles error:', error);
     return NextResponse.json(
