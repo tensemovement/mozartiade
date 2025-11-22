@@ -20,7 +20,8 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const year = searchParams.get('year') || '';
+    const yearParam = searchParams.get('year');
+    const year = yearParam && yearParam.trim() !== '' ? yearParam.trim() : null;
     const reorderMode = searchParams.get('reorderMode') === 'true';
 
     // When reorder mode is enabled, show all items on one page (no pagination)
@@ -35,20 +36,48 @@ export async function GET(req: NextRequest) {
 
     // Build where clause
     const where: any = {};
+
     if (search) {
-      where.title = { contains: search, mode: 'insensitive' };
-    }
-    if (type) {
-      where.type = type;
-    }
-    if (year) {
-      where.year = parseInt(year);
-    }
-    if (highlight) {
-      where.highlight = highlight === 'true';
-    }
-    if (isVisible) {
-      where.isVisible = isVisible === 'true';
+      // When search is present, use AND to combine all conditions
+      const andConditions: any[] = [];
+
+      // Search condition (title OR work.title)
+      andConditions.push({
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { work: { title: { contains: search, mode: 'insensitive' } } }
+        ]
+      });
+
+      // Other filters
+      if (type) {
+        andConditions.push({ type });
+      }
+      if (year) {
+        andConditions.push({ year: parseInt(year) });
+      }
+      if (highlight) {
+        andConditions.push({ highlight: highlight === 'true' });
+      }
+      if (isVisible) {
+        andConditions.push({ isVisible: isVisible === 'true' });
+      }
+
+      where.AND = andConditions;
+    } else {
+      // When no search, add filters directly
+      if (type) {
+        where.type = type;
+      }
+      if (year) {
+        where.year = parseInt(year);
+      }
+      if (highlight) {
+        where.highlight = highlight === 'true';
+      }
+      if (isVisible) {
+        where.isVisible = isVisible === 'true';
+      }
     }
 
     // Build orderBy clause
