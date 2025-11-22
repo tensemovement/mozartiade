@@ -36,7 +36,10 @@ export async function GET(req: NextRequest) {
     // Build where clause
     const where: any = {};
     if (search) {
-      where.title = { contains: search, mode: 'insensitive' };
+      where.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { work: { title: { contains: search, mode: 'insensitive' } } }
+      ];
     }
     if (type) {
       where.type = type;
