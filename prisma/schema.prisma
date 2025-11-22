@@ -88,6 +88,7 @@ model Work {
   titleEn                String?
   description            String   @db.Text
   genre                  Genre?
+  instruments            Instrument[] // 작품에 참여하는 악기 목록
   youtubeUrl             String?
   sheetMusicUrl          String?
   compositionDetails     String?  @db.Text
@@ -210,4 +211,20 @@ enum AdminRole {
   SUPER_ADMIN // 모든 권한
   ADMIN       // 관리자 관리 제외한 모든 권한
   EDITOR      // 컨텐츠 편집 권한만
+}
+
+enum Instrument {
+  PIANO    // 피아노
+  VIOLIN   // 바이올린
+  VIOLA    // 비올라
+  CELLO    // 첼로
+  BASS     // 베이스
+  OBOE     // 오보에
+  FLUTE    // 플루트
+  CLARINET // 클라리넷
+  BASSOON  // 바순
+  HORN     // 호른
+  TRUMPET  // 트럼펫
+  TROMBONE // 트롬본
+  HARP     // 하프
 }

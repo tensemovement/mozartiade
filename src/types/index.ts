@@ -2,7 +2,7 @@
  * Common type definitions
  */
 
-import { GenreCode } from '@/lib/constants';
+import { GenreCode, InstrumentCode } from '@/lib/constants';
 
 export interface User {
   id: string;
@@ -77,6 +77,7 @@ export interface Work {
   catalogNumberFirstEd?: string; // K. number original first edition (1862)
   catalogNumberNinthEd?: string; // K. number 9th edition (2024)
   genre?: GenreCode;
+  instruments?: InstrumentCode[]; // 작품에 참여하는 악기 목록
   youtubeUrl?: string;
   sheetMusicUrl?: string;
   compositionDetails?: string;

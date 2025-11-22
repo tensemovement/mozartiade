@@ -8,7 +8,7 @@ import ImageUpload from '@/components/admin/ImageUpload';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { MdArrowBack, MdAdd, MdDelete, MdExpandMore, MdExpandLess, MdUnfoldMore, MdUnfoldLess, MdDragIndicator } from 'react-icons/md';
 import Link from 'next/link';
-import { GENRE_OPTIONS, GenreCode } from '@/lib/constants';
+import { GENRE_OPTIONS, GenreCode, INSTRUMENT_OPTIONS, InstrumentCode } from '@/lib/constants';
 import {
   DndContext,
   closestCenter,
@@ -339,6 +339,7 @@ export default function EditWorkPage() {
     titleEn: '',
     description: '',
     genre: '',
+    instruments: [] as string[],
     youtubeUrl: '',
     sheetMusicUrl: '',
     compositionDetails: '',
@@ -405,6 +406,7 @@ export default function EditWorkPage() {
         titleEn: work.titleEn || '',
         description: work.description,
         genre: work.genre || '',
+        instruments: work.instruments || [],
         youtubeUrl: work.youtubeUrl || '',
         sheetMusicUrl: work.sheetMusicUrl || '',
         compositionDetails: work.compositionDetails || '',
@@ -523,6 +525,13 @@ export default function EditWorkPage() {
     const updated = [...formData.usageExamples];
     updated[index] = value;
     setFormData({ ...formData, usageExamples: updated });
+  };
+
+  const toggleInstrument = (instrumentCode: string) => {
+    const instruments = formData.instruments.includes(instrumentCode)
+      ? formData.instruments.filter(i => i !== instrumentCode)
+      : [...formData.instruments, instrumentCode];
+    setFormData({ ...formData, instruments });
   };
 
   const addRelatedLink = () => {
@@ -792,6 +801,25 @@ export default function EditWorkPage() {
                         </option>
                       ))}
                     </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      악기 (다중 선택 가능)
+                    </label>
+                    <div className="grid grid-cols-3 gap-3 p-4 border border-gray-300 rounded-lg bg-gray-50">
+                      {INSTRUMENT_OPTIONS.map((option) => (
+                        <label key={option.code} className="flex items-center space-x-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={formData.instruments.includes(option.code)}
+                            onChange={() => toggleInstrument(option.code)}
+                            className="w-4 h-4 text-slate-600 border-gray-300 rounded focus:ring-slate-500"
+                          />
+                          <span className="text-sm text-gray-700">{option.label}</span>
+                        </label>
+                      ))}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-3 gap-4">
