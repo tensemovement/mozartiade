@@ -20,7 +20,8 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const year = searchParams.get('year') || '';
+    const yearParam = searchParams.get('year');
+    const year = yearParam && yearParam.trim() !== '' ? yearParam.trim() : null;
     const reorderMode = searchParams.get('reorderMode') === 'true';
 
     // When reorder mode is enabled, show all items on one page (no pagination)
@@ -32,6 +33,11 @@ export async function GET(req: NextRequest) {
     const highlight = searchParams.get('highlight') || '';
     const isVisible = searchParams.get('isVisible') || '';
     const order = searchParams.get('order') || 'desc';
+
+    console.log('=== Chronicles API Debug ===');
+    console.log('Raw yearParam:', yearParam);
+    console.log('Processed year:', year);
+    console.log('All params:', { search, type, year, highlight, isVisible, order, page });
 
     // Build where clause
     const where: any = {};
@@ -79,8 +85,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    console.log('Chronicles API - Search params:', { search, type, year, highlight, isVisible, order });
-    console.log('Chronicles API - Where clause:', JSON.stringify(where, null, 2));
+    console.log('Final WHERE clause:', JSON.stringify(where, null, 2));
 
     // Build orderBy clause
     const orderBy: any[] = [
@@ -110,6 +115,9 @@ export async function GET(req: NextRequest) {
       }),
       prisma.chronicle.count({ where }),
     ]);
+
+    console.log('Query results:', { total, chroniclesCount: chronicles.length, skip, limit });
+    console.log('=== End Debug ===\n');
 
     return NextResponse.json(
       {

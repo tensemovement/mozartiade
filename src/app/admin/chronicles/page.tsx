@@ -200,6 +200,8 @@ export default function ChroniclesManagementPage() {
   const fetchChronicles = async () => {
     setIsLoading(true);
     try {
+      console.log('[Frontend] Current filters:', filters);
+
       const params = new URLSearchParams({
         page: pagination.page.toString(),
         ...(filters.search && { search: filters.search }),
@@ -210,6 +212,8 @@ export default function ChroniclesManagementPage() {
         ...(filters.order && { order: filters.order }),
         ...(enableReordering && canReorder && { reorderMode: 'true' }),
       });
+
+      console.log('[Frontend] API URL:', `/api/admin/chronicles?${params.toString()}`);
 
       const data = await get<any>(`/api/admin/chronicles?${params.toString()}`);
 
