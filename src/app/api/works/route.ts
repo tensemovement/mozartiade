@@ -7,6 +7,7 @@ import { prisma } from '@/lib/prisma'
  *
  * Query params:
  * - genre: Filter by genre
+ * - instrument: Filter by instrument
  * - search: Search in title/titleEn/description
  * - highlight: Filter highlighted works (true/false)
  * - sort: Sort by field (year, voteCount, title, catalogNumber)
@@ -25,6 +26,7 @@ export async function GET(request: NextRequest) {
 
     // Filters
     const genre = searchParams.get('genre')
+    const instrument = searchParams.get('instrument')
     const search = searchParams.get('search')
     const highlight = searchParams.get('highlight')
 
@@ -39,6 +41,12 @@ export async function GET(request: NextRequest) {
 
     if (genre) {
       where.genre = genre
+    }
+
+    if (instrument) {
+      where.instruments = {
+        has: instrument,
+      }
     }
 
     if (highlight !== null && highlight !== '') {
@@ -95,6 +103,7 @@ export async function GET(request: NextRequest) {
           titleEn: true,
           description: true,
           genre: true,
+          instruments: true,
           youtubeUrl: true,
           sheetMusicUrl: true,
           compositionDetails: true,
