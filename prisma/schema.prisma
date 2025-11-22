@@ -87,7 +87,7 @@ model Work {
   title                  String
   titleEn                String?
   description            String   @db.Text
-  genre                  String?
+  genre                  Genre?
   youtubeUrl             String?
   sheetMusicUrl          String?
   compositionDetails     String?  @db.Text
@@ -191,6 +191,19 @@ model Chronicle {
 enum ChronicleType {
   life // 생애 사건
   work // 작품 작곡
+}
+
+enum Genre {
+  SYMPHONY   // 교향곡
+  ORCHESTRAL // 관현악곡
+  CONCERTO   // 협주곡
+  CHAMBER    // 실내악
+  SOLO       // 독주곡
+  VOCAL      // 성악곡
+  OPERA      // 오페라
+  RELIGIOUS  // 종교음악
+  DANCE      // 무곡
+  OTHER      // 기타
 }
 
 enum AdminRole {

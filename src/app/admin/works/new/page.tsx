@@ -8,6 +8,7 @@ import ImageUpload from '@/components/admin/ImageUpload';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { MdArrowBack, MdAdd, MdDelete } from 'react-icons/md';
 import Link from 'next/link';
+import { GENRE_OPTIONS, GenreCode } from '@/lib/constants';
 
 interface MovementForm {
   order: number;
@@ -244,15 +245,20 @@ export default function NewWorkPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       장르
                     </label>
-                    <input
-                      type="text"
+                    <select
                       value={formData.genre}
                       onChange={(e) =>
                         setFormData({ ...formData, genre: e.target.value })
                       }
-                      placeholder="교향곡, 협주곡, 소나타..."
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-                    />
+                    >
+                      <option value="">장르 선택</option>
+                      {GENRE_OPTIONS.map((option) => (
+                        <option key={option.code} value={option.code}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className="grid grid-cols-3 gap-4">

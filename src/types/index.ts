@@ -2,6 +2,8 @@
  * Common type definitions
  */
 
+import { GenreCode } from '@/lib/constants';
+
 export interface User {
   id: string;
   email: string;
@@ -74,7 +76,7 @@ export interface Work {
   catalogNumberSuffix?: string; // Suffix part of K. number (e.g., "", "b")
   catalogNumberFirstEd?: string; // K. number original first edition (1862)
   catalogNumberNinthEd?: string; // K. number 9th edition (2024)
-  genre?: string;
+  genre?: GenreCode;
   youtubeUrl?: string;
   sheetMusicUrl?: string;
   compositionDetails?: string;

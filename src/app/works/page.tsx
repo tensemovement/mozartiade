@@ -10,6 +10,7 @@ import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle } from 'react-icons/md';
 import { Work } from '@/types';
+import { GENRE_OPTIONS, getGenreLabel, GenreCode } from '@/lib/constants';
 
 export default function WorksPage() {
   const [selectedWork, setSelectedWork] = useRecoilState(selectedWorkState);
@@ -46,11 +47,10 @@ export default function WorksPage() {
     fetchWorks();
   }, []);
 
-  // Extract unique genres and instruments
+  // Genre options from constants
   const genres = useMemo(() => {
-    const uniqueGenres = Array.from(new Set(allWorks.map(work => work.genre).filter(Boolean)));
-    return ['all', ...uniqueGenres];
-  }, [allWorks]);
+    return ['all', ...GENRE_OPTIONS.map(option => option.code)];
+  }, []);
 
   // Map instruments from genres (simplified categorization)
   const instruments = useMemo(() => {
@@ -227,7 +227,7 @@ export default function WorksPage() {
               >
                 {genres.map((genre) => (
                   <option key={genre} value={genre}>
-                    {genre === 'all' ? '모든 장르' : genre}
+                    {genre === 'all' ? '모든 장르' : getGenreLabel(genre)}
                   </option>
                 ))}
               </select>
@@ -332,7 +332,7 @@ export default function WorksPage() {
                     {/* Genre badge - Top Left */}
                     {work.genre && (
                       <div className="absolute top-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold z-10 shadow-sm">
-                        {work.genre}
+                        {getGenreLabel(work.genre)}
                       </div>
                     )}
                     {/* Detail page button - Top Right */}
@@ -419,7 +419,7 @@ export default function WorksPage() {
                         </h3>
                         {work.genre && (
                           <span className="flex-shrink-0 px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs font-semibold">
-                            {work.genre}
+                            {getGenreLabel(work.genre)}
                           </span>
                         )}
                       </div>
