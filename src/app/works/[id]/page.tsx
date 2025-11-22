@@ -1,8 +1,9 @@
 'use client';
 
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import { useRecoilState } from 'recoil';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -10,8 +11,9 @@ import WorkPanel from '@/components/WorkPanel';
 import MovementPanel from '@/components/MovementPanel';
 import { Work, Movement, RelatedLink } from '@/types';
 import { selectedMovementState, selectedWorkState } from '@/store/atoms';
-import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote, MdArticle, MdOpenInNew } from 'react-icons/md';
+import { MdPlayArrow, MdClose, MdFavorite, MdFavoriteBorder, MdShare, MdMusicNote, MdArticle, MdOpenInNew } from 'react-icons/md';
 import { getGenreLabel } from '@/lib/constants';
+import toast from 'react-hot-toast';
 
 interface PageProps {
   params: {
@@ -20,11 +22,16 @@ interface PageProps {
 }
 
 export default function WorkDetailPage({ params }: PageProps) {
+  const router = useRouter();
+  const { data: session, status } = useSession();
   const [work, setWork] = useState<Work | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedMovement, setSelectedMovement] = useRecoilState(selectedMovementState);
   const [, setSelectedWork] = useRecoilState(selectedWorkState);
+  const [liked, setLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
+  const [isLiking, setIsLiking] = useState(false);
 
   // Fetch work from API
   useEffect(() => {
@@ -36,6 +43,7 @@ export default function WorkDetailPage({ params }: PageProps) {
 
         if (result.success) {
           setWork(result.data);
+          setLikesCount(result.data.likesCount || 0);
         } else {
           setError(result.error || 'Failed to fetch work');
         }
@@ -49,6 +57,56 @@ export default function WorkDetailPage({ params }: PageProps) {
 
     fetchWork();
   }, [params.id]);
+
+  // Fetch like status
+  useEffect(() => {
+    async function fetchLikeStatus() {
+      if (status === 'authenticated') {
+        try {
+          const response = await fetch(`/api/works/${params.id}/like`);
+          const result = await response.json();
+          setLiked(result.liked);
+          setLikesCount(result.likesCount);
+        } catch (err) {
+          console.error('Error fetching like status:', err);
+        }
+      }
+    }
+
+    fetchLikeStatus();
+  }, [params.id, status]);
+
+  // Toggle like
+  const handleLikeToggle = async () => {
+    if (status !== 'authenticated') {
+      toast.error('로그인이 필요합니다.');
+      router.push('/auth');
+      return;
+    }
+
+    if (isLiking) return;
+
+    try {
+      setIsLiking(true);
+      const response = await fetch(`/api/works/${params.id}/like`, {
+        method: 'POST',
+      });
+      const result = await response.json();
+
+      if (response.ok) {
+        setLiked(result.liked);
+        setLikesCount(result.likesCount);
+        toast.success(result.liked ? '좋아요를 추가했습니다.' : '좋아요를 취소했습니다.');
+      } else {
+        toast.error(result.error || '좋아요 처리 중 오류가 발생했습니다.');
+      }
+    } catch (err) {
+      console.error('Error toggling like:', err);
+      toast.error('좋아요 처리 중 오류가 발생했습니다.');
+    } finally {
+      setIsLiking(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -143,15 +201,13 @@ export default function WorkDetailPage({ params }: PageProps) {
                   <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">작곡 일자</h3>
                   <p className="text-white font-medium">{formatDate()}</p>
                 </div>
-                {work.voteCount !== undefined && (
-                  <div>
-                    <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">좋아요</h3>
-                    <p className="text-white font-medium flex items-center gap-1">
-                      <MdFavorite className="text-accent-300" />
-                      {work.voteCount.toLocaleString()}
-                    </p>
-                  </div>
-                )}
+                <div>
+                  <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">좋아요</h3>
+                  <p className="text-white font-medium flex items-center gap-1">
+                    <MdFavorite className="text-accent-300" />
+                    {likesCount.toLocaleString()}
+                  </p>
+                </div>
               </div>
 
               {/* 추가 카탈로그 번호 */}
@@ -200,9 +256,21 @@ export default function WorkDetailPage({ params }: PageProps) {
                   악보 다운로드
                 </a>
               )}
-              <button className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-2">
-                <MdFavorite className="text-xl" />
-                {work.voteCount?.toLocaleString()}
+              <button
+                onClick={handleLikeToggle}
+                disabled={isLiking}
+                className={`px-8 py-4 backdrop-blur-md border rounded-full font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-2 ${
+                  liked
+                    ? 'bg-accent/20 border-accent text-accent hover:bg-accent/30'
+                    : 'bg-white/10 hover:bg-white/20 border-white/30 text-white'
+                } ${isLiking ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {liked ? (
+                  <MdFavorite className="text-xl" />
+                ) : (
+                  <MdFavoriteBorder className="text-xl" />
+                )}
+                {likesCount.toLocaleString()}
               </button>
               <button className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-2">
                 <MdShare className="text-xl" />

@@ -3,13 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { selectedWorkState, selectedMovementState } from '@/store/atoms';
-import { MdSearch, MdMenu, MdClose } from 'react-icons/md';
+import { MdSearch, MdMenu, MdClose, MdPerson } from 'react-icons/md';
 import AnimatedTitle from './AnimatedTitle';
 
 export default function Navigation() {
+  const { data: session, status } = useSession();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -116,16 +118,30 @@ export default function Navigation() {
             }`}>
               <MdSearch className="h-5 w-5" />
             </button>
-            <Link
-              href="/auth"
-              className={`px-5 py-2 rounded-lg font-sans text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
-                isScrolled
-                  ? 'bg-primary-800 text-white hover:bg-primary-900'
-                  : 'bg-white text-primary-900 hover:bg-cream'
-              }`}
-            >
-              시작하기
-            </Link>
+            {status === 'authenticated' ? (
+              <Link
+                href="/profile"
+                className={`px-5 py-2 rounded-lg font-sans text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center gap-2 ${
+                  isScrolled
+                    ? 'bg-primary-800 text-white hover:bg-primary-900'
+                    : 'bg-white text-primary-900 hover:bg-cream'
+                }`}
+              >
+                <MdPerson className="h-5 w-5" />
+                마이페이지
+              </Link>
+            ) : (
+              <Link
+                href="/auth"
+                className={`px-5 py-2 rounded-lg font-sans text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
+                  isScrolled
+                    ? 'bg-primary-800 text-white hover:bg-primary-900'
+                    : 'bg-white text-primary-900 hover:bg-cream'
+                }`}
+              >
+                시작하기
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -164,13 +180,24 @@ export default function Navigation() {
                   </Link>
                 );
               })}
-              <Link
-                href="/auth"
-                className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors block text-center"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                시작하기
-              </Link>
+              {status === 'authenticated' ? (
+                <Link
+                  href="/profile"
+                  className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors flex items-center justify-center gap-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <MdPerson className="h-5 w-5" />
+                  마이페이지
+                </Link>
+              ) : (
+                <Link
+                  href="/auth"
+                  className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors block text-center"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  시작하기
+                </Link>
+              )}
             </div>
           </div>
         )}

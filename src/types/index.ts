@@ -83,7 +83,8 @@ export interface Work {
   compositionDetails?: string;
   highlight?: boolean;
   image?: string;
-  voteCount?: number; // 투표/좋아요 수
+  voteCount?: number; // 투표 수 (deprecated, use likesCount)
+  likesCount?: number; // 좋아요 수
   isVisible?: boolean; // 노출 여부
 
   // 상세 페이지용 추가 정보
