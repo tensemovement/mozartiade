@@ -12,6 +12,7 @@ import Pagination from '@/components/admin/Pagination';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { Work } from '@/types';
 import { MdAdd, MdEdit, MdDelete, MdSearch, MdMusicNote, MdFilterList, MdClose, MdDragIndicator } from 'react-icons/md';
+import { getGenreLabel, GENRE_OPTIONS } from '@/lib/constants';
 import {
   DndContext,
   closestCenter,
@@ -85,7 +86,7 @@ function SortableWorkRow({ work, onEdit, onDelete, isDraggable }: {
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-          {work.genre || '미분류'}
+          {work.genre ? getGenreLabel(work.genre) : '미분류'}
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -391,9 +392,9 @@ export default function WorksManagementPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
                       >
                         <option value="">전체</option>
-                        {genres.map((genre) => (
-                          <option key={genre} value={genre}>
-                            {genre}
+                        {GENRE_OPTIONS.map((option) => (
+                          <option key={option.code} value={option.code}>
+                            {option.label}
                           </option>
                         ))}
                       </select>
@@ -493,7 +494,7 @@ export default function WorksManagementPage() {
                   )}
                   {filters.genre && (
                     <span className="inline-flex items-center space-x-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">
-                      <span>장르: {filters.genre}</span>
+                      <span>장르: {getGenreLabel(filters.genre)}</span>
                       <button onClick={() => handleFilterChange('genre', '')}>
                         <MdClose className="w-4 h-4" />
                       </button>
