@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
@@ -13,15 +14,62 @@ import { Work } from '@/types';
 import { GENRE_OPTIONS, getGenreLabel, GenreCode, INSTRUMENT_OPTIONS, InstrumentCode, getInstrumentLabel } from '@/lib/constants';
 
 export default function WorksPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedWork, setSelectedWork] = useRecoilState(selectedWorkState);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState<string>('all');
-  const [selectedInstrument, setSelectedInstrument] = useState<string>('all');
-  const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title' | 'catalog-asc' | 'catalog-desc'>('year-desc');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  // Initialize state from URL parameters
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const [selectedGenre, setSelectedGenre] = useState<string>(searchParams.get('genre') || 'all');
+  const [selectedInstrument, setSelectedInstrument] = useState<string>(searchParams.get('instrument') || 'all');
+  const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title' | 'catalog-asc' | 'catalog-desc'>(
+    (searchParams.get('sort') as any) || 'year-desc'
+  );
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>((searchParams.get('view') as any) || 'grid');
   const [allWorks, setAllWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Update URL when filters change
+  const updateURL = (params: Record<string, string>) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value && value !== 'all' && value !== '') {
+        newParams.set(key, value);
+      } else {
+        newParams.delete(key);
+      }
+    });
+
+    router.push(`/works?${newParams.toString()}`, { scroll: false });
+  };
+
+  // Handle filter changes
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    updateURL({ search: value, genre: selectedGenre, instrument: selectedInstrument, sort: sortOrder, view: viewMode });
+  };
+
+  const handleGenreChange = (value: string) => {
+    setSelectedGenre(value);
+    updateURL({ search: searchQuery, genre: value, instrument: selectedInstrument, sort: sortOrder, view: viewMode });
+  };
+
+  const handleInstrumentChange = (value: string) => {
+    setSelectedInstrument(value);
+    updateURL({ search: searchQuery, genre: selectedGenre, instrument: value, sort: sortOrder, view: viewMode });
+  };
+
+  const handleSortChange = (value: string) => {
+    setSortOrder(value as any);
+    updateURL({ search: searchQuery, genre: selectedGenre, instrument: selectedInstrument, sort: value, view: viewMode });
+  };
+
+  const handleViewModeChange = (value: 'grid' | 'list') => {
+    setViewMode(value);
+    updateURL({ search: searchQuery, genre: selectedGenre, instrument: selectedInstrument, sort: sortOrder, view: value });
+  };
 
   // Fetch works from API
   useEffect(() => {
@@ -184,7 +232,7 @@ export default function WorksPage() {
                   type="text"
                   placeholder="작품명, K번호로 검색..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                   className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
                 <MdSearch className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -195,7 +243,7 @@ export default function WorksPage() {
             <div className="w-full lg:w-40">
               <select
                 value={selectedInstrument}
-                onChange={(e) => setSelectedInstrument(e.target.value)}
+                onChange={(e) => handleInstrumentChange(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               >
                 {instruments.map((instrument) => (
@@ -210,7 +258,7 @@ export default function WorksPage() {
             <div className="w-full lg:w-40">
               <select
                 value={selectedGenre}
-                onChange={(e) => setSelectedGenre(e.target.value)}
+                onChange={(e) => handleGenreChange(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               >
                 {genres.map((genre) => (
@@ -225,7 +273,7 @@ export default function WorksPage() {
             <div className="w-full lg:w-48">
               <select
                 value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value as any)}
+                onChange={(e) => handleSortChange(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               >
                 <option value="year-desc">최신순</option>
@@ -239,7 +287,7 @@ export default function WorksPage() {
             {/* View Mode Toggle */}
             <div className="flex gap-2">
               <button
-                onClick={() => setViewMode('grid')}
+                onClick={() => handleViewModeChange('grid')}
                 className={`p-2 rounded-lg transition-all ${
                   viewMode === 'grid'
                     ? 'bg-primary-600 text-white shadow-md'
@@ -250,7 +298,7 @@ export default function WorksPage() {
                 <MdGridView className="h-5 w-5" />
               </button>
               <button
-                onClick={() => setViewMode('list')}
+                onClick={() => handleViewModeChange('list')}
                 className={`p-2 rounded-lg transition-all ${
                   viewMode === 'list'
                     ? 'bg-primary-600 text-white shadow-md'
