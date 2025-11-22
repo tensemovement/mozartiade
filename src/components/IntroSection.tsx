@@ -1,7 +1,8 @@
 'use client';
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import { MdLibraryMusic, MdTimeline, MdSchool, MdGroup } from 'react-icons/md';
+import Link from 'next/link';
+import { MdLibraryMusic, MdTimeline, MdSchool, MdGroup, MdChevronRight } from 'react-icons/md';
 
 export default function IntroSection() {
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
@@ -53,7 +54,7 @@ export default function IntroSection() {
           </div>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
             {features.map((feature, index) => {
               const Icon = feature.icon;
 
@@ -74,6 +75,17 @@ export default function IntroSection() {
                 </div>
               );
             })}
+          </div>
+
+          {/* CTA */}
+          <div className="text-center">
+            <Link
+              href="/works"
+              className="inline-flex items-center px-8 py-4 bg-primary-900 text-white rounded-xl font-sans text-lg font-semibold hover:bg-primary-800 transition-all duration-300 shadow-lg hover:shadow-xl group"
+            >
+              전체 작품 카탈로그 탐색하기
+              <MdChevronRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
         </div>
       </div>

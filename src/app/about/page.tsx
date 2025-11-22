@@ -1,4 +1,5 @@
 import Navigation from '@/components/Navigation';
+import AboutHeroSection from '@/components/AboutHeroSection';
 import IntroSection from '@/components/IntroSection';
 import Footer from '@/components/Footer';
 
@@ -12,6 +13,7 @@ export default function AboutPage() {
     <>
       <Navigation />
       <main className="overflow-x-hidden">
+        <AboutHeroSection />
         <IntroSection />
       </main>
       <Footer />
