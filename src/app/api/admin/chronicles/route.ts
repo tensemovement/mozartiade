@@ -36,27 +36,51 @@ export async function GET(req: NextRequest) {
     // Build where clause
     const where: any = {};
 
-    // Direct filters (AND conditions)
-    if (type) {
-      where.type = type;
-    }
-    if (year) {
-      where.year = parseInt(year);
-    }
-    if (highlight) {
-      where.highlight = highlight === 'true';
-    }
-    if (isVisible) {
-      where.isVisible = isVisible === 'true';
+    if (search) {
+      // When search is present, use AND to combine all conditions
+      const andConditions: any[] = [];
+
+      // Search condition (title OR work.title)
+      andConditions.push({
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { work: { title: { contains: search, mode: 'insensitive' } } }
+        ]
+      });
+
+      // Other filters
+      if (type) {
+        andConditions.push({ type });
+      }
+      if (year) {
+        andConditions.push({ year: parseInt(year) });
+      }
+      if (highlight) {
+        andConditions.push({ highlight: highlight === 'true' });
+      }
+      if (isVisible) {
+        andConditions.push({ isVisible: isVisible === 'true' });
+      }
+
+      where.AND = andConditions;
+    } else {
+      // When no search, add filters directly
+      if (type) {
+        where.type = type;
+      }
+      if (year) {
+        where.year = parseInt(year);
+      }
+      if (highlight) {
+        where.highlight = highlight === 'true';
+      }
+      if (isVisible) {
+        where.isVisible = isVisible === 'true';
+      }
     }
 
-    // Search condition (title OR work.title)
-    if (search) {
-      where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { work: { title: { contains: search, mode: 'insensitive' } } }
-      ];
-    }
+    console.log('Chronicles API - Search params:', { search, type, year, highlight, isVisible, order });
+    console.log('Chronicles API - Where clause:', JSON.stringify(where, null, 2));
 
     // Build orderBy clause
     const orderBy: any[] = [
