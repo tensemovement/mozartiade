@@ -2,23 +2,19 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { FaYoutube } from 'react-icons/fa';
 
 export default function Footer() {
   const footerLinks = {
     explore: [
-      { label: '작품 카탈로그', href: '/#catalog' },
-      { label: '연대기', href: '/#timeline' },
-      { label: '작품 검색', href: '/#works' },
-    ],
-    content: [
-      { label: '모든 작품', href: '/works' },
-      { label: '작곡 시기별', href: '/#timeline' },
-      { label: '장르별 분류', href: '/#catalog' },
+      { label: '작품 카탈로그', href: '/catalog' },
+      { label: '연대기', href: '/chronology' },
     ],
     about: [
       { label: '프로젝트 소개', href: '/about' },
       { label: '사용 방법', href: '/guide' },
       { label: 'FAQ', href: '/faq' },
+      { label: '문의하기', href: '/contact' },
     ],
     legal: [
       { label: '이용약관', href: '/terms' },
@@ -30,7 +26,7 @@ export default function Footer() {
     <footer className="bg-primary-900 text-white">
       <div className="container mx-auto px-4">
         {/* Main Footer */}
-        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Section */}
           <div className="lg:col-span-2 md:col-span-2">
             <Link href="/" className="inline-flex items-center space-x-3 mb-6">
@@ -54,6 +50,17 @@ export default function Footer() {
               모차르트의 626개 작품을 작곡 시기별, 장르별로 탐색하고
               케헬 번호로 상세 정보를 확인하세요.
             </p>
+            {/* YouTube Link */}
+            <a
+              href="https://www.youtube.com/@EnjoyMozart"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+              aria-label="YouTube Channel"
+            >
+              <FaYoutube className="text-white text-xl" />
+              <span className="font-sans text-sm font-semibold">YouTube 채널</span>
+            </a>
           </div>
 
           {/* Links Columns */}
@@ -61,22 +68,6 @@ export default function Footer() {
             <h4 className="font-sans font-bold text-white mb-4">탐색</h4>
             <ul className="space-y-3">
               {footerLinks.explore.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="font-sans text-sm text-primary-200 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-sans font-bold text-white mb-4">콘텐츠</h4>
-            <ul className="space-y-3">
-              {footerLinks.content.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
