@@ -89,11 +89,20 @@
   }
 
   /* react-hot-toast 슬라이드 애니메이션 적용 */
-  [data-react-hot-toast] > div {
+  .toast-slide-right {
     animation: slideInRight 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards !important;
   }
 
-  [data-react-hot-toast] > div[data-visible="false"] {
+  /* 사라질 때 애니메이션 */
+  div[data-react-hot-toast] > div[data-visible="false"] .toast-slide-right,
+  .toast-slide-right[data-visible="false"] {
     animation: slideOutRight 0.3s ease-in forwards !important;
+  }
+
+  /* react-hot-toast 기본 애니메이션 비활성화 */
+  div[data-react-hot-toast] > div[role="status"],
+  div[data-react-hot-toast] > div[role="alert"] {
+    --enter-animation: none !important;
+    --exit-animation: none !important;
   }
 }

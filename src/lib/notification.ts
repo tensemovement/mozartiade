@@ -44,6 +44,7 @@ const iconStyle = {
 export const notifySuccess = (message: string, duration = 4000) => {
   return toast.success(message, {
     duration,
+    className: 'toast-slide-right',
     style: {
       ...baseStyle,
       borderLeft: `4px solid ${COLORS.success}`,
@@ -61,6 +62,7 @@ export const notifySuccess = (message: string, duration = 4000) => {
 export const notifyError = (message: string, duration = 5000) => {
   return toast.error(message, {
     duration,
+    className: 'toast-slide-right',
     style: {
       ...baseStyle,
       borderLeft: `4px solid ${COLORS.error}`,
@@ -79,6 +81,7 @@ export const notifyWarning = (message: string, duration = 4000) => {
   return toast(message, {
     duration,
     icon: '⚠️',
+    className: 'toast-slide-right',
     style: {
       ...baseStyle,
       borderLeft: `4px solid ${COLORS.warning}`,
@@ -93,6 +96,7 @@ export const notifyInfo = (message: string, duration = 4000) => {
   return toast(message, {
     duration,
     icon: 'ℹ️',
+    className: 'toast-slide-right',
     style: {
       ...baseStyle,
       borderLeft: `4px solid ${COLORS.info}`,
@@ -105,6 +109,7 @@ export const notifyInfo = (message: string, duration = 4000) => {
  */
 export const notifyLoading = (message: string) => {
   return toast.loading(message, {
+    className: 'toast-slide-right',
     style: {
       ...baseStyle,
       borderLeft: `4px solid ${COLORS.accent}`,
@@ -205,6 +210,7 @@ export const notifyCustom = (
   return toast(message, {
     duration,
     icon,
+    className: 'toast-slide-right',
     style: {
       ...baseStyle,
       borderLeft: `4px solid ${COLORS[color]}`,
