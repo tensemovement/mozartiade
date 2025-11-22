@@ -66,9 +66,16 @@ export default function Footer() {
                 href="https://tensemovement.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-800 hover:bg-primary-700 rounded-lg transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors"
                 aria-label="Tense Movement"
               >
+                <Image
+                  src="https://tensemovement.com/tt_logo_400x400.png"
+                  alt="Tense Movement Logo"
+                  width={20}
+                  height={20}
+                  className="rounded"
+                />
                 <span className="font-sans text-sm font-semibold">Tense Movement</span>
               </a>
             </div>
