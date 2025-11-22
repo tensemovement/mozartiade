@@ -14,10 +14,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
           position="top-right"
           reverseOrder={false}
           gutter={8}
+          containerClassName="toast-container"
           containerStyle={{
-            top: 80,
+            top: 100,
           }}
           toastOptions={{
+            className: 'toast-container',
             // 기본 설정
             duration: 4000,
             // 성공 알림 스타일

@@ -64,4 +64,36 @@
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-800 to-secondary-700;
   }
+
+  /* Toast notification animations - 우측에서 좌측으로 슬라이드 */
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideOutRight {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(120%);
+    }
+  }
+
+  /* Toast container custom styles */
+  .toast-container {
+    animation: slideInRight 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+  }
+
+  .toast-container[data-exit="true"] {
+    animation: slideOutRight 0.3s ease-in forwards;
+  }
 }
