@@ -10,7 +10,7 @@ export default function Footer() {
       { label: '작품 카탈로그', href: '/catalog' },
       { label: '연대기', href: '/chronology' },
     ],
-    about: [
+    help: [
       { label: '프로젝트 소개', href: '/about' },
       { label: '사용 방법', href: '/guide' },
       { label: 'FAQ', href: '/faq' },
@@ -26,7 +26,7 @@ export default function Footer() {
     <footer className="bg-primary-900 text-white">
       <div className="container mx-auto px-4">
         {/* Main Footer */}
-        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand Section */}
           <div className="lg:col-span-2 md:col-span-2">
             <Link href="/" className="inline-flex items-center space-x-3 mb-6">
@@ -48,19 +48,30 @@ export default function Footer() {
             </Link>
             <p className="font-sans text-sm text-primary-200 mb-6 max-w-sm">
               모차르트의 626개 작품을 작곡 시기별, 장르별로 탐색하고
-              케헬 번호로 상세 정보를 확인하세요.
+              쾨헬 번호로 상세 정보를 확인하세요.
             </p>
-            {/* YouTube Link */}
-            <a
-              href="https://www.youtube.com/@EnjoyMozart"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
-              aria-label="YouTube Channel"
-            >
-              <FaYoutube className="text-white text-xl" />
-              <span className="font-sans text-sm font-semibold">YouTube 채널</span>
-            </a>
+            {/* Links */}
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="https://www.youtube.com/@EnjoyMozart"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+                aria-label="YouTube Channel"
+              >
+                <FaYoutube className="text-white text-xl" />
+                <span className="font-sans text-sm font-semibold">YouTube</span>
+              </a>
+              <a
+                href="https://tensemovement.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-800 hover:bg-primary-700 rounded-lg transition-colors"
+                aria-label="Tense Movement"
+              >
+                <span className="font-sans text-sm font-semibold">Tense Movement</span>
+              </a>
+            </div>
           </div>
 
           {/* Links Columns */}
@@ -81,9 +92,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-sans font-bold text-white mb-4">정보</h4>
+            <h4 className="font-sans font-bold text-white mb-4">도움말</h4>
             <ul className="space-y-3">
-              {footerLinks.about.map((link) => (
+              {footerLinks.help.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -93,6 +104,12 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-sans font-bold text-white mb-4">법적 정보</h4>
+            <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
                   <Link
