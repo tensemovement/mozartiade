@@ -9,6 +9,7 @@ import { formatVoteCount } from '@/utils/format';
 import { MdFullscreen, MdFavorite, MdChevronRight, MdMusicNote, MdArticle } from 'react-icons/md';
 import { Work } from '@/types';
 import { useState, useEffect } from 'react';
+import { getGenreLabel } from '@/lib/constants';
 
 export default function UnifiedWorksSection() {
   const { ref, isVisible } = useScrollAnimation();
@@ -161,7 +162,7 @@ export default function UnifiedWorksSection() {
                   {/* Genre badge - Top Left */}
                   {work.genre && (
                     <div className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full font-sans text-xs font-semibold z-10">
-                      {work.genre}
+                      {getGenreLabel(work.genre)}
                     </div>
                   )}
                   {/* Detail page button - Top Right */}

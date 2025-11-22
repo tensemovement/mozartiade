@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAdminApi } from '@/hooks/useAdminApi';
 import { MdClose, MdSearch, MdCheck } from 'react-icons/md';
+import { getGenreLabel } from '@/lib/constants';
 
 interface Work {
   id: string;
@@ -245,7 +246,7 @@ export default function WorkSelectModal({
                       {work.title}
                     </h3>
                     <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
-                      <span>{work.genre}</span>
+                      <span>{getGenreLabel(work.genre)}</span>
                       <span>•</span>
                       <span>{work.year}년</span>
                     </div>
