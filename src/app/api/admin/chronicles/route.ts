@@ -35,23 +35,35 @@ export async function GET(req: NextRequest) {
 
     // Build where clause
     const where: any = {};
+    const conditions: any[] = [];
+
+    // Search condition (title OR work.title)
     if (search) {
-      where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { work: { title: { contains: search, mode: 'insensitive' } } }
-      ];
+      conditions.push({
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { work: { title: { contains: search, mode: 'insensitive' } } }
+        ]
+      });
     }
+
+    // Other filters
     if (type) {
-      where.type = type;
+      conditions.push({ type });
     }
     if (year) {
-      where.year = parseInt(year);
+      conditions.push({ year: parseInt(year) });
     }
     if (highlight) {
-      where.highlight = highlight === 'true';
+      conditions.push({ highlight: highlight === 'true' });
     }
     if (isVisible) {
-      where.isVisible = isVisible === 'true';
+      conditions.push({ isVisible: isVisible === 'true' });
+    }
+
+    // Combine all conditions with AND
+    if (conditions.length > 0) {
+      where.AND = conditions;
     }
 
     // Build orderBy clause
