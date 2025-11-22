@@ -7,7 +7,7 @@ import { FaYoutube } from 'react-icons/fa';
 export default function Footer() {
   const footerLinks = {
     explore: [
-      { label: '작품 카탈로그', href: '/catalog' },
+      { label: '작품 카탈로그', href: '/works' },
       { label: '연대기', href: '/chronology' },
     ],
     help: [

@@ -1,6 +1,7 @@
 import Navigation from '@/components/Navigation';
 import AboutHeroSection from '@/components/AboutHeroSection';
 import IntroSection from '@/components/IntroSection';
+import AboutContentSection from '@/components/AboutContentSection';
 import Footer from '@/components/Footer';
 
 export const metadata = {
@@ -15,6 +16,7 @@ export default function AboutPage() {
       <main className="overflow-x-hidden">
         <AboutHeroSection />
         <IntroSection />
+        <AboutContentSection />
       </main>
       <Footer />
     </>
