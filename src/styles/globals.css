@@ -67,33 +67,33 @@
 
   /* Toast notification animations - 우측에서 좌측으로 슬라이드 */
   @keyframes slideInRight {
-    from {
+    0% {
       opacity: 0;
       transform: translateX(100%);
     }
-    to {
+    100% {
       opacity: 1;
       transform: translateX(0);
     }
   }
 
   @keyframes slideOutRight {
-    from {
+    0% {
       opacity: 1;
       transform: translateX(0);
     }
-    to {
+    100% {
       opacity: 0;
       transform: translateX(120%);
     }
   }
 
-  /* Toast container custom styles */
-  .toast-container {
-    animation: slideInRight 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+  /* react-hot-toast 슬라이드 애니메이션 적용 */
+  [data-react-hot-toast] > div {
+    animation: slideInRight 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards !important;
   }
 
-  .toast-container[data-exit="true"] {
-    animation: slideOutRight 0.3s ease-in forwards;
+  [data-react-hot-toast] > div[data-visible="false"] {
+    animation: slideOutRight 0.3s ease-in forwards !important;
   }
 }
