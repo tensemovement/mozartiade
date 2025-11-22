@@ -9,6 +9,7 @@ import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFavorite, MdLocationOn, MdMusicNote, MdArticle } from 'react-icons/md';
 import { ChronologyItem } from '@/types';
+import { getGenreLabel } from '@/lib/constants';
 
 export default function ChronologyPage() {
   const [selectedWork, setSelectedWork] = useRecoilState(selectedWorkState);
@@ -321,7 +322,7 @@ export default function ChronologyPage() {
                                   )}
                                   {item.type === 'work' && item.genre && (
                                     <span className="px-2 py-0.5 bg-secondary-100 text-secondary-800 border border-secondary-200 rounded text-xs font-sans font-medium">
-                                      {item.genre}
+                                      {getGenreLabel(item.genre)}
                                     </span>
                                   )}
                                   {item.type === 'work' && item.voteCount && (

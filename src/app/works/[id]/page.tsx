@@ -11,6 +11,7 @@ import MovementPanel from '@/components/MovementPanel';
 import { Work, Movement, RelatedLink } from '@/types';
 import { selectedMovementState, selectedWorkState } from '@/store/atoms';
 import { MdPlayArrow, MdClose, MdFavorite, MdShare, MdMusicNote, MdArticle, MdOpenInNew } from 'react-icons/md';
+import { getGenreLabel } from '@/lib/constants';
 
 interface PageProps {
   params: {
@@ -108,7 +109,7 @@ export default function WorkDetailPage({ params }: PageProps) {
               )}
               {work.genre && (
                 <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm">
-                  {work.genre}
+                  {getGenreLabel(work.genre)}
                 </span>
               )}
               <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white/80 text-sm">

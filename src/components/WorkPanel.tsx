@@ -6,6 +6,7 @@ import { selectedWorkState, selectedMovementState } from '@/store/atoms';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MdFullscreen, MdClose, MdLocationOn, MdDescription, MdArticle, MdOpenInNew, MdOndemandVideo, MdFavorite, MdMusicNote } from 'react-icons/md';
+import { getGenreLabel } from '@/lib/constants';
 
 export default function WorkPanel() {
   const [selectedWork, setSelectedWork] = useRecoilState(selectedWorkState);
@@ -123,7 +124,7 @@ export default function WorkPanel() {
               </div>
               {selectedWork.genre && (
                 <div className="px-2.5 py-0.5 bg-white/20 rounded-full text-xs font-bold text-white">
-                  {selectedWork.genre}
+                  {getGenreLabel(selectedWork.genre)}
                 </div>
               )}
               {selectedWork.location && (
@@ -371,7 +372,7 @@ export default function WorkPanel() {
               </div>
               {selectedWork.genre && (
                 <div className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-bold text-white">
-                  {selectedWork.genre}
+                  {getGenreLabel(selectedWork.genre)}
                 </div>
               )}
               {selectedWork.location && (
