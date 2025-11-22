@@ -215,6 +215,7 @@ enum AdminRole {
 
 enum Instrument {
   PIANO    // 피아노
+  ORGAN    // 오르간
   VIOLIN   // 바이올린
   VIOLA    // 비올라
   CELLO    // 첼로
@@ -226,5 +227,6 @@ enum Instrument {
   HORN     // 호른
   TRUMPET  // 트럼펫
   TROMBONE // 트롬본
+  TUBA     // 튜바
   HARP     // 하프
 }

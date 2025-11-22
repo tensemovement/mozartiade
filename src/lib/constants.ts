@@ -69,6 +69,7 @@ export function getLabelToGenreCode(label: string | null | undefined): GenreCode
  */
 export enum InstrumentCode {
   PIANO = 'PIANO',           // 피아노
+  ORGAN = 'ORGAN',           // 오르간
   VIOLIN = 'VIOLIN',         // 바이올린
   VIOLA = 'VIOLA',           // 비올라
   CELLO = 'CELLO',           // 첼로
@@ -80,6 +81,7 @@ export enum InstrumentCode {
   HORN = 'HORN',             // 호른
   TRUMPET = 'TRUMPET',       // 트럼펫
   TROMBONE = 'TROMBONE',     // 트롬본
+  TUBA = 'TUBA',             // 튜바
   HARP = 'HARP',             // 하프
 }
 
@@ -88,6 +90,7 @@ export enum InstrumentCode {
  */
 export const INSTRUMENT_LABELS: Record<InstrumentCode, string> = {
   [InstrumentCode.PIANO]: '피아노',
+  [InstrumentCode.ORGAN]: '오르간',
   [InstrumentCode.VIOLIN]: '바이올린',
   [InstrumentCode.VIOLA]: '비올라',
   [InstrumentCode.CELLO]: '첼로',
@@ -99,6 +102,7 @@ export const INSTRUMENT_LABELS: Record<InstrumentCode, string> = {
   [InstrumentCode.HORN]: '호른',
   [InstrumentCode.TRUMPET]: '트럼펫',
   [InstrumentCode.TROMBONE]: '트롬본',
+  [InstrumentCode.TUBA]: '튜바',
   [InstrumentCode.HARP]: '하프',
 };
 

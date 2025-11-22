@@ -220,6 +220,7 @@ export async function PUT(
           titleEn: workData.titleEn,
           description: workData.description,
           genre: workData.genre,
+          instruments: workData.instruments || [],
           youtubeUrl: workData.youtubeUrl,
           sheetMusicUrl: workData.sheetMusicUrl,
           compositionDetails: workData.compositionDetails,
