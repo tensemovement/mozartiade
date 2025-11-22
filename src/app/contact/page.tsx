@@ -4,7 +4,7 @@ import { useState, FormEvent } from 'react';
 import { FiMail, FiUser, FiMessageSquare, FiSend, FiCheck } from 'react-icons/fi';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import toast from 'react-hot-toast';
+import { notifySuccess, notifyError, notifyWarning } from '@/lib/notification';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -28,12 +28,24 @@ export default function ContactPage() {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('전송에 실패했습니다.');
+        // 서버에서 반환한 에러 메시지 사용
+        const errorMessage = data.error || '문의 전송에 실패했습니다. 다시 시도해주세요.';
+        notifyError(errorMessage);
+        throw new Error(errorMessage);
       }
 
+      // 성공 처리
       setIsSubmitted(true);
-      toast.success('문의가 성공적으로 전송되었습니다!');
+
+      // 이메일 전송 여부에 따라 다른 메시지 표시
+      if (data.emailSent === false) {
+        notifyWarning('문의가 접수되었습니다. 빠른 시일 내에 답변드리겠습니다.');
+      } else {
+        notifySuccess('문의가 성공적으로 전송되었습니다!');
+      }
 
       // Reset form
       setFormData({
@@ -45,8 +57,8 @@ export default function ContactPage() {
       // Reset success state after 5 seconds
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
-      toast.error('문의 전송에 실패했습니다. 다시 시도해주세요.');
       console.error('Contact form error:', error);
+      // 에러는 위에서 이미 표시했으므로 여기서는 로깅만
     } finally {
       setIsSubmitting(false);
     }
