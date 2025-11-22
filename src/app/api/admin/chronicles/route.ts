@@ -34,11 +34,6 @@ export async function GET(req: NextRequest) {
     const isVisible = searchParams.get('isVisible') || '';
     const order = searchParams.get('order') || 'desc';
 
-    console.log('=== Chronicles API Debug ===');
-    console.log('Raw yearParam:', yearParam);
-    console.log('Processed year:', year);
-    console.log('All params:', { search, type, year, highlight, isVisible, order, page });
-
     // Build where clause
     const where: any = {};
 
@@ -85,8 +80,6 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    console.log('Final WHERE clause:', JSON.stringify(where, null, 2));
-
     // Build orderBy clause
     const orderBy: any[] = [
       { year: order as 'asc' | 'desc' },
@@ -116,30 +109,21 @@ export async function GET(req: NextRequest) {
       prisma.chronicle.count({ where }),
     ]);
 
-    console.log('Query results:', { total, chroniclesCount: chronicles.length, skip, limit });
-
-    const response = {
-      success: true,
-      data: {
-        chronicles,
-        pagination: {
-          page,
-          limit,
-          total,
-          totalPages: Math.ceil(total / limit),
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          chronicles,
+          pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit),
+          },
         },
-      },
-    };
-
-    console.log('API Response structure:', {
-      success: response.success,
-      hasData: !!response.data,
-      chroniclesInResponse: response.data.chronicles.length,
-      paginationInResponse: response.data.pagination,
-    });
-    console.log('=== End Debug ===\n');
-
-    return NextResponse.json(response as ApiResponse, { status: 200 });
+      } as ApiResponse,
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Get chronicles error:', error);
     return NextResponse.json(
