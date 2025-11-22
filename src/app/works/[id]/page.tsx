@@ -117,7 +117,7 @@ export default function WorkDetailPage({ params }: PageProps) {
             </div>
 
             {/* 제목 */}
-            <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-4 leading-tight">
+            <h1 className="font-serif text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
               {work.title}
             </h1>
             <p className="font-serif text-2xl md:text-3xl text-accent/90 italic mb-6">
