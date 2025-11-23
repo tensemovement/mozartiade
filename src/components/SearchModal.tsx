@@ -35,6 +35,19 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     return () => setMounted(false)
   }, [])
 
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
+
   // Focus input when modal opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
