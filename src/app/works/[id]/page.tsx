@@ -109,6 +109,18 @@ export default function WorkDetailPage({ params }: PageProps) {
     }
   };
 
+  // Share (copy URL)
+  const handleShare = async () => {
+    try {
+      const url = window.location.href;
+      await navigator.clipboard.writeText(url);
+      toast.success('URL을 복사하였습니다');
+    } catch (err) {
+      console.error('Error copying URL:', err);
+      toast.error('URL 복사에 실패했습니다.');
+    }
+  };
+
   if (isLoading) {
     return (
       <>
@@ -240,17 +252,6 @@ export default function WorkDetailPage({ params }: PageProps) {
 
             {/* 액션 버튼 */}
             <div className="flex flex-wrap gap-4">
-              {work.youtubeUrl && (
-                <a
-                  href={work.youtubeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group px-8 py-4 bg-accent hover:bg-accent/90 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-2xl flex items-center gap-2"
-                >
-                  <MdPlayArrow className="text-2xl group-hover:scale-110 transition-transform" />
-                  전체 감상하기
-                </a>
-              )}
               {work.sheetMusicUrl && (
                 <a
                   href={work.sheetMusicUrl}
@@ -262,6 +263,13 @@ export default function WorkDetailPage({ params }: PageProps) {
                   악보 다운로드
                 </a>
               )}
+              <button
+                onClick={handleShare}
+                className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-2"
+              >
+                <MdShare className="text-xl" />
+                공유하기
+              </button>
               <button
                 onClick={handleLikeToggle}
                 disabled={isLiking}
@@ -277,10 +285,6 @@ export default function WorkDetailPage({ params }: PageProps) {
                   <MdFavoriteBorder className="text-xl" />
                 )}
                 {likesCount.toLocaleString()}
-              </button>
-              <button className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 flex items-center gap-2">
-                <MdShare className="text-xl" />
-                공유하기
               </button>
             </div>
           </div>

@@ -181,10 +181,10 @@ export default function WorkPanel() {
                     <span>{selectedWork.compositionLocation}</span>
                   </div>
                 )}
-                {selectedWork.voteCount !== undefined && (
+                {selectedWork.likesCount !== undefined && (
                   <div className="flex items-center gap-1.5 text-white/80">
                     <MdFavorite className="h-3 w-3 text-accent-300" />
-                    <span>{selectedWork.voteCount.toLocaleString()}</span>
+                    <span>{selectedWork.likesCount.toLocaleString()}</span>
                   </div>
                 )}
               </div>
@@ -429,10 +429,10 @@ export default function WorkPanel() {
                     <span>{selectedWork.compositionLocation}</span>
                   </div>
                 )}
-                {selectedWork.voteCount !== undefined && (
+                {selectedWork.likesCount !== undefined && (
                   <div className="flex items-center gap-1 text-white/80">
                     <MdFavorite className="h-3 w-3 text-accent-300" />
-                    <span>{selectedWork.voteCount.toLocaleString()}</span>
+                    <span>{selectedWork.likesCount.toLocaleString()}</span>
                   </div>
                 )}
               </div>
