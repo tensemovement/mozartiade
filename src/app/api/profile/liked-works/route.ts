@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/user';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 // 좋아하는 작품 목록 조회
 export async function GET(req: NextRequest) {
@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: 'desc' },
     });
 
-    const works = likedWorks.map((like) => like.work);
+    const works = likedWorks.map((like: any) => like.work);
 
     return NextResponse.json({
       success: true,

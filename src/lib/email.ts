@@ -44,7 +44,7 @@ function createTransporter() {
     },
   };
 
-  return nodemailer.createTransporter(config);
+  return nodemailer.createTransport(config);
 }
 
 // Send email function

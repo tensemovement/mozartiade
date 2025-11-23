@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/user';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 // 좋아요 토글 (추가/제거)
 export async function POST(

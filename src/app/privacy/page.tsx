@@ -49,7 +49,7 @@ export default function PrivacyPage() {
                   </h2>
                   <div className="prose prose-lg max-w-none">
                     <p className="text-primary-700 leading-relaxed mb-4">
-                      Mozartiade는 귀하의 개인정보보호를 매우 중요시하며, "정보통신망이용촉진 등에 관한 법률" 상의 개인정보보호 규정 및 정보통신부가 제정한 "개인정보보호 지침"을 준수하고 있습니다.
+                      Mozartiade는 귀하의 개인정보보호를 매우 중요시하며, &ldquo;정보통신망이용촉진 등에 관한 법률&rdquo; 상의 개인정보보호 규정 및 정보통신부가 제정한 &ldquo;개인정보보호 지침&rdquo;을 준수하고 있습니다.
                     </p>
                     <p className="text-primary-700 leading-relaxed mb-4">
                       Mozartiade는 개인정보보호방침을 통하여 귀하께서 제공하시는 개인정보가 어떠한 용도와 방식으로 이용되고 있으며 개인정보보호를 위해 어떠한 조치가 취해지고 있는지 알려드립니다.
