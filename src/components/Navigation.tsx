@@ -126,14 +126,14 @@ export default function Navigation() {
               <>
                 <Link
                   href="/profile"
-                  className={`px-5 py-2 rounded-lg font-sans text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center gap-2 ${
+                  className={`p-2 rounded-lg transition-colors ${
                     shouldShowScrolledStyle
-                      ? 'bg-primary-800 text-white hover:bg-primary-900'
-                      : 'bg-white text-primary-900 hover:bg-cream'
+                      ? 'hover:bg-primary-50 text-primary-700'
+                      : 'hover:bg-white/20 text-white'
                   }`}
+                  title="마이페이지"
                 >
                   <MdPerson className="h-5 w-5" />
-                  마이페이지
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}

@@ -12,7 +12,7 @@ import MovementPanel from '@/components/MovementPanel';
 import { Work, Movement, RelatedLink } from '@/types';
 import { selectedMovementState, selectedWorkState } from '@/store/atoms';
 import { MdPlayArrow, MdClose, MdFavorite, MdFavoriteBorder, MdShare, MdMusicNote, MdArticle, MdOpenInNew } from 'react-icons/md';
-import { getGenreLabel } from '@/lib/constants';
+import { getGenreLabel, getInstrumentLabels } from '@/lib/constants';
 import toast from 'react-hot-toast';
 
 interface PageProps {
@@ -190,7 +190,7 @@ export default function WorkDetailPage({ params }: PageProps) {
 
             {/* 작품 기본 정보 - 컴팩트 */}
             <div className="mb-6 p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 {work.compositionLocation && (
                   <div>
                     <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">작곡 장소</h3>
@@ -201,6 +201,21 @@ export default function WorkDetailPage({ params }: PageProps) {
                   <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">작곡 일자</h3>
                   <p className="text-white font-medium">{formatDate()}</p>
                 </div>
+                {work.instruments && work.instruments.length > 0 && (
+                  <div>
+                    <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">악기 편성</h3>
+                    <p className="text-white font-medium">
+                      {getInstrumentLabels(work.instruments).slice(0, 2).join(', ')}
+                      {work.instruments.length > 2 && ` 외 ${work.instruments.length - 2}개`}
+                    </p>
+                  </div>
+                )}
+                {work.movements && work.movements.length > 0 && (
+                  <div>
+                    <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">악장 수</h3>
+                    <p className="text-white font-medium">{work.movements.length}악장</p>
+                  </div>
+                )}
               </div>
 
               {/* 추가 카탈로그 번호 */}
