@@ -22,7 +22,7 @@ export default function WorksPage() {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [selectedGenre, setSelectedGenre] = useState<string>(searchParams.get('genre') || 'all');
   const [selectedInstrument, setSelectedInstrument] = useState<string>(searchParams.get('instrument') || 'all');
-  const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title' | 'catalog-asc' | 'catalog-desc'>(
+  const [sortOrder, setSortOrder] = useState<'year-asc' | 'year-desc' | 'title' | 'catalog-asc' | 'catalog-desc' | 'likes-desc'>(
     (searchParams.get('sort') as any) || 'year-desc'
   );
   const [viewMode, setViewMode] = useState<'grid' | 'list'>((searchParams.get('view') as any) || 'grid');
@@ -180,6 +180,11 @@ export default function WorksPage() {
           const suffixB = (b as any).catalogNumberSuffix || '';
           return suffixB.localeCompare(suffixA);
         }
+        case 'likes-desc': {
+          const likesA = (a as any).likesCount ?? 0;
+          const likesB = (b as any).likesCount ?? 0;
+          return likesB - likesA;
+        }
         default:
           return 0;
       }
@@ -276,6 +281,7 @@ export default function WorksPage() {
                 onChange={(e) => handleSortChange(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               >
+                <option value="likes-desc">인기순</option>
                 <option value="year-desc">최신순</option>
                 <option value="year-asc">오래된순</option>
                 <option value="catalog-asc">작품번호순 (오름차순)</option>

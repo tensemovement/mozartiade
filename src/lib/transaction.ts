@@ -21,14 +21,12 @@ export async function withTransaction<T>(
   options?: {
     maxWait?: number; // Maximum time (ms) to wait for a transaction slot (default: 5000ms)
     timeout?: number; // Maximum time (ms) for the transaction to complete (default: 10000ms)
-    isolationLevel?: Prisma.TransactionIsolationLevel;
   }
 ): Promise<T> {
   try {
     return await prisma.$transaction(callback, {
       maxWait: options?.maxWait || 5000,
       timeout: options?.timeout || 10000,
-      isolationLevel: options?.isolationLevel,
     });
   } catch (error) {
     // 트랜잭션 실패 시 에러를 다시 throw
@@ -56,7 +54,6 @@ export async function withReadTransaction<T>(
   callback: (tx: Prisma.TransactionClient) => Promise<T>
 ): Promise<T> {
   return withTransaction(callback, {
-    isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
     timeout: 5000, // 읽기 작업은 더 짧은 타임아웃
   });
 }

@@ -3,13 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { selectedWorkState, selectedMovementState } from '@/store/atoms';
-import { MdSearch, MdMenu, MdClose } from 'react-icons/md';
+import { MdSearch, MdMenu, MdClose, MdPerson, MdExitToApp } from 'react-icons/md';
 import AnimatedTitle from './AnimatedTitle';
 
 export default function Navigation() {
+  const { data: session, status } = useSession();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -36,6 +38,10 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 특정 페이지에서는 항상 스크롤된 상태의 스타일 적용
+  const alwaysScrolledPages = ['/profile', '/auth'];
+  const shouldShowScrolledStyle = isScrolled || alwaysScrolledPages.some(page => pathname.startsWith(page));
+
   const menuItems = [
     { label: '홈', href: '/' },
     { label: '연대기', href: '/chronology' },
@@ -52,7 +58,7 @@ export default function Navigation() {
       className={`fixed top-0 left-0 z-50 transition-all duration-300 w-full ${
         isPanelOpen ? 'md:w-[66.666667%]' : ''
       } ${
-        isScrolled
+        shouldShowScrolledStyle
           ? 'bg-white/95 backdrop-blur-md shadow-lg'
           : 'bg-white/10 backdrop-blur-sm shadow-sm'
       }`}
@@ -62,7 +68,7 @@ export default function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
             <div className={`w-12 h-12 rounded-lg flex items-center justify-center transform transition-all group-hover:scale-110 overflow-hidden ${
-              isScrolled ? 'bg-white' : 'bg-white/90 backdrop-blur-sm'
+              shouldShowScrolledStyle ? 'bg-white' : 'bg-white/90 backdrop-blur-sm'
             }`}>
               <Image
                 src="/images/logo.svg"
@@ -74,9 +80,9 @@ export default function Navigation() {
               />
             </div>
             <div>
-              <AnimatedTitle isScrolled={isScrolled} />
+              <AnimatedTitle isScrolled={shouldShowScrolledStyle} />
               <p className={`text-xs font-sans ${
-                isScrolled ? 'text-primary-700' : 'text-white/90 drop-shadow'
+                shouldShowScrolledStyle ? 'text-primary-700' : 'text-white/90 drop-shadow'
               }`}>
                 완전한 카탈로그와 연대기
               </p>
@@ -92,7 +98,7 @@ export default function Navigation() {
                   key={item.href}
                   href={item.href}
                   className={`px-4 py-2 rounded-lg font-sans text-sm font-medium transition-all duration-200 relative ${
-                    isScrolled
+                    shouldShowScrolledStyle
                       ? active
                         ? 'text-primary-800 bg-primary-100 font-semibold'
                         : 'text-primary-900 hover:bg-primary-50 hover:text-primary-800'
@@ -108,37 +114,64 @@ export default function Navigation() {
           </div>
 
           {/* Search & CTA */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-3">
             <button className={`p-2 rounded-lg transition-colors ${
-              isScrolled
+              shouldShowScrolledStyle
                 ? 'hover:bg-primary-50 text-primary-700'
                 : 'hover:bg-white/20 text-white'
             }`}>
               <MdSearch className="h-5 w-5" />
             </button>
-            <Link
-              href="/auth"
-              className={`px-5 py-2 rounded-lg font-sans text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
-                isScrolled
-                  ? 'bg-primary-800 text-white hover:bg-primary-900'
-                  : 'bg-white text-primary-900 hover:bg-cream'
-              }`}
-            >
-              시작하기
-            </Link>
+            {status === 'authenticated' ? (
+              <>
+                <Link
+                  href="/profile"
+                  className={`p-2 rounded-lg transition-colors ${
+                    shouldShowScrolledStyle
+                      ? 'hover:bg-primary-50 text-primary-700'
+                      : 'hover:bg-white/20 text-white'
+                  }`}
+                  title="마이페이지"
+                >
+                  <MdPerson className="h-5 w-5" />
+                </Link>
+                <button
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                  className={`p-2 rounded-lg transition-colors ${
+                    shouldShowScrolledStyle
+                      ? 'hover:bg-red-50 text-red-600'
+                      : 'hover:bg-white/20 text-white'
+                  }`}
+                  title="로그아웃"
+                >
+                  <MdExitToApp className="h-5 w-5" />
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/auth"
+                className={`px-5 py-2 rounded-lg font-sans text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
+                  shouldShowScrolledStyle
+                    ? 'bg-primary-800 text-white hover:bg-primary-900'
+                    : 'bg-white text-primary-900 hover:bg-cream'
+                }`}
+              >
+                시작하기
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
           <button
             className={`lg:hidden p-2 rounded-lg ${
-              isScrolled ? 'hover:bg-primary-50' : 'hover:bg-white/20'
+              shouldShowScrolledStyle ? 'hover:bg-primary-50' : 'hover:bg-white/20'
             }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <MdClose className={`h-6 w-6 ${isScrolled ? 'text-primary-900' : 'text-white'}`} />
+              <MdClose className={`h-6 w-6 ${shouldShowScrolledStyle ? 'text-primary-900' : 'text-white'}`} />
             ) : (
-              <MdMenu className={`h-6 w-6 ${isScrolled ? 'text-primary-900' : 'text-white'}`} />
+              <MdMenu className={`h-6 w-6 ${shouldShowScrolledStyle ? 'text-primary-900' : 'text-white'}`} />
             )}
           </button>
         </div>
@@ -164,13 +197,36 @@ export default function Navigation() {
                   </Link>
                 );
               })}
-              <Link
-                href="/auth"
-                className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors block text-center"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                시작하기
-              </Link>
+              {status === 'authenticated' ? (
+                <>
+                  <Link
+                    href="/profile"
+                    className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors flex items-center justify-center gap-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <MdPerson className="h-5 w-5" />
+                    마이페이지
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      signOut({ callbackUrl: '/' });
+                    }}
+                    className="mx-4 mt-2 px-5 py-3 bg-red-50 text-red-600 rounded-lg font-sans text-sm font-semibold hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MdExitToApp className="h-5 w-5" />
+                    로그아웃
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/auth"
+                  className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors block text-center"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  시작하기
+                </Link>
+              )}
             </div>
           </div>
         )}

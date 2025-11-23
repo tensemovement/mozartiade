@@ -10,7 +10,7 @@ import { prisma } from '@/lib/prisma'
  * - instrument: Filter by instrument
  * - search: Search in title/titleEn/description
  * - highlight: Filter highlighted works (true/false)
- * - sort: Sort by field (year, voteCount, title, catalogNumber)
+ * - sort: Sort by field (year, voteCount, likesCount, title, catalogNumber)
  * - order: Sort order (asc/desc)
  * - page: Page number (default: 1)
  * - limit: Items per page (default: 20)
@@ -110,6 +110,7 @@ export async function GET(request: NextRequest) {
           highlight: true,
           image: true,
           voteCount: true,
+          likesCount: true,
           createdAt: true,
           updatedAt: true,
         },

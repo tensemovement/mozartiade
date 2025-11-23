@@ -23,6 +23,7 @@ model User {
 
   accounts      Account[]
   sessions      Session[]
+  workLikes     WorkLike[] // 사용자가 좋아요한 작품 목록
 }
 
 model Account {
@@ -95,6 +96,7 @@ model Work {
   highlight              Boolean  @default(false)
   image                  String?
   voteCount              Int      @default(0)
+  likesCount             Int      @default(0) // 좋아요 총 개수
   isVisible              Boolean  @default(false) // 노출 여부 (기본값: 노출 안함)
 
   // Detail page fields
@@ -106,6 +108,7 @@ model Work {
   movements              Movement[]
   relatedLinks           RelatedLink[]
   chronicles             Chronicle[] // 이 작품을 참조하는 연대기 항목들
+  likes                  WorkLike[] // 이 작품을 좋아요한 사용자 목록
 
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
@@ -115,6 +118,7 @@ model Work {
   @@index([genre])
   @@index([year])
   @@index([year, compositionOrder])
+  @@index([likesCount]) // 인기순 정렬을 위한 인덱스
 }
 
 model Movement {
@@ -229,4 +233,19 @@ enum Instrument {
   TROMBONE // 트롬본
   TUBA     // 튜바
   HARP     // 하프
+}
+
+// 작품 좋아요
+model WorkLike {
+  id        String   @id @default(cuid())
+  userId    String
+  workId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workId]) // 한 사용자가 같은 작품을 여러 번 좋아요 할 수 없도록
+  @@index([userId])
+  @@index([workId])
 }
