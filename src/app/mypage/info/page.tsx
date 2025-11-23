@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { MdPerson, MdEmail, MdCalendarToday, MdEdit, MdSave, MdCancel } from 'react-icons/md';
+import { MdPerson, MdCalendarToday, MdEdit, MdSave, MdCancel } from 'react-icons/md';
 import ProfileImageUpload from '@/components/ProfileImageUpload';
 import toast from 'react-hot-toast';
 
@@ -79,8 +79,8 @@ export default function MyPageInfoPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="max-w-md mx-auto">
+      <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">회원정보</h2>
         {!isEditing ? (
           <button
@@ -112,70 +112,60 @@ export default function MyPageInfoPage() {
         )}
       </div>
 
-      {/* Profile Image */}
-      <div className="flex justify-center py-6">
-        {isEditing ? (
-          <ProfileImageUpload
-            value={profileImage}
-            onChange={setProfileImage}
-            userName={name}
-          />
-        ) : (
-          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg bg-gray-100 flex items-center justify-center">
-            {session.user.image ? (
-              <img
-                src={session.user.image}
-                alt="프로필 이미지"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <MdPerson className="w-20 h-20 text-gray-400" />
-            )}
-          </div>
-        )}
-      </div>
+      {/* Profile Section */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        {/* Profile Image */}
+        <div className="flex justify-center mb-4">
+          {isEditing ? (
+            <ProfileImageUpload
+              value={profileImage}
+              onChange={setProfileImage}
+              userName={name}
+            />
+          ) : (
+            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-200 shadow-md bg-gray-100 flex items-center justify-center">
+              {session.user.image ? (
+                <img
+                  src={session.user.image}
+                  alt="프로필 이미지"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <MdPerson className="w-16 h-16 text-gray-400" />
+              )}
+            </div>
+          )}
+        </div>
 
-      <div className="space-y-4">
-        {/* Name */}
-        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-          <MdPerson className="text-2xl text-gray-400 flex-shrink-0" />
-          <div className="flex-1 min-w-0">
-            <p className="text-sm text-gray-500">이름</p>
-            {isEditing ? (
+        {/* Profile Info */}
+        <div className="text-center space-y-3">
+          {/* Name */}
+          {isEditing ? (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">이름</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full text-lg font-semibold text-gray-900 bg-white border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full text-center text-xl font-bold text-gray-900 bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
                 placeholder="이름을 입력하세요"
               />
-            ) : (
-              <p className="text-lg font-semibold text-gray-900 truncate">
-                {session.user.name || '이름 없음'}
-              </p>
-            )}
-          </div>
-        </div>
+            </div>
+          ) : (
+            <h3 className="text-xl font-bold text-gray-900">
+              {session.user.name || '이름 없음'}
+            </h3>
+          )}
 
-        {/* Email */}
-        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-          <MdEmail className="text-2xl text-gray-400 flex-shrink-0" />
-          <div className="flex-1 min-w-0">
-            <p className="text-sm text-gray-500">이메일</p>
-            <p className="text-lg font-semibold text-gray-900 truncate">
-              {session.user.email}
-            </p>
-          </div>
-        </div>
+          {/* Email */}
+          <p className="text-sm text-gray-600">
+            {session.user.email}
+          </p>
 
-        {/* Provider */}
-        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-          <MdCalendarToday className="text-2xl text-gray-400 flex-shrink-0" />
-          <div className="flex-1 min-w-0">
-            <p className="text-sm text-gray-500">가입 방법</p>
-            <p className="text-lg font-semibold text-gray-900">
-              {(session.user as any).provider === 'google' ? 'Google' : '이메일'}
-            </p>
+          {/* Provider Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+            <MdCalendarToday className="text-sm" />
+            {(session.user as any).provider === 'google' ? 'Google 계정' : '이메일 계정'}
           </div>
         </div>
       </div>

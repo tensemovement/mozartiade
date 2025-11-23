@@ -91,7 +91,7 @@ export default function ProfileImageUpload({ value, onChange, userName }: Profil
     <div className="flex flex-col items-center">
       {value ? (
         <div className="relative group">
-          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg">
+          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-200 shadow-md">
             <img
               src={value}
               alt="프로필 이미지"
@@ -101,17 +101,17 @@ export default function ProfileImageUpload({ value, onChange, userName }: Profil
           <button
             type="button"
             onClick={handleRemove}
-            className="absolute top-0 right-0 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition shadow-lg opacity-0 group-hover:opacity-100"
+            className="absolute top-0 right-0 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition shadow-md opacity-0 group-hover:opacity-100"
             title="이미지 제거"
           >
-            <MdClose className="w-4 h-4" />
+            <MdClose className="w-3 h-3" />
           </button>
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition">
             <label
               htmlFor="profile-image-upload"
               className="cursor-pointer flex flex-col items-center text-white"
             >
-              <MdCloudUpload className="w-8 h-8" />
+              <MdCloudUpload className="w-6 h-6" />
               <span className="text-xs mt-1">변경</span>
             </label>
           </div>
@@ -126,7 +126,7 @@ export default function ProfileImageUpload({ value, onChange, userName }: Profil
         >
           <label
             htmlFor="profile-image-upload"
-            className={`flex flex-col items-center justify-center w-32 h-32 rounded-full border-4 border-dashed cursor-pointer transition ${
+            className={`flex flex-col items-center justify-center w-24 h-24 rounded-full border-4 border-dashed cursor-pointer transition ${
               uploading
                 ? 'opacity-50 cursor-not-allowed border-gray-300 bg-gray-100'
                 : isDragging
@@ -136,15 +136,14 @@ export default function ProfileImageUpload({ value, onChange, userName }: Profil
           >
             {uploading ? (
               <div className="flex flex-col items-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-600 border-t-transparent"></div>
-                <p className="mt-2 text-xs text-gray-500">업로드 중...</p>
+                <div className="animate-spin rounded-full h-10 w-10 border-4 border-primary-600 border-t-transparent"></div>
               </div>
             ) : (
               <div className="flex flex-col items-center">
                 {value === '' ? (
-                  <MdPerson className={`w-16 h-16 transition ${isDragging ? 'text-primary-600 scale-110' : 'text-gray-400'}`} />
+                  <MdPerson className={`w-12 h-12 transition ${isDragging ? 'text-primary-600 scale-110' : 'text-gray-400'}`} />
                 ) : (
-                  <MdCloudUpload className={`w-12 h-12 transition ${isDragging ? 'text-primary-600 scale-110' : 'text-gray-400'}`} />
+                  <MdCloudUpload className={`w-10 h-10 transition ${isDragging ? 'text-primary-600 scale-110' : 'text-gray-400'}`} />
                 )}
               </div>
             )}
@@ -161,7 +160,7 @@ export default function ProfileImageUpload({ value, onChange, userName }: Profil
         id="profile-image-upload"
       />
 
-      <p className="mt-3 text-xs text-gray-500 text-center">
+      <p className="mt-2 text-xs text-gray-500 text-center">
         JPG, PNG, WEBP (최대 5MB)
       </p>
 
