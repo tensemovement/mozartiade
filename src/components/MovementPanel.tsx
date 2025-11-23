@@ -63,14 +63,58 @@ export default function MovementPanel() {
     return null;
   }
 
-  // YouTube ID 추출
+  // YouTube ID 추출 및 embed URL 생성
   const getYouTubeId = (url?: string) => {
     if (!url) return null;
     const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
     return match ? match[1] : null;
   };
 
+  const getYoutubeEmbedUrl = (url?: string) => {
+    if (!url) return null;
+    const videoId = getYouTubeId(url);
+    if (!videoId) return null;
+
+    // Extract t parameter (timestamp) from URL
+    try {
+      const urlObj = new URL(url.includes('://') ? url : `https://${url}`);
+      const tParam = urlObj.searchParams.get('t');
+
+      let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+
+      if (tParam) {
+        // Convert t parameter to seconds
+        // Support formats: 123, 1m30s, 1h2m3s
+        let seconds = 0;
+
+        if (/^\d+$/.test(tParam)) {
+          // Pure number (seconds)
+          seconds = parseInt(tParam, 10);
+        } else {
+          // Parse format like 1h2m3s or 1m30s
+          const hours = tParam.match(/(\d+)h/);
+          const minutes = tParam.match(/(\d+)m/);
+          const secs = tParam.match(/(\d+)s/);
+
+          if (hours) seconds += parseInt(hours[1], 10) * 3600;
+          if (minutes) seconds += parseInt(minutes[1], 10) * 60;
+          if (secs) seconds += parseInt(secs[1], 10);
+        }
+
+        if (seconds > 0) {
+          embedUrl += `&start=${seconds}`;
+        }
+      }
+
+      return embedUrl;
+    } catch (e) {
+      // Fallback if URL parsing fails
+      return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+    }
+  };
+
   const youtubeId = getYouTubeId(movement.youtubeUrl);
+  const youtubeEmbedUrl = getYoutubeEmbedUrl(movement.youtubeUrl);
 
   return (
     <>
@@ -152,10 +196,10 @@ export default function MovementPanel() {
           )}
 
           {/* YouTube 플레이어 */}
-          {youtubeId && (
+          {youtubeEmbedUrl && (
             <div className="mb-6 rounded-lg overflow-hidden border border-gray-300">
               <iframe
-                src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&rel=0`}
+                src={youtubeEmbedUrl}
                 title={movement.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -267,10 +311,10 @@ export default function MovementPanel() {
           )}
 
           {/* YouTube 플레이어 */}
-          {youtubeId && (
+          {youtubeEmbedUrl && (
             <div className="mb-6 rounded-lg overflow-hidden border border-gray-300">
               <iframe
-                src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&rel=0`}
+                src={youtubeEmbedUrl}
                 title={movement.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

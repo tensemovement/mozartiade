@@ -6,7 +6,7 @@ import { selectedWorkState } from '@/store/atoms';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatVoteCount } from '@/utils/format';
-import { MdFullscreen, MdFavorite, MdChevronRight, MdMusicNote, MdArticle } from 'react-icons/md';
+import { MdFavorite, MdChevronRight, MdMusicNote, MdArticle } from 'react-icons/md';
 import { Work } from '@/types';
 import { useState, useEffect } from 'react';
 import { getGenreLabel } from '@/lib/constants';
@@ -133,11 +133,9 @@ export default function UnifiedWorksSection() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
               {featuredWorks.map((work, index) => (
-              <div
+              <Link
                 key={work.id}
-                onClick={() => {
-                  setSelectedWork({ ...work, type: 'work' as const });
-                }}
+                href={`/works/${work.id}`}
                 className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-100"
               >
                 {/* Header with K number */}
@@ -165,17 +163,18 @@ export default function UnifiedWorksSection() {
                       {getGenreLabel(work.genre)}
                     </div>
                   )}
-                  {/* Detail page button - Top Right */}
-                  <Link
-                    href={`/works/${work.id}`}
+                  {/* Panel open button - Top Right */}
+                  <button
                     onClick={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
+                      setSelectedWork({ ...work, type: 'work' as const });
                     }}
                     className="absolute top-4 right-4 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md z-10"
-                    title="작품 상세 보기"
+                    title="작품 패널 열기"
                   >
-                    <MdFullscreen className="h-4 w-4" />
-                  </Link>
+                    <MdChevronRight className="h-4 w-4" />
+                  </button>
                   {/* Vote count badge */}
                   {work.voteCount && (
                     <div className="absolute bottom-4 left-4 px-3 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
@@ -217,7 +216,7 @@ export default function UnifiedWorksSection() {
 
                 {/* Bottom accent */}
                 <div className="h-1 bg-primary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              </div>
+              </Link>
             ))}
             </div>
           )}
