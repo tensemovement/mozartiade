@@ -41,7 +41,7 @@ export default function Navigation() {
   }, []);
 
   // 특정 페이지에서는 항상 스크롤된 상태의 스타일 적용
-  const alwaysScrolledPages = ['/profile', '/auth'];
+  const alwaysScrolledPages = ['/mypage', '/auth'];
   const shouldShowScrolledStyle = isScrolled || alwaysScrolledPages.some(page => pathname.startsWith(page));
 
   const menuItems = [
@@ -130,7 +130,7 @@ export default function Navigation() {
             {status === 'authenticated' ? (
               <>
                 <Link
-                  href="/profile"
+                  href="/mypage"
                   className={`p-2 rounded-lg transition-colors ${
                     shouldShowScrolledStyle
                       ? 'hover:bg-primary-50 text-primary-700'
@@ -205,7 +205,7 @@ export default function Navigation() {
               {status === 'authenticated' ? (
                 <>
                   <Link
-                    href="/profile"
+                    href="/mypage"
                     className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors flex items-center justify-center gap-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >

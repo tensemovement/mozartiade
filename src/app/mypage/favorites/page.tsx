@@ -20,7 +20,7 @@ export default function MyPageFavoritesPage() {
   const fetchLikedWorks = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/profile/liked-works');
+      const response = await fetch('/api/mypage/liked-works');
       const result = await response.json();
 
       if (result.success) {
