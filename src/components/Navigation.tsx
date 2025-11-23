@@ -138,7 +138,15 @@ export default function Navigation() {
                   }`}
                   title="마이페이지"
                 >
-                  <MdPerson className="h-5 w-5" />
+                  {session?.user?.image ? (
+                    <img
+                      src={session.user.image}
+                      alt="프로필"
+                      className="h-8 w-8 rounded-full object-cover border-2 border-current"
+                    />
+                  ) : (
+                    <MdPerson className="h-5 w-5" />
+                  )}
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
@@ -209,7 +217,15 @@ export default function Navigation() {
                     className="mx-4 mt-4 px-5 py-3 bg-primary-800 text-white rounded-lg font-sans text-sm font-semibold hover:bg-primary-900 transition-colors flex items-center justify-center gap-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <MdPerson className="h-5 w-5" />
+                    {session?.user?.image ? (
+                      <img
+                        src={session.user.image}
+                        alt="프로필"
+                        className="h-5 w-5 rounded-full object-cover"
+                      />
+                    ) : (
+                      <MdPerson className="h-5 w-5" />
+                    )}
                     마이페이지
                   </Link>
                   <button
