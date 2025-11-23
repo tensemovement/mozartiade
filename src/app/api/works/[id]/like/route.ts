@@ -11,7 +11,7 @@ export async function POST(
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user?.email) {
+    if (!session?.user?.email) {
       return NextResponse.json(
         { error: '로그인이 필요합니다.' },
         { status: 401 }
@@ -19,10 +19,11 @@ export async function POST(
     }
 
     const workId = params.id;
+    const userEmail = session.user.email;
 
     // 사용자 찾기
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { email: userEmail },
     });
 
     if (!user) {
@@ -117,15 +118,16 @@ export async function GET(
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user?.email) {
+    if (!session?.user?.email) {
       return NextResponse.json({ liked: false, likesCount: 0 });
     }
 
     const workId = params.id;
+    const userEmail = session.user.email;
 
     // 사용자 찾기
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { email: userEmail },
     });
 
     if (!user) {
