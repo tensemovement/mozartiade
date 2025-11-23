@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { selectedWorkState } from '@/store/atoms';
 import Image from 'next/image';
 import Link from 'next/link';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { formatVoteCount } from '@/utils/format';
 import { MdFavorite, MdChevronRight, MdMusicNote, MdArticle, MdVisibility } from 'react-icons/md';
 import { Work } from '@/types';
@@ -126,10 +127,7 @@ export default function UnifiedWorksSection() {
 
           {/* Featured Works Grid */}
           {isLoading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-              <p className="text-gray-500">대표 작품을 불러오는 중...</p>
-            </div>
+            <LoadingSpinner size="md" message="대표 작품을 불러오는 중..." />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
               {featuredWorks.map((work, index) => (

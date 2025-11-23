@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle, MdVisibility } from 'react-icons/md';
@@ -329,10 +330,7 @@ export default function WorksPage() {
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           {isLoading ? (
-            <div className="text-center py-20">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
-              <p className="text-gray-500 text-lg">작품 목록을 불러오는 중...</p>
-            </div>
+            <LoadingSpinner size="lg" message="작품 목록을 불러오는 중..." />
           ) : error ? (
             <div className="text-center py-20">
               <MdSentimentDissatisfied className="h-16 w-16 mx-auto text-red-400 mb-4" />
