@@ -98,15 +98,7 @@ export default function ProfileImageUpload({ value, onChange, userName }: Profil
               className="w-full h-full object-cover"
             />
           </div>
-          <button
-            type="button"
-            onClick={handleRemove}
-            className="absolute top-0 right-0 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition shadow-md opacity-0 group-hover:opacity-100"
-            title="이미지 제거"
-          >
-            <MdClose className="w-3 h-3" />
-          </button>
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition">
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition z-10">
             <label
               htmlFor="profile-image-upload"
               className="cursor-pointer flex flex-col items-center text-white"
@@ -115,6 +107,14 @@ export default function ProfileImageUpload({ value, onChange, userName }: Profil
               <span className="text-xs mt-1">변경</span>
             </label>
           </div>
+          <button
+            type="button"
+            onClick={handleRemove}
+            className="absolute top-0 right-0 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition shadow-md opacity-0 group-hover:opacity-100 z-20"
+            title="이미지 제거"
+          >
+            <MdClose className="w-3 h-3" />
+          </button>
         </div>
       ) : (
         <div
