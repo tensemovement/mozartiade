@@ -3,7 +3,7 @@
 import { MdNotifications, MdDelete } from 'react-icons/md';
 import toast from 'react-hot-toast';
 
-export default function ProfileSettingsPage() {
+export default function MyPageSettingsPage() {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">설정</h2>

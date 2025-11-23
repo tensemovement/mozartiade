@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { MdPerson, MdEmail, MdCalendarToday } from 'react-icons/md';
 
-export default function ProfileInfoPage() {
+export default function MyPageInfoPage() {
   const { data: session } = useSession();
 
   if (!session) {

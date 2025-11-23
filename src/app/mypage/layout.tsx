@@ -11,7 +11,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import { MdPerson, MdFavorite, MdSettings } from 'react-icons/md';
 import toast from 'react-hot-toast';
 
-export default function ProfileLayout({
+export default function MyPageLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -84,9 +84,9 @@ export default function ProfileLayout({
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden">
                   <nav className="flex flex-col">
                     <Link
-                      href="/profile/info"
+                      href="/mypage/info"
                       className={`flex items-center gap-3 px-6 py-4 font-semibold transition-all border-l-4 ${
-                        isActive('/profile/info')
+                        isActive('/mypage/info')
                           ? 'bg-primary-50 text-primary-700 border-primary-600'
                           : 'bg-white text-gray-700 border-transparent hover:bg-gray-50'
                       }`}
@@ -95,9 +95,9 @@ export default function ProfileLayout({
                       <span>회원정보</span>
                     </Link>
                     <Link
-                      href="/profile/favorites"
+                      href="/mypage/favorites"
                       className={`flex items-center gap-3 px-6 py-4 font-semibold transition-all border-l-4 ${
-                        isActive('/profile/favorites')
+                        isActive('/mypage/favorites')
                           ? 'bg-primary-50 text-primary-700 border-primary-600'
                           : 'bg-white text-gray-700 border-transparent hover:bg-gray-50'
                       }`}
@@ -106,9 +106,9 @@ export default function ProfileLayout({
                       <span>좋아하는 작품</span>
                     </Link>
                     <Link
-                      href="/profile/settings"
+                      href="/mypage/settings"
                       className={`flex items-center gap-3 px-6 py-4 font-semibold transition-all border-l-4 ${
-                        isActive('/profile/settings')
+                        isActive('/mypage/settings')
                           ? 'bg-primary-50 text-primary-700 border-primary-600'
                           : 'bg-white text-gray-700 border-transparent hover:bg-gray-50'
                       }`}

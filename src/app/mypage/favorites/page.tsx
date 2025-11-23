@@ -9,7 +9,7 @@ import { MdFavorite, MdPlayArrow } from 'react-icons/md';
 import { getGenreLabel } from '@/lib/constants';
 import toast from 'react-hot-toast';
 
-export default function ProfileFavoritesPage() {
+export default function MyPageFavoritesPage() {
   const [likedWorks, setLikedWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
