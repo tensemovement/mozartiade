@@ -91,7 +91,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 backdrop-blur-sm pt-20"
+      className="fixed inset-0 z-[100] flex items-start justify-center bg-black/50 backdrop-blur-md pt-20"
       onClick={onClose}
     >
       <div
@@ -140,37 +140,37 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 <li key={work.id}>
                   <button
                     onClick={() => navigateToWork(work.id)}
-                    className={`w-full text-left px-6 py-4 hover:bg-gray-50 transition-colors ${
+                    className={`w-full text-left px-5 py-2.5 hover:bg-gray-50 transition-colors ${
                       index === selectedIndex ? 'bg-gray-50' : ''
                     }`}
                     onMouseEnter={() => setSelectedIndex(index)}
                   >
                     <div className="flex items-baseline justify-between gap-4">
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900 truncate">
+                        <h3 className="font-medium text-gray-900 truncate text-sm">
                           {work.title}
                         </h3>
                         {work.titleEn && (
-                          <p className="text-sm text-gray-600 truncate mt-0.5">
+                          <p className="text-xs text-gray-600 truncate mt-0.5">
                             {work.titleEn}
                           </p>
                         )}
                       </div>
-                      <div className="flex items-center gap-3 flex-shrink-0">
+                      <div className="flex items-center gap-2.5 flex-shrink-0">
                         {work.catalogNumber && (
-                          <span className="text-sm text-gray-500 font-mono">
+                          <span className="text-xs text-gray-500 font-mono">
                             {work.catalogNumber}
                           </span>
                         )}
                         {work.year && (
-                          <span className="text-sm text-gray-500">
+                          <span className="text-xs text-gray-500">
                             {work.year}
                           </span>
                         )}
                       </div>
                     </div>
                     {work.genre && (
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500 mt-0.5">
                         {work.genre}
                       </p>
                     )}
