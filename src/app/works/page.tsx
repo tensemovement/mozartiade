@@ -9,7 +9,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
-import { MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle, MdViewSidebar } from 'react-icons/md';
+import { MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle, MdPreview } from 'react-icons/md';
 import { Work } from '@/types';
 import { GENRE_OPTIONS, getGenreLabel, GenreCode, INSTRUMENT_OPTIONS, InstrumentCode, getInstrumentLabel } from '@/lib/constants';
 
@@ -388,7 +388,7 @@ export default function WorksPage() {
                       className="absolute top-3 right-3 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md z-10"
                       title="작품 패널 열기"
                     >
-                      <MdViewSidebar className="h-4 w-4" />
+                      <MdPreview className="h-4 w-4" />
                     </button>
                     {/* Vote count badge */}
                     {work.voteCount && (
@@ -501,7 +501,7 @@ export default function WorksPage() {
                         className="p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-sm"
                         title="작품 패널 열기"
                       >
-                        <MdViewSidebar className="h-4 w-4" />
+                        <MdPreview className="h-4 w-4" />
                       </button>
                     </div>
                   </div>

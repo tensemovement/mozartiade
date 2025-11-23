@@ -6,7 +6,7 @@ import { selectedWorkState } from '@/store/atoms';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatVoteCount } from '@/utils/format';
-import { MdFavorite, MdChevronRight, MdMusicNote, MdArticle, MdViewSidebar } from 'react-icons/md';
+import { MdFavorite, MdChevronRight, MdMusicNote, MdArticle, MdPreview } from 'react-icons/md';
 import { Work } from '@/types';
 import { useState, useEffect } from 'react';
 import { getGenreLabel } from '@/lib/constants';
@@ -173,7 +173,7 @@ export default function UnifiedWorksSection() {
                     className="absolute top-4 right-4 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md z-10"
                     title="작품 패널 열기"
                   >
-                    <MdViewSidebar className="h-4 w-4" />
+                    <MdPreview className="h-4 w-4" />
                   </button>
                   {/* Vote count badge */}
                   {work.voteCount && (
