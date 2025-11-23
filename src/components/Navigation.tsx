@@ -9,11 +9,13 @@ import Image from 'next/image';
 import { selectedWorkState, selectedMovementState } from '@/store/atoms';
 import { MdSearch, MdMenu, MdClose, MdPerson, MdExitToApp } from 'react-icons/md';
 import AnimatedTitle from './AnimatedTitle';
+import SearchModal from './SearchModal';
 
 export default function Navigation() {
   const { data: session, status } = useSession();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
   const selectedWork = useRecoilValue(selectedWorkState);
   const selectedMovement = useRecoilValue(selectedMovementState);
@@ -115,11 +117,14 @@ export default function Navigation() {
 
           {/* Search & CTA */}
           <div className="hidden lg:flex items-center space-x-3">
-            <button className={`p-2 rounded-lg transition-colors ${
-              shouldShowScrolledStyle
-                ? 'hover:bg-primary-50 text-primary-700'
-                : 'hover:bg-white/20 text-white'
-            }`}>
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className={`p-2 rounded-lg transition-colors ${
+                shouldShowScrolledStyle
+                  ? 'hover:bg-primary-50 text-primary-700'
+                  : 'hover:bg-white/20 text-white'
+              }`}
+            >
               <MdSearch className="h-5 w-5" />
             </button>
             {status === 'authenticated' ? (
@@ -231,6 +236,9 @@ export default function Navigation() {
           </div>
         )}
       </div>
+
+      {/* Search Modal */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </nav>
   );
 }

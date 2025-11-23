@@ -114,6 +114,7 @@ export default function WorksPage() {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(work =>
         work.title.toLowerCase().includes(query) ||
+        work.titleEn?.toLowerCase().includes(query) ||
         work.catalogNumber?.toLowerCase().includes(query) ||
         work.description.toLowerCase().includes(query)
       );
