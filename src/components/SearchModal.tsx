@@ -159,7 +159,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                       </div>
                       <div className="flex items-center gap-2.5 flex-shrink-0">
                         {work.catalogNumber && (
-                          <span className="text-xs text-gray-500 font-mono">
+                          <span className="text-xs text-gray-500 font-mono px-2 py-0.5 bg-gray-100 rounded">
                             {work.catalogNumber}
                           </span>
                         )}
