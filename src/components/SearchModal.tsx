@@ -48,7 +48,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         )
         if (response.ok) {
           const data = await response.json()
-          setResults(data.works || [])
+          setResults(data.data?.works || [])
           setSelectedIndex(0)
         }
       } catch (error) {
