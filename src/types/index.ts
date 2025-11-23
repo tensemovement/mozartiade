@@ -177,6 +177,7 @@ export interface ChronologyItem {
   sheetMusicUrl?: string;
   compositionDetails?: string;
   voteCount?: number; // 투표/좋아요 수
+  likesCount?: number; // 좋아요 수
   behindStory?: string;
   usageExamples?: string[];
   movements?: Movement[];

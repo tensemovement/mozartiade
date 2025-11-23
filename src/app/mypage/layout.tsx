@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -52,31 +51,6 @@ export default function MyPageLayout({
       <div className="min-h-screen bg-gray-50 pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
-            {/* 헤더 */}
-            <div className="bg-white rounded-2xl shadow-md p-6 mb-6">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
-                  {session.user.image ? (
-                    <Image
-                      src={session.user.image}
-                      alt={session.user.name || '프로필'}
-                      width={64}
-                      height={64}
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <MdPerson className="text-4xl text-primary-600" />
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h1 className="text-2xl font-bold text-gray-900 mb-1">
-                    {session.user.name || '사용자'}
-                  </h1>
-                  <p className="text-gray-600 truncate">{session.user.email}</p>
-                </div>
-              </div>
-            </div>
-
             {/* 메인 레이아웃 - 좌측 사이드바 + 우측 컨텐츠 */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
               {/* 좌측 사이드바 */}

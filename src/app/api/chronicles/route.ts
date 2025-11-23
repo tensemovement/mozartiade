@@ -28,6 +28,7 @@ export async function GET(request: Request) {
             sheetMusicUrl: true,
             compositionDetails: true,
             voteCount: true,
+            likesCount: true,
             image: true,
           }
         }
@@ -73,6 +74,7 @@ export async function GET(request: Request) {
           sheetMusicUrl: work?.sheetMusicUrl,
           compositionDetails: work?.compositionDetails,
           voteCount: work?.voteCount,
+          likesCount: work?.likesCount,
           highlight: chronicle.highlight,
           image: chronicle.image || work?.image,
         };
