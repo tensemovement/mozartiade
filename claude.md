@@ -146,10 +146,64 @@ Input: "w-full px-4 py-3 rounded-lg border-2 border-primary-200
 
 ### 로딩 상태
 ```
-"Include loading skeletons instead of spinners"
+RULE: Use unified LoadingSpinner component for all loading indicators
+
+✅ CORRECT:
+import LoadingSpinner from '@/components/LoadingSpinner'
+
+{isLoading && (
+  <LoadingSpinner size="md" message="로딩 중..." />
+)}
+
+❌ INCORRECT:
+{isLoading && (
+  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+)}
+
+📝 AVAILABLE SIZES:
+- sm: 8x8 (small, inline loading)
+- md: 12x12 (medium, section loading)
+- lg: 16x16 (large, full-page loading)
+
+🎯 BENEFITS:
+- Consistent loading UI across the application
+- Single source of truth for loading spinner design
+- Easy to update globally
+- Maintains design system compliance
+- Proper spacing and messaging
+
+💡 USAGE EXAMPLES:
+
+// Full page loading
+<div className="min-h-screen flex items-center justify-center">
+  <LoadingSpinner size="lg" message="페이지를 불러오는 중..." />
+</div>
+
+// Section loading
+{isLoading ? (
+  <LoadingSpinner size="md" message="데이터를 불러오는 중..." />
+) : (
+  <DataContent />
+)}
+
+// Small inline loading
+<LoadingSpinner size="sm" message="처리 중..." className="my-4" />
+
+// Loading without message
+<LoadingSpinner size="md" />
+
+⚠️ WHEN TO USE SKELETONS INSTEAD:
+- For content-heavy pages where layout is important
+- When you want to show the structure while loading
 - Use shimmer animation: animate-pulse
 - Preserve layout to prevent layout shift
 - Gray placeholder blocks matching content structure
+
+🎨 LOADING SPINNER DESIGN:
+- Color: border-primary-600 (brand color)
+- Animation: animate-spin (smooth rotation)
+- Style: border-b-2 (partial border for modern look)
+- Message: Optional text in gray-500
 ```
 
 ### 접근성

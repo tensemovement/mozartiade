@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFavorite, MdLocationOn, MdMusicNote, MdArticle } from 'react-icons/md';
@@ -230,12 +231,7 @@ export default function ChronologyPage() {
             <div className="max-w-5xl mx-auto">
               {/* Loading State */}
               {isLoading && (
-                <div className="flex items-center justify-center py-20">
-                  <div className="text-center">
-                    <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-accent-500 border-r-transparent"></div>
-                    <p className="mt-4 text-gray-600">연대기를 불러오는 중...</p>
-                  </div>
-                </div>
+                <LoadingSpinner size="md" message="연대기를 불러오는 중..." />
               )}
 
               {/* Empty State */}

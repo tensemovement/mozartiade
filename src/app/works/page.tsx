@@ -7,9 +7,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
-import { MdFullscreen, MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle } from 'react-icons/md';
+import { MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle, MdVisibility } from 'react-icons/md';
 import { Work } from '@/types';
 import { GENRE_OPTIONS, getGenreLabel, GenreCode, INSTRUMENT_OPTIONS, InstrumentCode, getInstrumentLabel } from '@/lib/constants';
 
@@ -329,10 +330,7 @@ export default function WorksPage() {
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           {isLoading ? (
-            <div className="text-center py-20">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
-              <p className="text-gray-500 text-lg">작품 목록을 불러오는 중...</p>
-            </div>
+            <LoadingSpinner size="lg" message="작품 목록을 불러오는 중..." />
           ) : error ? (
             <div className="text-center py-20">
               <MdSentimentDissatisfied className="h-16 w-16 mx-auto text-red-400 mb-4" />
@@ -348,10 +346,10 @@ export default function WorksPage() {
             /* Grid View */
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredWorks.map((work) => (
-                <div
+                <Link
                   key={work.id}
+                  href={`/works/${work.id}`}
                   className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 border border-gray-100"
-                  onClick={() => setSelectedWork({ ...work, type: 'work' as const })}
                 >
                   {/* Header with K number */}
                   <div className="relative h-28 bg-gray-100 flex items-center justify-center overflow-hidden">
@@ -378,17 +376,18 @@ export default function WorksPage() {
                         {getGenreLabel(work.genre)}
                       </div>
                     )}
-                    {/* Detail page button - Top Right */}
-                    <Link
-                      href={`/works/${work.id}`}
+                    {/* Panel open button - Top Right */}
+                    <button
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
+                        setSelectedWork({ ...work, type: 'work' as const });
                       }}
                       className="absolute top-3 right-3 p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-md z-10"
-                      title="작품 상세 보기"
+                      title="작품 패널 열기"
                     >
-                      <MdFullscreen className="h-4 w-4" />
-                    </Link>
+                      <MdVisibility className="h-4 w-4" />
+                    </button>
                     {/* Vote count badge */}
                     {work.voteCount && (
                       <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
@@ -430,17 +429,17 @@ export default function WorksPage() {
 
                   {/* Bottom accent */}
                   <div className="h-1 bg-gradient-to-r from-primary-600 to-secondary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
             /* List View */
             <div className="space-y-3">
               {filteredWorks.map((work) => (
-                <div
+                <Link
                   key={work.id}
-                  className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-gray-100 hover:border-primary-300"
-                  onClick={() => setSelectedWork({ ...work, type: 'work' as const })}
+                  href={`/works/${work.id}`}
+                  className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer border border-gray-100 hover:border-primary-300 block"
                 >
                   <div className="flex items-center gap-4 p-4">
                     {/* Left: K Number & Year */}
@@ -491,22 +490,23 @@ export default function WorksPage() {
                           <MdArticle className="h-3 w-3" />
                         </div>
                       )}
-                      <Link
-                        href={`/works/${work.id}`}
+                      <button
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
+                          setSelectedWork({ ...work, type: 'work' as const });
                         }}
                         className="p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all hover:scale-110 shadow-sm"
-                        title="작품 상세 보기"
+                        title="작품 패널 열기"
                       >
-                        <MdFullscreen className="h-4 w-4" />
-                      </Link>
+                        <MdVisibility className="h-4 w-4" />
+                      </button>
                     </div>
                   </div>
 
                   {/* Bottom accent */}
                   <div className="h-0.5 bg-gradient-to-r from-primary-600 to-secondary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

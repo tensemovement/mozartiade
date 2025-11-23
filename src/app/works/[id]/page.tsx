@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { useRecoilState } from 'recoil';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import WorkPanel from '@/components/WorkPanel';
 import MovementPanel from '@/components/MovementPanel';
 import { Work, Movement, RelatedLink } from '@/types';
@@ -113,10 +114,7 @@ export default function WorkDetailPage({ params }: PageProps) {
       <>
         <Navigation />
         <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-500 text-lg">작품 정보를 불러오는 중...</p>
-          </div>
+          <LoadingSpinner size="lg" message="작품 정보를 불러오는 중..." />
         </div>
       </>
     );

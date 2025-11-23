@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { Work } from '@/types';
 import { MdPerson, MdFavorite, MdSettings, MdEmail, MdCalendarToday, MdNotifications, MdDelete, MdPlayArrow } from 'react-icons/md';
 import { getGenreLabel } from '@/lib/constants';
@@ -60,10 +61,7 @@ export default function ProfilePage() {
       <>
         <Navigation />
         <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-500 text-lg">로딩 중...</p>
-          </div>
+          <LoadingSpinner size="lg" message="로딩 중..." />
         </div>
       </>
     );
@@ -202,10 +200,7 @@ export default function ProfilePage() {
                         좋아하는 작품 ({likedWorks.length})
                       </h2>
                       {isLoading ? (
-                        <div className="text-center py-12">
-                          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-                          <p className="text-gray-500">로딩 중...</p>
-                        </div>
+                        <LoadingSpinner size="md" message="로딩 중..." />
                       ) : likedWorks.length === 0 ? (
                         <div className="text-center py-12">
                           <MdFavorite className="text-6xl text-gray-300 mx-auto mb-4" />

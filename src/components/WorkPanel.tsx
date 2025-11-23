@@ -56,7 +56,39 @@ export default function WorkPanel() {
   const getYoutubeEmbedUrl = (url: string) => {
     const videoIdMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
     if (videoIdMatch && videoIdMatch[1]) {
-      return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
+      const videoId = videoIdMatch[1];
+
+      // Extract t parameter (timestamp) from URL
+      const urlObj = new URL(url.includes('://') ? url : `https://${url}`);
+      const tParam = urlObj.searchParams.get('t');
+
+      let embedUrl = `https://www.youtube.com/embed/${videoId}`;
+
+      if (tParam) {
+        // Convert t parameter to seconds
+        // Support formats: 123, 1m30s, 1h2m3s
+        let seconds = 0;
+
+        if (/^\d+$/.test(tParam)) {
+          // Pure number (seconds)
+          seconds = parseInt(tParam, 10);
+        } else {
+          // Parse format like 1h2m3s or 1m30s
+          const hours = tParam.match(/(\d+)h/);
+          const minutes = tParam.match(/(\d+)m/);
+          const secs = tParam.match(/(\d+)s/);
+
+          if (hours) seconds += parseInt(hours[1], 10) * 3600;
+          if (minutes) seconds += parseInt(minutes[1], 10) * 60;
+          if (secs) seconds += parseInt(secs[1], 10);
+        }
+
+        if (seconds > 0) {
+          embedUrl += `?start=${seconds}`;
+        }
+      }
+
+      return embedUrl;
     }
     return null;
   };
