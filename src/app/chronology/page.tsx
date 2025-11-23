@@ -321,10 +321,10 @@ export default function ChronologyPage() {
                                       {getGenreLabel(item.genre)}
                                     </span>
                                   )}
-                                  {item.type === 'work' && item.voteCount && (
+                                  {item.type === 'work' && item.likesCount !== undefined && item.likesCount > 0 && (
                                     <span className="px-2 py-0.5 bg-rose-100 text-rose-800 border border-rose-200 rounded text-xs font-sans font-medium flex items-center gap-1">
                                       <MdFavorite className="h-3 w-3" />
-                                      {formatVoteCount(item.voteCount)}
+                                      {formatVoteCount(item.likesCount)}
                                     </span>
                                   )}
                                   {item.youtubeUrl && (
