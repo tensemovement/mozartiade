@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { MdSearch, MdClose } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
 import { getGenreLabel } from '@/lib/constants'
@@ -24,8 +25,15 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [results, setResults] = useState<Work[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [mounted, setMounted] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+
+  // Check if component is mounted (client-side only)
+  useEffect(() => {
+    setMounted(true)
+    return () => setMounted(false)
+  }, [])
 
   // Focus input when modal opens
   useEffect(() => {
@@ -88,9 +96,9 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     setResults([])
   }
 
-  if (!isOpen) return null
+  if (!isOpen || !mounted) return null
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[100] flex items-start justify-center bg-black/50 backdrop-blur-md pt-20"
       onClick={onClose}
@@ -187,6 +195,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
