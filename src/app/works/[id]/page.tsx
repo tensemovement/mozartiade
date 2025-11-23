@@ -190,7 +190,7 @@ export default function WorkDetailPage({ params }: PageProps) {
 
             {/* 작품 기본 정보 - 컴팩트 */}
             <div className="mb-6 p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                 {work.compositionLocation && (
                   <div>
                     <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">작곡 장소</h3>
@@ -200,13 +200,6 @@ export default function WorkDetailPage({ params }: PageProps) {
                 <div>
                   <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">작곡 일자</h3>
                   <p className="text-white font-medium">{formatDate()}</p>
-                </div>
-                <div>
-                  <h3 className="text-xs font-semibold text-white/60 uppercase mb-1">좋아요</h3>
-                  <p className="text-white font-medium flex items-center gap-1">
-                    <MdFavorite className="text-accent-300" />
-                    {likesCount.toLocaleString()}
-                  </p>
                 </div>
               </div>
 
