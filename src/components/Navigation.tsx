@@ -57,7 +57,9 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 z-50 transition-all duration-300 w-full ${
+      className={`fixed top-0 left-0 transition-all duration-300 w-full ${
+        isSearchOpen ? 'z-10' : 'z-50'
+      } ${
         isPanelOpen ? 'md:w-[66.666667%]' : ''
       } ${
         shouldShowScrolledStyle
