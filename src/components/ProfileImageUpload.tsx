@@ -146,9 +146,6 @@ export default function ProfileImageUpload({ value, onChange, userName }: Profil
                 ) : (
                   <MdCloudUpload className={`w-12 h-12 transition ${isDragging ? 'text-primary-600 scale-110' : 'text-gray-400'}`} />
                 )}
-                <p className={`mt-2 text-xs text-center px-2 transition ${isDragging ? 'text-primary-700 font-medium' : 'text-gray-500'}`}>
-                  {isDragging ? '여기에 놓으세요' : '클릭 또는 드래그'}
-                </p>
               </div>
             )}
           </label>
