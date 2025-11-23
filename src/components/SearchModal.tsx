@@ -100,7 +100,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex items-start justify-center bg-black/50 backdrop-blur-md pt-20"
+      className="fixed inset-0 z-[100] flex items-start justify-center bg-black/30 backdrop-blur-sm pt-20"
       onClick={onClose}
     >
       <div
