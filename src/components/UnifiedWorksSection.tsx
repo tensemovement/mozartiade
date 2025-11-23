@@ -23,7 +23,7 @@ export default function UnifiedWorksSection() {
     async function fetchFeaturedWorks() {
       try {
         setIsLoading(true);
-        const response = await fetch('/api/works?highlight=true&limit=6&sort=voteCount&order=desc');
+        const response = await fetch('/api/works?highlight=true&limit=6&sort=likesCount&order=desc');
         const result = await response.json();
 
         if (result.success) {
@@ -173,11 +173,11 @@ export default function UnifiedWorksSection() {
                   >
                     <MdVisibility className="h-4 w-4" />
                   </button>
-                  {/* Vote count badge */}
-                  {work.voteCount && (
+                  {/* Likes count badge */}
+                  {work.likesCount !== undefined && work.likesCount > 0 && (
                     <div className="absolute bottom-4 left-4 px-3 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
                       <MdFavorite className="h-3 w-3" />
-                      {formatVoteCount(work.voteCount)}
+                      {formatVoteCount(work.likesCount)}
                     </div>
                   )}
                   {/* Right bottom badges: Music & Sheet Music */}
