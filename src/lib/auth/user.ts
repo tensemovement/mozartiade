@@ -46,6 +46,8 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
+          image: user.image,
+          provider: user.provider,
         };
       },
     }),
@@ -57,15 +59,61 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
+        token.image = user.image;
+        token.provider = (user as any).provider;
       }
+
+      // When session is updated (e.g., profile image changed)
+      if (trigger === 'update' && session) {
+        // Fetch latest user data from database
+        const updatedUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            provider: true,
+          },
+        });
+
+        if (updatedUser) {
+          token.name = updatedUser.name;
+          token.email = updatedUser.email;
+          token.image = updatedUser.image;
+          token.provider = updatedUser.provider;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        session.user.image = token.image as string | null;
+        (session.user as any).provider = token.provider as string;
+
+        // Fetch latest user data to ensure session is always up-to-date
+        const user = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            provider: true,
+          },
+        });
+
+        if (user) {
+          session.user.name = user.name;
+          session.user.email = user.email!;
+          session.user.image = user.image;
+          (session.user as any).provider = user.provider;
+        }
       }
       return session;
     },
