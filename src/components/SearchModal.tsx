@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { MdSearch, MdClose } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
+import { getGenreLabel } from '@/lib/constants'
 
 interface Work {
   id: string
@@ -162,18 +163,13 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             {work.catalogNumber}
                           </span>
                         )}
-                        {work.year && (
-                          <span className="text-xs text-gray-500">
-                            {work.year}
+                        {work.genre && (
+                          <span className="text-xs text-gray-500 px-2 py-0.5 bg-gray-100 rounded">
+                            {getGenreLabel(work.genre)}
                           </span>
                         )}
                       </div>
                     </div>
-                    {work.genre && (
-                      <p className="text-xs text-gray-500 mt-0.5">
-                        {work.genre}
-                      </p>
-                    )}
                   </button>
                 </li>
               ))}
