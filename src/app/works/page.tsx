@@ -388,11 +388,11 @@ export default function WorksPage() {
                     >
                       <MdVisibility className="h-4 w-4" />
                     </button>
-                    {/* Vote count badge */}
-                    {work.voteCount && (
+                    {/* Likes count badge */}
+                    {work.likesCount !== undefined && work.likesCount > 0 && (
                       <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-rose-100/90 backdrop-blur-sm text-rose-800 rounded-full font-sans text-xs font-semibold z-10 shadow-sm flex items-center gap-1">
                         <MdFavorite className="h-3 w-3" />
-                        {formatVoteCount(work.voteCount)}
+                        {formatVoteCount(work.likesCount)}
                       </div>
                     )}
                     {/* Right bottom badges: Music & Sheet Music */}
@@ -472,12 +472,12 @@ export default function WorksPage() {
                       )}
                     </div>
 
-                    {/* Right: Actions & Vote Count */}
+                    {/* Right: Actions & Likes Count */}
                     <div className="flex-shrink-0 flex items-center gap-3">
-                      {work.voteCount && (
+                      {work.likesCount !== undefined && work.likesCount > 0 && (
                         <div className="flex items-center gap-1 px-2.5 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-semibold">
                           <MdFavorite className="h-3 w-3" />
-                          {formatVoteCount(work.voteCount)}
+                          {formatVoteCount(work.likesCount)}
                         </div>
                       )}
                       {work.youtubeUrl && (
