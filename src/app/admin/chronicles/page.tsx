@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import toast, { Toaster } from 'react-hot-toast';
@@ -130,7 +130,7 @@ function SortableChronicleRow({ chronicle, onEdit, onDelete, isDraggable }: {
   );
 }
 
-export default function ChroniclesManagementPage() {
+function ChroniclesManagementContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -625,5 +625,26 @@ export default function ChroniclesManagementPage() {
         type="danger"
       />
     </AdminProtectedRoute>
+  );
+}
+
+export default function ChroniclesManagementPage() {
+  return (
+    <Suspense fallback={
+      <AdminProtectedRoute>
+        <div className="flex">
+          <AdminSidebar />
+          <div className="flex-1 ml-64 h-screen overflow-y-auto">
+            <div className="p-8">
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-slate-900 border-t-transparent"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AdminProtectedRoute>
+    }>
+      <ChroniclesManagementContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute';
 import AdminSidebar from '@/components/admin/AdminSidebar';
@@ -12,7 +12,7 @@ import { useAdminApi } from '@/hooks/useAdminApi';
 import { User } from '@/types';
 import { MdEdit, MdDelete, MdSearch, MdPeople } from 'react-icons/md';
 
-export default function UsersManagementPage() {
+function UsersManagementContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -293,5 +293,26 @@ export default function UsersManagementPage() {
         type="danger"
       />
     </AdminProtectedRoute>
+  );
+}
+
+export default function UsersManagementPage() {
+  return (
+    <Suspense fallback={
+      <AdminProtectedRoute>
+        <div className="flex">
+          <AdminSidebar />
+          <div className="flex-1 ml-64 h-screen overflow-y-auto">
+            <div className="p-8">
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-slate-900 border-t-transparent"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AdminProtectedRoute>
+    }>
+      <UsersManagementContent />
+    </Suspense>
   );
 }

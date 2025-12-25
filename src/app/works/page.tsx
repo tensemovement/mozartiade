@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Suspense } from 'react';
 import { useAppStore } from '@/store/store';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
@@ -13,7 +13,7 @@ import { MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, 
 import { Work } from '@/types';
 import { GENRE_OPTIONS, getGenreLabel, GenreCode, INSTRUMENT_OPTIONS, InstrumentCode, getInstrumentLabel } from '@/lib/constants';
 
-export default function WorksPage() {
+function WorksPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const setSelectedWork = useAppStore((state) => state.setSelectedWork);
@@ -523,5 +523,20 @@ export default function WorksPage() {
         }
       `}</style>
     </>
+  );
+}
+
+export default function WorksPage() {
+  return (
+    <Suspense fallback={
+      <>
+        <Navigation />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-600 border-t-transparent"></div>
+        </div>
+      </>
+    }>
+      <WorksPageContent />
+    </Suspense>
   );
 }
