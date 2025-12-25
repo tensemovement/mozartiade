@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { selectedWorkState, selectedMovementState } from '@/store/atoms';
+import { useAppStore } from '@/store/store';
 import { MdSearch, MdMenu, MdClose, MdPerson, MdExitToApp } from 'react-icons/md';
 import AnimatedTitle from './AnimatedTitle';
 import SearchModal from './SearchModal';
@@ -17,8 +16,8 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
-  const selectedWork = useRecoilValue(selectedWorkState);
-  const selectedMovement = useRecoilValue(selectedMovementState);
+  const selectedWork = useAppStore((state) => state.selectedWork);
+  const selectedMovement = useAppStore((state) => state.selectedMovement);
 
   // 어느 패널이라도 열려있으면 true
   const isPanelOpen = selectedWork !== null || selectedMovement !== null;

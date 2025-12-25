@@ -1,14 +1,13 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useAppStore } from '@/store/store';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFavorite, MdSearch, MdSentimentDissatisfied, MdGridView, MdViewList, MdMusicNote, MdArticle, MdVisibility } from 'react-icons/md';
 import { Work } from '@/types';
@@ -17,7 +16,7 @@ import { GENRE_OPTIONS, getGenreLabel, GenreCode, INSTRUMENT_OPTIONS, Instrument
 export default function WorksPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [selectedWork, setSelectedWork] = useRecoilState(selectedWorkState);
+  const setSelectedWork = useAppStore((state) => state.setSelectedWork);
 
   // Initialize state from URL parameters
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');

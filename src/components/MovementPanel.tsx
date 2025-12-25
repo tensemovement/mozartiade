@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { selectedMovementState, selectedWorkState } from '@/store/atoms';
+import { useAppStore } from '@/store/store';
 import { MdClose, MdPlayArrow, MdPerson, MdStars } from 'react-icons/md';
 
 export default function MovementPanel() {
-  const [movement, setMovement] = useRecoilState(selectedMovementState);
-  const [, setSelectedWork] = useRecoilState(selectedWorkState);
-  const selectedWork = useRecoilValue(selectedWorkState);
+  const movement = useAppStore((state) => state.selectedMovement);
+  const setMovement = useAppStore((state) => state.setSelectedMovement);
+  const selectedWork = useAppStore((state) => state.selectedWork);
+  const setSelectedWork = useAppStore((state) => state.setSelectedWork);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const prevWorkRef = useRef(selectedWork);

@@ -280,9 +280,8 @@ src/
 ├── lib/                  # Utility functions
 │   ├── utils.ts
 │   └── prisma.ts
-├── store/                # Recoil state management
-│   ├── atoms/
-│   └── selectors/
+├── store/                # Zustand state management
+│   └── store.ts          # Global store
 ├── styles/               # Global styles
 │   └── globals.css
 └── types/                # TypeScript types
@@ -369,8 +368,22 @@ export function useDebounce<T>(value: T, delay: number): T {
 - **CSS Modules** for component-specific styles (optional)
 
 ### State Management
-- **Recoil** for global state
+- **Zustand** for global state
 - React hooks for local state
+
+### Zustand 사용법
+```tsx
+import { useAppStore } from '@/store/store';
+
+// 값 읽기 (selector로 구독)
+const selectedWork = useAppStore((state) => state.selectedWork);
+
+// 액션 가져오기
+const setSelectedWork = useAppStore((state) => state.setSelectedWork);
+
+// 사용
+setSelectedWork(work);
+```
 
 ### Database & ORM
 - **Supabase** (PostgreSQL)
@@ -604,5 +617,5 @@ NEXT_PUBLIC_API_URL="https://..."
 
 ---
 
-**Last Updated:** 2025-11-05
-**Version:** 1.0.0
+**Last Updated:** 2025-12-25
+**Version:** 1.1.0

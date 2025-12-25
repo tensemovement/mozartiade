@@ -11,7 +11,7 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log('Seeding admin user...');
 
-  // Hash the password
+// Hash the password
   const hashedPassword = await bcrypt.hash('admin123', 10);
 
   // Create super admin
