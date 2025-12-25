@@ -7,9 +7,10 @@ import { ApiResponse, Admin, AdminUpdateRequest } from '@/types';
 // PUT - Update admin
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -38,7 +39,7 @@ export async function PUT(
 
     // Check if admin exists
     const existingAdmin = await prisma.admin.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingAdmin) {
@@ -79,7 +80,7 @@ export async function PUT(
 
     // Update admin
     const admin = await prisma.admin.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       select: {
         id: true,
@@ -113,9 +114,10 @@ export async function PUT(
 // DELETE - Delete admin
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -140,7 +142,7 @@ export async function DELETE(
     }
 
     // Prevent self-deletion
-    if (authResult.admin.id === params.id) {
+    if (authResult.admin.id === id) {
       return NextResponse.json(
         {
           success: false,
@@ -152,7 +154,7 @@ export async function DELETE(
 
     // Check if admin exists
     const existingAdmin = await prisma.admin.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingAdmin) {
@@ -167,7 +169,7 @@ export async function DELETE(
 
     // Delete admin
     await prisma.admin.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(

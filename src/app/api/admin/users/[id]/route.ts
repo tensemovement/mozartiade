@@ -6,9 +6,10 @@ import { ApiResponse, User } from '@/types';
 // PUT - Update user
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -37,7 +38,7 @@ export async function PUT(
 
     // Check if user exists
     const existingUser = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingUser) {
@@ -73,7 +74,7 @@ export async function PUT(
     if (name !== undefined) updateData.name = name;
 
     const user = await prisma.user.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
     });
 
@@ -99,9 +100,10 @@ export async function PUT(
 // DELETE - Delete user
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -127,7 +129,7 @@ export async function DELETE(
 
     // Check if user exists
     const existingUser = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingUser) {
@@ -142,7 +144,7 @@ export async function DELETE(
 
     // Delete user
     await prisma.user.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(

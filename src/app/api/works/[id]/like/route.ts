@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 // 좋아요 토글 (추가/제거)
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -18,7 +18,7 @@ export async function POST(
       );
     }
 
-    const workId = params.id;
+    const { id: workId } = await params;
     const userEmail = session.user.email;
 
     // 사용자 찾기
@@ -113,7 +113,7 @@ export async function POST(
 // 좋아요 상태 조회
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -122,7 +122,7 @@ export async function GET(
       return NextResponse.json({ liked: false, likesCount: 0 });
     }
 
-    const workId = params.id;
+    const { id: workId } = await params;
     const userEmail = session.user.email;
 
     // 사용자 찾기

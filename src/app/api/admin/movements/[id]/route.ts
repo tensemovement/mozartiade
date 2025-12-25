@@ -6,9 +6,10 @@ import { ApiResponse, Movement } from '@/types';
 // PUT - Update movement
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -36,7 +37,7 @@ export async function PUT(
 
     // Check if movement exists
     const existingMovement = await prisma.movement.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingMovement) {
@@ -51,7 +52,7 @@ export async function PUT(
 
     // Update movement
     const movement = await prisma.movement.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         order: body.order,
         title: body.title,
@@ -85,9 +86,10 @@ export async function PUT(
 // DELETE - Delete movement
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -113,7 +115,7 @@ export async function DELETE(
 
     // Check if movement exists
     const existingMovement = await prisma.movement.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingMovement) {
@@ -128,7 +130,7 @@ export async function DELETE(
 
     // Delete movement
     await prisma.movement.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(

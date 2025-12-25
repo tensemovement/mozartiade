@@ -7,9 +7,10 @@ import { withTransaction } from '@/lib/transaction';
 // GET - Get single chronicle
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -23,7 +24,7 @@ export async function GET(
     }
 
     const chronicle = await prisma.chronicle.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         work: {
           select: {
@@ -68,9 +69,10 @@ export async function GET(
 // PUT - Update chronicle
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -98,7 +100,7 @@ export async function PUT(
 
     // Check if chronicle exists
     const existingChronicle = await prisma.chronicle.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingChronicle) {
@@ -126,7 +128,7 @@ export async function PUT(
 
       // Update chronicle
       return await tx.chronicle.update({
-        where: { id: params.id },
+        where: { id },
         data: {
           type: body.type,
           year: body.year,
@@ -175,9 +177,10 @@ export async function PUT(
 // DELETE - Delete chronicle
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -203,7 +206,7 @@ export async function DELETE(
 
     // Check if chronicle exists
     const existingChronicle = await prisma.chronicle.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingChronicle) {
@@ -218,7 +221,7 @@ export async function DELETE(
 
     // Delete chronicle
     await prisma.chronicle.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(

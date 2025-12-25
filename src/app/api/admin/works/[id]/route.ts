@@ -7,9 +7,10 @@ import { withTransaction } from '@/lib/transaction';
 // GET - Get single work
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -23,7 +24,7 @@ export async function GET(
     }
 
     const work = await prisma.work.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         movements: {
           orderBy: {
@@ -70,9 +71,10 @@ export async function GET(
 // PUT - Update work with all related data in a transaction
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -107,7 +109,7 @@ export async function PUT(
 
     // Check if work exists
     const existingWork = await prisma.work.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingWork) {
@@ -127,7 +129,7 @@ export async function PUT(
         await tx.movement.deleteMany({
           where: {
             id: { in: deletedMovementIds },
-            workId: params.id, // Ensure movements belong to this work
+            workId: id, // Ensure movements belong to this work
           },
         });
       }
@@ -137,7 +139,7 @@ export async function PUT(
         await tx.relatedLink.deleteMany({
           where: {
             id: { in: deletedRelatedLinkIds },
-            workId: params.id, // Ensure links belong to this work
+            workId: id, // Ensure links belong to this work
           },
         });
       }
@@ -162,7 +164,7 @@ export async function PUT(
           // Create new movement
           await tx.movement.create({
             data: {
-              workId: params.id,
+              workId: id,
               order: movement.order,
               title: movement.title,
               titleEn: movement.titleEn,
@@ -192,7 +194,7 @@ export async function PUT(
           // Create new link
           await tx.relatedLink.create({
             data: {
-              workId: params.id,
+              workId: id,
               title: link.title,
               url: link.url,
               description: link.description,
@@ -204,7 +206,7 @@ export async function PUT(
 
       // 5. Update work (last to ensure all related data is consistent)
       return await tx.work.update({
-        where: { id: params.id },
+        where: { id },
         data: {
           catalogNumber: workData.catalogNumber,
           catalogNumberNumeric: workData.catalogNumberNumeric,
@@ -268,9 +270,10 @@ export async function PUT(
 // DELETE - Delete work
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -296,7 +299,7 @@ export async function DELETE(
 
     // Check if work exists
     const existingWork = await prisma.work.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingWork) {
@@ -311,7 +314,7 @@ export async function DELETE(
 
     // Delete work (movements will be cascade deleted)
     await prisma.work.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(

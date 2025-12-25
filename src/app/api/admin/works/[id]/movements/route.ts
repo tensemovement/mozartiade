@@ -6,9 +6,10 @@ import { ApiResponse, Movement } from '@/types';
 // POST - Create movement for a work
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authResult = verifyAdminAuth(req);
 
     if (!authResult.authenticated || !authResult.admin) {
@@ -37,7 +38,7 @@ export async function POST(
 
     // Check if work exists
     const work = await prisma.work.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!work) {
@@ -53,7 +54,7 @@ export async function POST(
     // Create movement
     const movement = await prisma.movement.create({
       data: {
-        workId: params.id,
+        workId: id,
         order,
         title,
         titleEn,

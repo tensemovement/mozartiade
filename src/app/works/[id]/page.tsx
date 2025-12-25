@@ -1,6 +1,6 @@
 'use client';
 
-import { notFound, useRouter } from 'next/navigation';
+import { notFound, useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -16,14 +16,9 @@ import { MdPlayArrow, MdClose, MdFavorite, MdFavoriteBorder, MdShare, MdMusicNot
 import { getGenreLabel, getInstrumentLabels } from '@/lib/constants';
 import toast from 'react-hot-toast';
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default function WorkDetailPage({ params }: PageProps) {
+export default function WorkDetailPage() {
   const router = useRouter();
+  const params = useParams<{ id: string }>();
   const { data: session, status } = useSession();
   const [work, setWork] = useState<Work | null>(null);
   const [isLoading, setIsLoading] = useState(true);
