@@ -1,8 +1,33 @@
 import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
 import * as fs from 'fs'
 import * as path from 'path'
+import 'dotenv/config'
 
-const prisma = new PrismaClient()
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+const adapter = new PrismaPg(pool)
+const prisma = new PrismaClient({ adapter })
+
+// Genre mapping from Korean to Prisma enum
+const genreMap: Record<string, string> = {
+  '교향곡': 'SYMPHONY',
+  '관현악곡': 'ORCHESTRAL',
+  '협주곡': 'CONCERTO',
+  '실내악': 'CHAMBER',
+  '독주곡': 'SOLO',
+  '성악곡': 'VOCAL',
+  '오페라': 'OPERA',
+  '종교음악': 'RELIGIOUS',
+  '무곡': 'DANCE',
+  '기타': 'OTHER',
+  '초기작': 'OTHER',
+}
+
+function mapGenre(genre?: string): string | undefined {
+  if (!genre) return undefined
+  return genreMap[genre] || 'OTHER'
+}
 
 interface SeedWork {
   catalogNumber?: string
@@ -100,7 +125,7 @@ async function main() {
           title: workData.title,
           titleEn: workData.titleEn,
           description: workData.description,
-          genre: workData.genre,
+          genre: mapGenre(workData.genre) as any,
           youtubeUrl: workData.youtubeUrl,
           sheetMusicUrl: workData.sheetMusicUrl,
           compositionDetails: workData.compositionDetails,
@@ -127,7 +152,6 @@ async function main() {
               character: movementData.character,
               description: movementData.description,
               youtubeUrl: movementData.youtubeUrl,
-              duration: movementData.duration,
               highlights: movementData.highlights,
             },
           })
