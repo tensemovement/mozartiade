@@ -114,7 +114,7 @@ export default function ContactPage() {
                 </div>
                 <h3 className="font-semibold text-primary-900 mb-2">이메일</h3>
                 <p className="text-sm text-primary-600">
-                  support@mozartiade.com
+                  support@mozartia.de
                 </p>
               </div>
 

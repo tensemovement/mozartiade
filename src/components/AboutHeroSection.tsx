@@ -25,7 +25,7 @@ export default function AboutHeroSection() {
           <div className="inline-flex items-center px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg mb-8">
             <MdMusicNote className="h-4 w-4 text-primary-800 mr-2" />
             <span className="text-primary-800 font-sans text-sm font-medium">
-              About Mozartiade Portal
+              About Mozartiade
             </span>
           </div>
 

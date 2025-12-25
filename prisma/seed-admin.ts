@@ -11,10 +11,10 @@ async function main() {
 
   // Create super admin
   const admin = await prisma.admin.upsert({
-    where: { email: 'admin@mozartiade.com' },
+    where: { email: 'admin@mozartia.de' },
     update: {},
     create: {
-      email: 'admin@mozartiade.com',
+      email: 'admin@mozartia.de',
       password: hashedPassword,
       name: 'Super Admin',
       role: 'SUPER_ADMIN',
@@ -29,7 +29,7 @@ async function main() {
   });
 
   console.log('\n=== Login Credentials ===');
-  console.log('Email: admin@mozartiade.com');
+  console.log('Email: admin@mozartia.de');
   console.log('Password: admin123');
   console.log('========================\n');
 }

@@ -1,7 +1,7 @@
 # Pull Request: Design System - Mozart-Inspired Classical Theme with Typography
 
 ## 개요
-Mozartiade Portal을 위한 디자인 시스템 구축 및 모차르트에서 영감받은 클래식 테마 적용
+Mozartiade를 위한 디자인 시스템 구축 및 모차르트에서 영감받은 클래식 테마 적용
 
 ## 주요 변경사항
 

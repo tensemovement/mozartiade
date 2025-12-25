@@ -32,7 +32,7 @@ npm run prisma:seed-admin
 
 ### 기본 로그인 정보
 
-- **이메일**: `admin@mozartiade.com`
+- **이메일**: `admin@mozartia.de`
 - **비밀번호**: `admin123`
 - **역할**: SUPER_ADMIN
 

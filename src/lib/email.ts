@@ -173,7 +173,7 @@ export async function sendContactEmail(
   message: string
 ): Promise<boolean> {
   const recipientEmail =
-    process.env.CONTACT_EMAIL || 'support@mozartiade.com';
+    process.env.CONTACT_EMAIL || 'support@mozartia.de';
 
   return await sendEmail({
     to: recipientEmail,

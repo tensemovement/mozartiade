@@ -261,7 +261,7 @@ export default function PrivacyPage() {
                 <p className="text-sm text-white/70">
                   개인정보와 관련하여 궁금하신 사항이나 문의사항이 있으시면 언제든지 연락주시기 바랍니다.
                   <br />
-                  이메일: privacy@mozartiade.com | 전화: 02-1234-5678
+                  이메일: privacy@mozartia.de | 전화: 02-1234-5678
                 </p>
               </div>
             </div>

@@ -190,7 +190,7 @@ export default function FAQPage() {
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <a
-                    href="mailto:support@mozartiade.com"
+                    href="mailto:support@mozartia.de"
                     className="inline-flex items-center gap-2 px-8 py-4 bg-white text-secondary rounded-full font-medium hover:bg-cream transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                   >
                     <FiMail className="w-5 h-5" />
@@ -205,7 +205,7 @@ export default function FAQPage() {
                   <p className="text-sm text-white/70">
                     평일 10:00 - 18:00 (주말 및 공휴일 휴무)
                     <br />
-                    이메일: support@mozartiade.com | 전화: 02-1234-5678
+                    이메일: support@mozartia.de | 전화: 02-1234-5678
                   </p>
                 </div>
               </div>
