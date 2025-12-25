@@ -1,8 +1,13 @@
 "use client";
 
-import { RecoilRoot } from "recoil";
+import dynamic from "next/dynamic";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
+
+const RecoilRoot = dynamic(
+  () => import("recoil").then((mod) => mod.RecoilRoot),
+  { ssr: false }
+);
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

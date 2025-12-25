@@ -47,13 +47,10 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: chronicle,
-      } as ApiResponse<Chronicle>,
-      { status: 200 }
-    );
+    return NextResponse.json({
+      success: true,
+      data: chronicle,
+    });
   } catch (error) {
     console.error('Get chronicle error:', error);
     return NextResponse.json(
@@ -155,13 +152,10 @@ export async function PUT(
       });
     });
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: chronicle,
-      } as ApiResponse<Chronicle>,
-      { status: 200 }
-    );
+    return NextResponse.json({
+      success: true,
+      data: chronicle,
+    });
   } catch (error) {
     console.error('Update chronicle error:', error);
     return NextResponse.json(

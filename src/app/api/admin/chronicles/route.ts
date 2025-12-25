@@ -242,13 +242,10 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: chronicle,
-      } as ApiResponse<Chronicle>,
-      { status: 201 }
-    );
+    return NextResponse.json({
+      success: true,
+      data: chronicle,
+    }, { status: 201 });
   } catch (error) {
     console.error('Create chronicle error:', error);
     return NextResponse.json(
