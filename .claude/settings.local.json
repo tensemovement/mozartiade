@@ -14,7 +14,9 @@
       "Bash(git stash:*)",
       "Bash(git stash pop:*)",
       "Bash(npm uninstall:*)",
-      "Bash(npm run prisma:seed-admin:*)"
+      "Bash(npm run prisma:seed-admin:*)",
+      "Bash(find:*)",
+      "WebSearch"
     ]
   }
 }
