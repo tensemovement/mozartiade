@@ -13,26 +13,36 @@ export default function ComingSoonPage() {
     setMounted(true);
   }, []);
 
-  // 첫 클릭 시 음악 시작
+  // 페이지 진입 시 자동 재생 시도
   useEffect(() => {
-    const startMusic = () => {
-      if (audioRef.current) {
-        audioRef.current.play().then(() => {
-          setIsPlaying(true);
-        }).catch(() => {
-          // 브라우저가 autoplay를 차단한 경우
-        });
+    let mounted = true;
+
+    const tryAutoplay = async () => {
+      if (audioRef.current && mounted) {
+        try {
+          await audioRef.current.play();
+          if (mounted) setIsPlaying(true);
+        } catch {
+          // 브라우저가 autoplay를 차단한 경우, 클릭 시 재생
+          const startOnInteraction = () => {
+            if (audioRef.current) {
+              audioRef.current.play().then(() => {
+                setIsPlaying(true);
+              });
+            }
+            document.removeEventListener('click', startOnInteraction);
+            document.removeEventListener('touchstart', startOnInteraction);
+          };
+          document.addEventListener('click', startOnInteraction);
+          document.addEventListener('touchstart', startOnInteraction);
+        }
       }
-      document.removeEventListener('click', startMusic);
-      document.removeEventListener('touchstart', startMusic);
     };
 
-    document.addEventListener('click', startMusic);
-    document.addEventListener('touchstart', startMusic);
+    tryAutoplay();
 
     return () => {
-      document.removeEventListener('click', startMusic);
-      document.removeEventListener('touchstart', startMusic);
+      mounted = false;
     };
   }, []);
 
