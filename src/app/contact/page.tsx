@@ -31,8 +31,15 @@ export default function ContactPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        // 서버에서 반환한 에러 메시지 사용
-        const errorMessage = data.error || '문의 전송에 실패했습니다. 다시 시도해주세요.';
+        // details에서 구체적인 에러 메시지 추출
+        let errorMessage = data.error || '문의 전송에 실패했습니다. 다시 시도해주세요.';
+
+        if (data.details && Array.isArray(data.details)) {
+          // Zod 에러 메시지 추출
+          const messages = data.details.map((issue: { message: string }) => issue.message);
+          errorMessage = messages.join('\n');
+        }
+
         notifyError(errorMessage);
         throw new Error(errorMessage);
       }
