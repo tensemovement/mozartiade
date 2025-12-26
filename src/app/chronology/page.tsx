@@ -1,19 +1,18 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
+import { useAppStore } from '@/store/store';
 import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { selectedWorkState } from '@/store/atoms';
 import { formatVoteCount } from '@/utils/format';
 import { MdFavorite, MdLocationOn, MdMusicNote, MdArticle } from 'react-icons/md';
 import { ChronologyItem } from '@/types';
 import { getGenreLabel } from '@/lib/constants';
 
 export default function ChronologyPage() {
-  const [selectedWork, setSelectedWork] = useRecoilState(selectedWorkState);
+  const setSelectedWork = useAppStore((state) => state.setSelectedWork);
   const [activeYear, setActiveYear] = useState<number | null>(null);
   const [chronologyData, setChronologyData] = useState<ChronologyItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);

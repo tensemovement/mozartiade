@@ -1,8 +1,7 @@
 'use client';
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import { useRecoilState } from 'recoil';
-import { selectedWorkState } from '@/store/atoms';
+import { useAppStore } from '@/store/store';
 import Image from 'next/image';
 import Link from 'next/link';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -14,7 +13,7 @@ import { getGenreLabel } from '@/lib/constants';
 
 export default function UnifiedWorksSection() {
   const { ref, isVisible } = useScrollAnimation();
-  const [, setSelectedWork] = useRecoilState(selectedWorkState);
+  const setSelectedWork = useAppStore((state) => state.setSelectedWork);
   const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

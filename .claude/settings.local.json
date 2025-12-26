@@ -12,7 +12,9 @@
       "Bash(gh pr create:*)",
       "Bash(gh pr merge:*)",
       "Bash(git stash:*)",
-      "Bash(git stash pop:*)"
+      "Bash(git stash pop:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run prisma:seed-admin:*)"
     ]
   }
 }

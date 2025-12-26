@@ -1,15 +1,4 @@
-import nodemailer from 'nodemailer';
-
-// Email configuration type
-interface EmailConfig {
-  host: string;
-  port: number;
-  secure: boolean;
-  auth: {
-    user: string;
-    pass: string;
-  };
-}
+import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 
 // Email options type
 interface SendEmailOptions {
@@ -19,40 +8,34 @@ interface SendEmailOptions {
   replyTo?: string;
 }
 
-// Create email transporter
-function createTransporter() {
-  // Check if email configuration is available
-  const emailHost = process.env.EMAIL_HOST;
-  const emailPort = process.env.EMAIL_PORT;
-  const emailUser = process.env.EMAIL_USER;
-  const emailPass = process.env.EMAIL_PASS;
+// Create SES client
+function createSESClient(): SESClient | null {
+  const region = process.env.AWS_SES_REGION || process.env.AWS_REGION;
+  const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
-  if (!emailHost || !emailPort || !emailUser || !emailPass) {
+  if (!region || !accessKeyId || !secretAccessKey) {
     console.warn(
-      'Email configuration is missing. Emails will not be sent. Please configure EMAIL_HOST, EMAIL_PORT, EMAIL_USER, and EMAIL_PASS environment variables.'
+      'AWS SES configuration is missing. Emails will not be sent. Please configure AWS_SES_REGION (or AWS_REGION), AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY environment variables.'
     );
     return null;
   }
 
-  const config: EmailConfig = {
-    host: emailHost,
-    port: parseInt(emailPort),
-    secure: parseInt(emailPort) === 465, // true for 465, false for other ports
-    auth: {
-      user: emailUser,
-      pass: emailPass,
+  return new SESClient({
+    region,
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
     },
-  };
-
-  return nodemailer.createTransport(config);
+  });
 }
 
-// Send email function
+// Send email function using AWS SES
 export async function sendEmail(options: SendEmailOptions): Promise<boolean> {
-  const transporter = createTransporter();
+  const sesClient = createSESClient();
 
-  if (!transporter) {
-    console.log('Email transporter not configured. Skipping email send.');
+  if (!sesClient) {
+    console.log('SES client not configured. Skipping email send.');
     console.log('Would have sent email:', {
       to: options.to,
       subject: options.subject,
@@ -61,19 +44,34 @@ export async function sendEmail(options: SendEmailOptions): Promise<boolean> {
     return false;
   }
 
-  try {
-    const info = await transporter.sendMail({
-      from: `"Mozartiade" <${process.env.EMAIL_USER}>`,
-      to: options.to,
-      subject: options.subject,
-      html: options.html,
-      replyTo: options.replyTo,
-    });
+  const fromEmail = process.env.AWS_SES_FROM_EMAIL || 'noreply@mozartia.de';
 
-    console.log('Email sent successfully:', info.messageId);
+  const command = new SendEmailCommand({
+    Source: `Mozartiade <${fromEmail}>`,
+    Destination: {
+      ToAddresses: [options.to],
+    },
+    Message: {
+      Subject: {
+        Charset: 'UTF-8',
+        Data: options.subject,
+      },
+      Body: {
+        Html: {
+          Charset: 'UTF-8',
+          Data: options.html,
+        },
+      },
+    },
+    ReplyToAddresses: options.replyTo ? [options.replyTo] : undefined,
+  });
+
+  try {
+    const response = await sesClient.send(command);
+    console.log('Email sent successfully via AWS SES:', response.MessageId);
     return true;
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error sending email via AWS SES:', error);
     throw error;
   }
 }

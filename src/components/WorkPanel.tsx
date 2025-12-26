@@ -1,17 +1,17 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { selectedWorkState, selectedMovementState } from '@/store/atoms';
+import { useAppStore } from '@/store/store';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MdFullscreen, MdClose, MdLocationOn, MdDescription, MdArticle, MdOpenInNew, MdOndemandVideo, MdFavorite, MdMusicNote } from 'react-icons/md';
 import { getGenreLabel } from '@/lib/constants';
 
 export default function WorkPanel() {
-  const [selectedWork, setSelectedWork] = useRecoilState(selectedWorkState);
-  const [, setSelectedMovement] = useRecoilState(selectedMovementState);
-  const selectedMovement = useRecoilValue(selectedMovementState);
+  const selectedWork = useAppStore((state) => state.selectedWork);
+  const setSelectedWork = useAppStore((state) => state.setSelectedWork);
+  const selectedMovement = useAppStore((state) => state.selectedMovement);
+  const setSelectedMovement = useAppStore((state) => state.setSelectedMovement);
   const [isScrolled, setIsScrolled] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const prevMovementRef = useRef(selectedMovement);

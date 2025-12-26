@@ -1,13 +1,12 @@
 'use client';
 
-import { useRecoilValue } from 'recoil';
-import { selectedWorkState, selectedMovementState } from '@/store/atoms';
+import { useAppStore } from '@/store/store';
 import WorkPanel from './WorkPanel';
 import MovementPanel from './MovementPanel';
 
 export default function LayoutContent({ children }: { children: React.ReactNode }) {
-  const selectedWork = useRecoilValue(selectedWorkState);
-  const selectedMovement = useRecoilValue(selectedMovementState);
+  const selectedWork = useAppStore((state) => state.selectedWork);
+  const selectedMovement = useAppStore((state) => state.selectedMovement);
 
   // 어느 패널이라도 열려있으면 true
   const isPanelOpen = selectedWork !== null || selectedMovement !== null;
