@@ -1,14 +1,53 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { MdPlayArrow, MdPause } from 'react-icons/md';
 
 export default function ComingSoonPage() {
   const [mounted, setMounted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 첫 클릭 시 음악 시작
+  useEffect(() => {
+    const startMusic = () => {
+      if (audioRef.current) {
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch(() => {
+          // 브라우저가 autoplay를 차단한 경우
+        });
+      }
+      document.removeEventListener('click', startMusic);
+      document.removeEventListener('touchstart', startMusic);
+    };
+
+    document.addEventListener('click', startMusic);
+    document.addEventListener('touchstart', startMusic);
+
+    return () => {
+      document.removeEventListener('click', startMusic);
+      document.removeEventListener('touchstart', startMusic);
+    };
+  }, []);
+
+  const togglePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play();
+        setIsPlaying(true);
+      }
+    }
+  };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-black">
@@ -126,6 +165,52 @@ export default function ComingSoonPage() {
       {/* Bottom Decorative Element */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-secondary-500/20" />
 
+      {/* Audio Element */}
+      <audio
+        ref={audioRef}
+        src="https://mozartiade.s3.ap-northeast-2.amazonaws.com/music/andantino.mp3"
+        loop
+        preload="auto"
+      />
+
+      {/* Music Player - Fixed Bottom */}
+      <div
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-1000 delay-1000 ease-out ${
+          mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}
+      >
+        <div className="flex items-center gap-3 px-4 py-2.5 bg-black/50 backdrop-blur-md border border-white/10 rounded-full">
+          {/* Equalizer Bars */}
+          <div className="flex items-end gap-[3px] h-4 w-5">
+            <span className={`equalizer-bar ${isPlaying ? 'animate-equalizer-1' : ''}`} />
+            <span className={`equalizer-bar ${isPlaying ? 'animate-equalizer-2' : ''}`} />
+            <span className={`equalizer-bar ${isPlaying ? 'animate-equalizer-3' : ''}`} />
+            <span className={`equalizer-bar ${isPlaying ? 'animate-equalizer-4' : ''}`} />
+          </div>
+
+          {/* Track Info */}
+          <div className="flex flex-col">
+            <span className="text-[10px] text-white/40 tracking-wide">Now Playing</span>
+            <span className="text-xs text-white/70 font-medium max-w-[200px] md:max-w-none truncate">
+              Mozart - Concerto for Flute and Harp, K. 299: II. Andantino
+            </span>
+          </div>
+
+          {/* Play/Pause Button */}
+          <button
+            onClick={togglePlay}
+            className="ml-2 p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200"
+            aria-label={isPlaying ? '일시정지' : '재생'}
+          >
+            {isPlaying ? (
+              <MdPause className="w-4 h-4 text-white/80" />
+            ) : (
+              <MdPlayArrow className="w-4 h-4 text-white/80" />
+            )}
+          </button>
+        </div>
+      </div>
+
       {/* Custom Animation Styles */}
       <style jsx global>{`
         @keyframes slow-zoom {
@@ -138,6 +223,48 @@ export default function ComingSoonPage() {
         }
         .animate-slow-zoom {
           animation: slow-zoom 30s ease-out forwards;
+        }
+
+        /* Equalizer Bar Styles */
+        .equalizer-bar {
+          width: 3px;
+          height: 4px;
+          background-color: rgba(255, 255, 255, 0.6);
+          border-radius: 1px;
+          transition: height 0.1s ease;
+        }
+
+        @keyframes equalizer-1 {
+          0%, 100% { height: 4px; }
+          50% { height: 14px; }
+        }
+        @keyframes equalizer-2 {
+          0%, 100% { height: 6px; }
+          50% { height: 10px; }
+        }
+        @keyframes equalizer-3 {
+          0%, 100% { height: 4px; }
+          50% { height: 16px; }
+        }
+        @keyframes equalizer-4 {
+          0%, 100% { height: 8px; }
+          50% { height: 12px; }
+        }
+
+        .animate-equalizer-1 {
+          animation: equalizer-1 0.8s ease-in-out infinite;
+        }
+        .animate-equalizer-2 {
+          animation: equalizer-2 0.6s ease-in-out infinite;
+          animation-delay: 0.1s;
+        }
+        .animate-equalizer-3 {
+          animation: equalizer-3 0.7s ease-in-out infinite;
+          animation-delay: 0.2s;
+        }
+        .animate-equalizer-4 {
+          animation: equalizer-4 0.5s ease-in-out infinite;
+          animation-delay: 0.15s;
         }
       `}</style>
     </div>
